@@ -4,7 +4,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialCommunityIcons, Entypo, AntDesign, Fontisto } from 'react-native-vector-icons';
 import ModalDropdown from 'react-native-modal-dropdown';
-// import DatePicker from 'react-native-datepicker';
 import { ModalDatePicker } from "react-native-material-date-picker";
 import Moment from 'moment';
 
@@ -34,7 +33,6 @@ const RegisterScreen = ({navigation}) => {
          gender: null,
          calendar:null,
          idcard: null
-
       }
    )
    const [validate, setValidate] = React.useState(
@@ -264,7 +262,7 @@ const RegisterScreen = ({navigation}) => {
          //    ...status,
          //    status: false
          // })
-         return Alert.alert('Dien Di')
+         return Alert.alert('')
       }  
       
    }

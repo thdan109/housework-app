@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, KeyboardAvoidingView} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Dimensions, Animated} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,6 +8,8 @@ import ProfileUser from './ProfileUser';
 import HomeChild from './HomeScreenChild'
 import Setting from './SettingScreen'
 const Tab = createBottomTabNavigator();
+const {width, height} = Dimensions.get("screen")
+
 const Chat = () =>{
    return(
       <View style= {{flex: 1, justifyContent: "center", alignItems: "center"}}> 
@@ -15,13 +17,6 @@ const Chat = () =>{
       </View>
    )
 }
-// const  SettingsScreen=()=> {
-//    return (
-//      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//        <Text>Settings!</Text>
-//      </View>
-//    );
-//  }
  const Home = () => {
     return (
        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
@@ -38,10 +33,15 @@ const Chat = () =>{
    )
 }
 
+
+
 const IndexScreen = () => {
-   return (
-    
+
+   return (    
          <Tab.Navigator
+            tabBarOptions= {{
+               keyboardHidesTabBar: true
+            }}
           >
             <Tab.Screen name="Home" component={HomeChild} 
                         options={{
@@ -84,8 +84,7 @@ const IndexScreen = () => {
                            ),
                         }}
             />
-         </Tab.Navigator>   
-      
+         </Tab.Navigator>  
    )
 }
 

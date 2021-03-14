@@ -80,7 +80,7 @@ const  ProfileUser= ({ navigation }) => {
                   justifyContent: 'center',
                }}>
                   <TouchableOpacity onPress={()=> navigation.navigate('UpdateProfileUser')}>
-                     <FontAwesome5  name="user-edit" size={25} color="#043927" />
+                     <FontAwesome5  name="edit" size={25} color="#043927" />
                   </TouchableOpacity>
                 
                </View>
@@ -89,52 +89,52 @@ const  ProfileUser= ({ navigation }) => {
             
             <View style={{ height: height/2, borderWidth: 0, paddingHorizontal: 0, marginVertical: 10}}>
 
-               <View style={{flexDirection: "row", alignItems: "center" , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3,  paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <Entypo name="cake" size={20} color="#043927" style={{marginRight: 3}} />
+               {/* <View style={{flexDirection: "row", alignItems: "flex-end",paddingVertical: 3 , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3,  paddingHorizontal: 7, borderBottomWidth: 1 }}>
+                  <Entypo name="cake" size={18} color="#043927" style={{marginRight: 3, marginBottom: 3}} />
                   <Text style={{flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Ngày sinh </Text>
                   <Text style={{  }}>{Moment(user.users.data.birthday).format('dddd MM yyyy')}</Text> 
                </View>
                
-               <View style={{ flexDirection: "row", alignItems: "center" ,flex: 1/10 ,backgroundColor: 'white', borderWidth: 0, marginVertical:1, marginHorizontal: 3,paddingHorizontal: 7,  borderBottomWidth: 1}}>
-                  <Entypo name="phone" size={20} color="#043927" style={{marginRight: 3}} />
+               <View style={{ flexDirection: "row",alignItems: "flex-end",paddingVertical: 3 ,flex: 1/10 ,backgroundColor: 'white', borderWidth: 0, marginVertical:1, marginHorizontal: 3,paddingHorizontal: 7,  borderBottomWidth: 1}}>
+                  <Entypo name="phone" size={18} color="#043927" style={{marginRight: 3}} />
                   <Text style={{flex:1, marginLeft: 0, fontSize: 14, fontWeight: "bold"}} >Số điện thoại</Text>
                   <Text style={{  }}> {user.users.data.phone}</Text> 
                </View>
                
-               <View style={{flexDirection: "row", alignItems: "center" , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1, marginHorizontal: 3,paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <Entypo name="email" size={20} color="#043927" style={{marginRight: 3}} />
+               <View style={{flexDirection: "row", alignItems: "flex-end",paddingVertical: 3 , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1, marginHorizontal: 3,paddingHorizontal: 7, borderBottomWidth: 1 }}>
+                  <Entypo name="email" size={18} color="#043927" style={{marginRight: 3}} />
                   <Text style={{ flex:1, marginLeft: 0, fontSize: 14, fontWeight: "bold"}} >Email:</Text>
                   <Text style={{  }}>{user.users.data.email}</Text> 
                </View>
                
-               <View style={{flexDirection: "row", alignItems: "center" , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3,  paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <Entypo name="address" size={20} color="#043927" style={{marginRight: 3}} />
+               <View style={{flexDirection: "row",alignItems: "flex-end",paddingVertical: 3 , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3,  paddingHorizontal: 7, borderBottomWidth: 1 }}>
+                  <Entypo name="address" size={18} color="#043927" style={{marginRight: 3}} />
                   <Text style={{flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Địa chỉ</Text>
                   <Text style={{  }}>{user.users.data.address}</Text> 
                </View>
-               
-               <View style={{flexDirection: "row", alignItems: "center" , flex: 1/10, backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3, paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <Entypo name="medal" size={20} color="#043927" style={{marginRight: 2}} />
+                */}
+               <View style={{flexDirection: "row",alignItems: "flex-end",paddingVertical: 3, flex: 1/10, backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3, paddingHorizontal: 7, borderBottomWidth: 1 }}>
+                  <Entypo name="medal" size={16} color="#043927" style={{marginRight: 2}} />
                   <Text style={{ flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Xếp loại khách hàng</Text>
                   <Text style={{  }}>KC</Text> 
                </View>  
 
-               <View style={{flexDirection: "row", alignItems: "center" , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3,  paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <FontAwesome name="history" color="#043927" size={20} style={{marginRight: 3, marginLeft: 1}} />
+               <View style={{flexDirection: "row",alignItems: "flex-end",paddingVertical: 3, flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:0,marginHorizontal: 3,  paddingHorizontal: 7, borderBottomWidth: 1 }}>
+                  <FontAwesome name="history" color="#043927" size={18} style={{marginRight: 3, marginLeft: 1}} />
                   <Text style={{ flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Lịch sử</Text>
                   
                </View>
 
                
-               <View style={{flexDirection: "row", alignItems: "center" , flexDirection: "row", alignItems: "center" , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3, paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <Ionicons name="gift" size={20} color="#043927" style={{marginRight: 3}} />
+               <View style={{flexDirection: "row", alignItems: "flex-end",paddingVertical: 3 , flexDirection: "row", flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3, paddingHorizontal: 7, borderBottomWidth: 1 }}>
+                  <Ionicons name="gift" size={18} color="#043927" style={{marginRight: 3}} />
                   <Text style={{flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Khuyến mãi</Text>
                </View>
                
               
                
-               <View style={{flexDirection: "row", alignItems: "center" , flex: 1/10 , backgroundColor: 'white', borderWidth: 0, marginVertical:1, paddingHorizontal: 7,marginHorizontal: 3, borderBottomWidth: 1 }}>
-                  <Entypo name="man" size={20} color="#043927" style={{marginRight: 3}} />
+               <View style={{flexDirection: "row", alignItems: "flex-end",paddingVertical: 3, flex: 1/10 , backgroundColor: 'white', borderWidth: 0, marginVertical:0, paddingHorizontal: 7,marginHorizontal: 3, borderBottomWidth: 1 }}>
+                  <Entypo name="man" size={18} color="#043927" style={{marginRight: 3}} />
                   <Text style={{ flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Người làm yêu thích</Text>
                </View>
 
@@ -163,54 +163,4 @@ const  ProfileUser= ({ navigation }) => {
 
 
 
- const styles = StyleSheet.create({
-   centeredView: {
-     flex: 1,
-     justifyContent: "center",
-   //   alignItems: "center",
-   //   marginTop: 22
-   },
-   modalView: {
-     margin: 20,
-     backgroundColor: "rgb(245,245,245)",
-     borderRadius: 20,
-     borderWidth: 1,
-     borderColor: '#043927',
-     padding: 35,
-     alignItems: "center",
-     shadowColor: "#000",
-     shadowOffset: {
-       width: 0,
-       height: 2
-     },
-     shadowOpacity: 0.25,
-     shadowRadius: 4,
-     elevation: 5
-   },
-  
-   buttonOpen: {
-     
-   },
-   buttonClose: {
-      backgroundColor: "#FF5733",
-      borderRadius: 10,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      elevation: 2
-   },
-   textStyle: {
-     color: "white",
-     fontWeight: "bold",
-     textAlign: "center",
-     fontSize: 16
-   },
-   modalText: {
-      // borderWidth: 1,
-      width: width / 1.099,
-      marginBottom: 15,
-      textAlign: "center",
-      fontWeight: "bold",
-      fontSize: 20,
-   }
- });
 export default ProfileUser;
