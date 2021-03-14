@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, Dimensions, StatusBar, TouchableOpacity, KeyboardAvoidingView, TextInput, Animated ,Platform ,Easing, Modal, StyleSheet, Pressable, ScrollView, Button, Alert} from 'react-native';
+import {View, Text, Dimensions, StatusBar, TouchableOpacity, TextInput, Animated, Image ,Platform ,Easing, Modal, StyleSheet, Pressable, ScrollView, Button, Alert} from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
-import { Ionicons, Entypo , Feather, FontAwesome5, Image} from '@expo/vector-icons';
+import { Ionicons, Entypo , Feather, FontAwesome5} from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { ModalDatePicker } from "react-native-material-date-picker";
 import Moment from 'moment'
@@ -170,21 +170,32 @@ const user =  useSelector( state => state)
       })
    }
 
-   // const pickImage = async () => {
-   //    let result = await ImagePicker.launchImageLibraryAsync({
-   //      mediaTypes: ImagePicker.MediaTypeOptions.All,
-   //      allowsEditing: true,
-   //      aspect: [4, 3],
-   //      quality: 1,
-   //    });
+   const pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
   
-   //    console.log(result);
+      console.log(result);
   
-   //    if (!result.cancelled) {
-   //      setImage(result.uri);
-   //    }
-   //  };
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
+    };
    
+   const UploadImage = async () =>{
+         let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+         })
+
+         
+
+   }
 
    const UpdateInforUser = ( ) =>{
       // console.log(data.fullname, data.idcard, data.address, data.phone, datee, data.gender);
@@ -261,8 +272,8 @@ const user =  useSelector( state => state)
                                           
                                        </View>
                                        <Pressable
-                                          // onPress={pickImage}
-                                          onPress={() => setModalVisible1(!modalVisible1)}
+                                          onPress={pickImage}
+                                          // onPress={() => setModalVisible1(!modalVisible1)}
                                        >
                                           <Text 
                                              style={{ 
@@ -490,7 +501,9 @@ const user =  useSelector( state => state)
                               backgroundColor: 'yellow'
                            }}>
                               <TouchableOpacity style={{flex:1}} onPress={() => setModalVisible1(true)}>
-                                    {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                                    { 
+                                       image && <Image source={{ uri: image }} style={{ flex: 1,  borderRadius: 80}} />                                       
+                                    }
                               </TouchableOpacity>
                            </View>  
                      </View>
