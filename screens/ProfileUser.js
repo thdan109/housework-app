@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StatusBar, Dimensions, Button , AsyncStorage, TouchableOpacity, Modal, StyleSheet, Pressable, TextInput, TextInputBase} from 'react-native';
+import { View, Text, StatusBar, Dimensions, Button , AsyncStorage, TouchableOpacity, Modal, StyleSheet, Pressable, TextInput,Image, TextInputBase} from 'react-native';
 import {Entypo, FontAwesome, MaterialIcons, Ionicons, FontAwesome5 } from 'react-native-vector-icons'
 const {width, height} = Dimensions.get('screen');
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../action/user';
 import Moment from 'moment';
 import { abs } from 'react-native-reanimated';
+import host  from '../host/index'
 
 
 
@@ -59,7 +60,7 @@ const  ProfileUser= ({ navigation }) => {
             >
                <View style={{ justifyContent: "center",width: width / 4, height: height/10, borderWidth:0  }}>
                   <View style={{backgroundColor: "#043927",  width: 80, height: 80, borderWidth: 0, borderRadius: 40,marginLeft: 20}}>
-                     
+                     <Image source={{uri: `${host}/${user.users.data.avatar}` }} style={{ flex: 1,  borderRadius: 80}} />
                   </View>
                </View>
                

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, ScrollView, StatusBar,TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Dimensions, ScrollView, StatusBar,TextInput, KeyboardAvoidingView,Image, TouchableOpacity } from 'react-native';
 const { width,height }  = Dimensions.get("screen");
 
 
@@ -51,39 +51,210 @@ const HomeScreenChild = () =>{
                      marginTop: -25,
                   }}
                >
+{/* Menu dịch vụ */}
                   <ScrollView>
                      <View>
+        {/* Dọn nhà */}
                         <View 
                            style={{
+                              flex:1,
                               width: width /1.1,
-                              height: height / 10,
+                              height: 180,
                               // borderWidth: 1,
                               marginHorizontal: 18,
                               borderRadius: 15,
                               backgroundColor: "white",
-                              marginBottom: 15,
-                              elevation: 10
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
                            }}
                         >
-                           <Text>Tên chức năng</Text>
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/cleaning-tools(1).png')} style={{ width: 100 , height: 100}} />
+                              <Text style={{textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Dọn dẹp nhà</Text>
+                           </TouchableOpacity>
                         </View>
+   {/* Vệ sinh Sofa */}
                         <View 
                            style={{
+                              flex:1,
                               width: width /1.1,
-                              height: height / 10,
+                              height: 180,
+                              // borderWidth: 1,
                               marginHorizontal: 18,
                               borderRadius: 15,
                               backgroundColor: "white",
-                              marginBottom: 15,
-                              elevation: 10
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
                            }}
                         >
-                           <Text>Tên</Text>
-                           
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/sofa(1).png')} style={{ width: 100 , height: 100}} />
+                              <Text style={{textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Vệ sinh Sofa</Text>
+                           </TouchableOpacity>
                         </View>
+         {/* Nấn ăn */}
+                        <View 
+                           style={{
+                              flex:1,
+                              width: width /1.1,
+                              height: 180,
+                              // borderWidth: 1,
+                              marginHorizontal: 18,
+                              borderRadius: 15,
+                              backgroundColor: "white",
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
+                           }}
+                        >
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/pot(1).png')} style={{ width: 100 , height: 100}} />
+                              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Nấu ăn</Text>
+                           </TouchableOpacity>
+                        </View>
+         
+      {/* Vệ sinh máy lạnh */}
+                        <View 
+                           style={{
+                              flex:1,
+                              width: width /1.1,
+                              height: 180,
+                              // borderWidth: 1,
+                              marginHorizontal: 18,
+                              borderRadius: 15,
+                              backgroundColor: "white",
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
+                           }}
+                        >
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/air-conditioner.png')} style={{ alignSelf: 'center', width: 100 , height: 100}} />
+                              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Vệ sinh máy lạnh</Text>
+                           </TouchableOpacity>
+                        </View>
+                   
+         {/* Đi chợ */}
+                        <View 
+                           style={{
+                              flex:1,
+                              width: width /1.1,
+                              height: 180,
+                              // borderWidth: 1,
+                              marginHorizontal: 18,
+                              borderRadius: 15,
+                              backgroundColor: "white",
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
+                           }}
+                        >
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/groceries.png')} style={{ width: 100 , height: 100}} />
+                              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Đi chợ</Text>
+                           </TouchableOpacity>
+                        </View>
+
+      {/*Vệ sinh nhà */}
+                        <View 
+                           style={{
+                              flex:1,
+                              width: width /1.1,
+                              height: 180,
+                              // borderWidth: 1,
+                              marginHorizontal: 18,
+                              borderRadius: 15,
+                              backgroundColor: "white",
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
+                           }}
+                        >
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/house-cleaning.png')} style={{ width: 100 , height: 100}} />
+                              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Vệ sinh nhà</Text>
+                           </TouchableOpacity>
+                        </View>      
+
+         {/*Khử khuẩn */}
+                        <View 
+                           style={{
+                              flex:1,
+                              width: width /1.1,
+                              height: 180,
+                              // borderWidth: 1,
+                              marginHorizontal: 18,
+                              borderRadius: 15,
+                              backgroundColor: "white",
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
+                           }}
+                        >
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/disinfection.png')} style={{ width: 100 , height: 100}} />
+                              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Khử khuẩn</Text>
+                           </TouchableOpacity>
+                        </View>            
+
+      {/*Khử khuẩn */}
+                        <View 
+                           style={{
+                              flex:1,
+                              width: width /1.1,
+                              height: 180,
+                              // borderWidth: 1,
+                              marginHorizontal: 18,
+                              borderRadius: 15,
+                              backgroundColor: "white",
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
+                           }}
+                        >
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/washing-machine.png')} style={{ width: 100 , height: 100}} />
+                              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Giặc ủi</Text>
+                           </TouchableOpacity>
+                        </View> 
+
+         {/* Làm vườn               */}
+                        <View 
+                           style={{
+                              flex:1,
+                              width: width /1.1,
+                              height: 180,
+                              // borderWidth: 1,
+                              marginHorizontal: 18,
+                              borderRadius: 15,
+                              backgroundColor: "white",
+                              marginBottom: 30,
+                              elevation: 10,
+                              justifyContent:'center',
+                              alignItems: 'center'
+                           }}
+                        >
+                           <TouchableOpacity>
+                              <Image source={require('../assets/images/farming.png')} style={{ alignSelf:'center', width: 100 , height: 100}} />
+                              <Text style={{ fontSize: 16, marginTop: 10, color: 'gray' }}>Chăm sóc sân vườn</Text>
+                           </TouchableOpacity>
+                        </View>
+
+                       
+
                      </View>
                   </ScrollView>
-                  <TextInput placeholder={'aaaaaaaaaaa'}></TextInput>
+                  {/* <TextInput placeholder={'aaaaaaaaaaa'}></TextInput> */}
                </View>
             </View>
          </View>

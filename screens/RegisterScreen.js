@@ -250,18 +250,7 @@ const RegisterScreen = ({navigation}) => {
              return   Alert.alert('No!')
           }
          })
-         // setStatus({
-         //    ...status,
-         //    status: true
-         // })
-        
-
       }else{
-         // setStatus(false)
-         // setStatus({
-         //    ...status,
-         //    status: false
-         // })
          return Alert.alert('')
       }  
       

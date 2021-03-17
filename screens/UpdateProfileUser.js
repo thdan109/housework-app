@@ -9,13 +9,14 @@ import axios from 'axios';
 import host from '../host';
 import Constants from 'expo-constants';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { addUser } from '../action/user';
 
 const { width, height } = Dimensions.get("screen");
 
 
 const UpddateProfileUser = ({navigation}) =>{
 const user =  useSelector( state => state)
+const dispatch = useDispatch();
 
    React.useEffect(() => {
       (async () => {
@@ -29,6 +30,8 @@ const user =  useSelector( state => state)
    }, []);
 
    const [image, setImage] = React.useState(null);
+   const [imageForm, setImageForm] = React.useState(null);
+   const [ status, setStatus] = React.useState(false)
 
    const [datee, setdate] = React.useState(new Date())
    const [data, setData ] = React.useState({
@@ -58,6 +61,7 @@ const user =  useSelector( state => state)
 
    // Animated
    const screenAnimation = React.useRef(new Animated.Value(height)).current;
+   const [ id , setId] = React.useState(user.users.data._id)
    const [modalVisible, setModalVisible] = React.useState(false);
    const [modalVisible1, setModalVisible1] = React.useState(false);
    const Animatedcontainer = {
@@ -170,32 +174,53 @@ const user =  useSelector( state => state)
       })
    }
 
+   const UploadImage = async () =>{
+      const localUri = imageForm.uri;
+      const filename = localUri.split('/').pop()
+      const match = /\.(\w+)$/.exec(filename);
+      const type = match ? `image/${match[1]}` : `image`;
+      const formData = new FormData();
+      const dataPicture = JSON.parse(JSON.stringify({ uri: localUri, name: filename, type }));
+      const user = JSON.parse(
+         JSON.stringify({
+            id : id
+         })
+       );
+      formData.append('photo', dataPicture);
+      formData.append('id',id)
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+      // console.log(formData,config);
+      axios.post(`${host}/user/imageUser`,formData, config).then(res =>{
+         // console.log(res.data.avatar);
+         dispatch(addUser({
+            ...user.users.data,
+            avatar: res.data.avatar
+         }))
+         navigation.replace('UpdateProfileUser');
+      }).catch(err =>{
+
+      })
+     
+      // console.log(user);
+
+   }
+
    const pickImage = async () => {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
+      const result = await ImagePicker.launchImageLibraryAsync({
+         mediaTypes: ImagePicker.MediaTypeOptions.All,
+         allowsEditing: true,
+         aspect: [4, 4],
+         quality: 1,
       });
-  
-      console.log(result);
-  
-      if (!result.cancelled) {
-        setImage(result.uri);
+
+      if (result.cancelled === false) {
+         setImage(result.uri);
+         setImageForm(result);
+         setStatus(true)
       }
     };
    
-   const UploadImage = async () =>{
-         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-         })
-
-         
-
-   }
+   
 
    const UpdateInforUser = ( ) =>{
       // console.log(data.fullname, data.idcard, data.address, data.phone, datee, data.gender);
@@ -271,8 +296,37 @@ const user =  useSelector( state => state)
                                        <View>
                                           
                                        </View>
+                                       {(status === true)?
+                                          <Pressable
+                                          onPress={
+                                              ()=>{ 
+                                                UploadImage(),
+                                                setModalVisible1(!modalVisible1)
+                                              }      
+                                             }
+                                          // onPress={() => setModalVisible1(!modalVisible1)}
+                                          >
+                                             <Text 
+                                                style={{ 
+                                                   backgroundColor: '#2196F3', 
+                                                   marginTop: 20, 
+                                                   marginHorizontal: 20, 
+                                                   paddingVertical: 10, 
+                                                   textAlign: 'center', 
+                                                   color: 'white', 
+                                                   fontSize: 18 , 
+                                                   borderRadius: 20,
+                                                   fontWeight: 'bold'
+                                                }}>Đồng ý
+                                             </Text>
+                                          </Pressable>:
+                                          <Pressable></Pressable>
+                                       }
+                                       
                                        <Pressable
-                                          onPress={pickImage}
+                                          onPress={
+                                                pickImage
+                                             }
                                           // onPress={() => setModalVisible1(!modalVisible1)}
                                        >
                                           <Text 
@@ -301,7 +355,7 @@ const user =  useSelector( state => state)
                                                 paddingVertical: 10, 
                                                 textAlign: 'center', 
                                                 color: 'white', 
-                                                fontSize: 18 , 
+                                                fontSize: 18,
                                                 borderRadius: 20,
                                                 fontWeight: 'bold'
                                              }}>Hủy bỏ
@@ -501,9 +555,14 @@ const user =  useSelector( state => state)
                               backgroundColor: 'yellow'
                            }}>
                               <TouchableOpacity style={{flex:1}} onPress={() => setModalVisible1(true)}>
-                                    { 
-                                       image && <Image source={{ uri: image }} style={{ flex: 1,  borderRadius: 80}} />                                       
-                                    }
+                                 { (image)?
+                                     image && <Image source={{ uri: image }} style={{ flex: 1,  borderRadius: 80}} />                                        
+                                    :
+                                    <Image source={{uri: `${host}/${user.users.data.avatar}` }} style={{ flex: 1,  borderRadius: 80}} />
+                                 }
+                                       {/* <Image source={{uri: `${host}/${user.users.data.avatar}` }} style={{ flex: 1,  borderRadius: 80}} /> */}
+                                    {/* image && <Image source={{ uri: image }} style={{ flex: 1,  borderRadius: 80}} />                                        */}
+                                    
                               </TouchableOpacity>
                            </View>  
                      </View>
@@ -514,6 +573,7 @@ const user =  useSelector( state => state)
                         flex: 1/8,
                         backgroundColor: 'white',
                         marginBottom: 20,
+                        
                      }}>
                         <View style={{
                            flexDirection: 'row',
@@ -522,12 +582,14 @@ const user =  useSelector( state => state)
                            flex: 1/2,
                            alignItems:'center',
                            paddingBottom: 3,
+                           marginLeft: 5
                         }}>
                            <Text style={{
                               flex: 1,
                               // fontWeight: 'bold',
                               marginHorizontal: 5,
-                              fontSize: 16   
+                              fontSize: 16,
+                             
                            }}>Tên đăng nhập</Text>
                            <Text style={{
                               color: 'red'
@@ -546,6 +608,7 @@ const user =  useSelector( state => state)
                            flex: 1/2,
                            alignItems:'center',
                            paddingBottom: 3,
+                           marginLeft: 5
                            
                         }}>
                            <Text style={{
@@ -576,6 +639,7 @@ const user =  useSelector( state => state)
                            flex: 1/2,
                            alignItems:'center',
                            paddingBottom: 3,
+                           marginLeft: 5
                            
                         }}>
                            <Text style={{
@@ -599,6 +663,7 @@ const user =  useSelector( state => state)
                            flex: 1/2,
                            alignItems:'center',
                            paddingBottom: 3,
+                           marginLeft: 5
                         }}>
                            <Text style={{
                               flex: 1,
@@ -620,6 +685,7 @@ const user =  useSelector( state => state)
                            flex: 1/2,
                            alignItems:'center',
                            paddingBottom: 3,
+                           marginLeft: 5
                            
                         }}>
                            <Text style={{
@@ -642,6 +708,7 @@ const user =  useSelector( state => state)
                            flex: 1/2,
                            alignItems:'center',
                            paddingBottom: 3,
+                           marginLeft: 5
                            
                         }}>
                            <Text style={{
@@ -664,6 +731,7 @@ const user =  useSelector( state => state)
                            flex: 1/2,
                            alignItems:'center',
                            paddingBottom: 3,
+                           marginLeft: 5
                            
                         }}>
                            <Text style={{
@@ -686,6 +754,7 @@ const user =  useSelector( state => state)
                            flex: 1/2,
                            alignItems:'center',
                            paddingBottom: 3,
+                           marginLeft: 5
                            
                         }}>
                            <Text style={{
@@ -715,6 +784,7 @@ const user =  useSelector( state => state)
                               flex: 1,
                               alignItems:'center',
                               paddingBottom: 3,
+                              marginLeft: 5
                         }}>
                            <Text 
                               style={{
