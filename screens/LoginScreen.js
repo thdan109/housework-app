@@ -5,6 +5,7 @@ import { styles } from '../styles/styleLogin';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
+// import * as Notifications from 'expo-no'
 
 import axios from 'axios';
 import host from '../host';
@@ -17,8 +18,8 @@ const { width,height }  = Dimensions.get("screen");
 
 const LoginScreen = ({navigation}) => {
    const dispatch = useDispatch();
-
    const user = useSelector(state => state)
+
    const [data, setData] = React.useState(
       {
          username: '',
@@ -26,7 +27,17 @@ const LoginScreen = ({navigation}) => {
       }
    )
    const screenAnimation = React.useRef(new Animated.Value(height)).current;
-   const inputAnimation = React.useRef(new Animated.Value(0)).current
+   const inputAnimation = React.useRef(new Animated.Value(0)).current;
+
+   React.useEffect(() => {
+      AnimateContainer();
+      // (async () => {
+      //    const token_vale = await AsyncStorage.getItem('token');
+      //    // console.log();
+         
+      //  })();
+      //  console.log(AsyncStorage.getItem('token'));
+    }, []);
    
    const AnimateContainer = () =>{
       Animated.timing(screenAnimation, {
@@ -51,9 +62,9 @@ const LoginScreen = ({navigation}) => {
       }).start();
    }
 
-   React.useEffect(() => {
-      AnimateContainer();
-   },[])
+   // React.useEffect(() => {
+   //    AnimateContainer();
+   // },[])
    
    const Animatedcontainer = {
       height: screenAnimation,
@@ -90,15 +101,20 @@ const LoginScreen = ({navigation}) => {
    }
    
    const loginUser = async () =>{
-      // console.log('login');
       const user = await axios.post(`${host}/user/login`,{
          usernameCus: data.username,
-         passwordCus: data.password
+         passwordCus: data.password,
       })
 
-      await AsyncStorage.setItem('Login', user.data._id)
-      dispatch(addUser(user.data))
-      navigation.replace('Home');
+      // await AsyncStorage.setItem('Login', user.data._id)
+      // dispatch(addUser(user.data))
+      // navigation.replace('Home');
+
+
+      await AsyncStorage.setItem('Token', user.data.token)
+      dispatch(addUser(user.data.user))
+      navigation.replace('Home')
+      
    }
 
       return(

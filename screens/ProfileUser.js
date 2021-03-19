@@ -26,9 +26,6 @@ const  ProfileUser= ({ navigation }) => {
       navigation.replace("Login")
    }
 
-   // const getProfile = async () =>{
-   //    console.log(user.users.data._id);
-   // }
    return (
       
      <View style={{ flex: 1, backgroundColor: "rgb(230, 230, 230)"}}>

@@ -181,7 +181,7 @@ const dispatch = useDispatch();
       const type = match ? `image/${match[1]}` : `image`;
       const formData = new FormData();
       const dataPicture = JSON.parse(JSON.stringify({ uri: localUri, name: filename, type }));
-      const user = JSON.parse(
+      const userr = JSON.parse(
          JSON.stringify({
             id : id
          })
@@ -192,16 +192,18 @@ const dispatch = useDispatch();
       // console.log(formData,config);
       axios.post(`${host}/user/imageUser`,formData, config).then(res =>{
          // console.log(res.data.avatar);
+         console.log('aaa');
          dispatch(addUser({
             ...user.users.data,
             avatar: res.data.avatar
          }))
+         // console.log(user.users.data.avatar);
          navigation.replace('UpdateProfileUser');
       }).catch(err =>{
 
       })
      
-      // console.log(user);
+      // console.log(user.users.data);
 
    }
 
@@ -555,12 +557,12 @@ const dispatch = useDispatch();
                               backgroundColor: 'yellow'
                            }}>
                               <TouchableOpacity style={{flex:1}} onPress={() => setModalVisible1(true)}>
-                                 { (image)?
+                                 {/* { (image)?
                                      image && <Image source={{ uri: image }} style={{ flex: 1,  borderRadius: 80}} />                                        
                                     :
                                     <Image source={{uri: `${host}/${user.users.data.avatar}` }} style={{ flex: 1,  borderRadius: 80}} />
-                                 }
-                                       {/* <Image source={{uri: `${host}/${user.users.data.avatar}` }} style={{ flex: 1,  borderRadius: 80}} /> */}
+                                 } */}
+                                       <Image source={{uri: `${host}/${user.users.data.avatar}` }} style={{ flex: 1,  borderRadius: 80}} />
                                     {/* image && <Image source={{ uri: image }} style={{ flex: 1,  borderRadius: 80}} />                                        */}
                                     
                               </TouchableOpacity>

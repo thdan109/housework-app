@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { StyleSheet, Image, AsyncStorage} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';

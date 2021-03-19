@@ -41,7 +41,7 @@ const HomeScreenChild = () =>{
                   flex: 9/10,
                   borderWidth: 1,
                   width: width,
-                  backgroundColor: 'rgb(245, 245, 245, 0.9)',
+                  backgroundColor: 'rgb(255, 255, 255, 0.5)',
                }}
             >
                <View 
@@ -67,11 +67,11 @@ const HomeScreenChild = () =>{
                               marginBottom: 30,
                               elevation: 10,
                               justifyContent:'center',
-                              alignItems: 'center'
+                              alignItems: 'center',                              
                            }}
                         >
                            <TouchableOpacity>
-                              <Image source={require('../assets/images/cleaning-tools(1).png')} style={{ width: 100 , height: 100}} />
+                              <Image source={require('../assets/images/cleaning-tools(1).png')} style={{ width: 100 , height: 100, opacity: 1}} />
                               <Text style={{textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Dọn dẹp nhà</Text>
                            </TouchableOpacity>
                         </View>

@@ -1,17 +1,17 @@
-import { USER_DATA, DELETE_FOOD } from './types';
+import { USER_DATA, DELETE_USER } from './types';
 
 
-export const addUser = (food) => (
+export const addUser = (user) => (
    {
       type: USER_DATA,
-      data: food
+      data: user
    }
 )
 
 
 export const deleteUse = (key) =>(
    {
-      type: DELETE_FOOD,
+      type: DELETE_USER,
       key: key
    }
 )

@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ProfileUser from './ProfileUser';
 import HomeChild from './HomeScreenChild'
-import Setting from './SettingScreen'
+import SettingScreen from './SettingScreen'
 const Tab = createBottomTabNavigator();
 const {width, height} = Dimensions.get("screen")
 
@@ -76,7 +76,7 @@ const IndexScreen = () => {
                         }}
             />
 
-            <Tab.Screen name="Setting" component={Setting} 
+            <Tab.Screen name="Setting" component={SettingScreen} 
                         options={{
                            tabBarLabel: 'Setting',
                            tabBarIcon: ({ color, size }) => (
