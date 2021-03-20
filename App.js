@@ -14,6 +14,7 @@ import IndexScreen from './screens/HomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import UpdateProfileUser from './screens/UpdateProfileUser'
+import CookingScreen from './screens/ServicesScreen/CookingScreen'
 
 const store = configureStore();
 const AppStack = createStackNavigator();
@@ -38,6 +39,7 @@ const handleRedux = () => {
                   <AppStack.Screen name="Signup" component={RegisterScreen} />
                   <AppStack.Screen name="Home" component={IndexScreen} />   
                   <AppStack.Screen name="UpdateProfileUser" component={UpdateProfileUser}  /> 
+                  <AppStack.Screen name="CookingScreen" component={CookingScreen} />
                   {/* <App.Screen name="Test" component={TestScreen} /> */}
                </AppStack.Navigator>
             </NavigationContainer>

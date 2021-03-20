@@ -1,13 +1,11 @@
 import React from 'react';
-import { View, Text, Dimensions, ScrollView, StatusBar,TextInput, KeyboardAvoidingView,Image, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, ScrollView, StatusBar,TextInput, KeyboardAvoidingView,Image, TouchableOpacity, TouchableHighlight } from 'react-native';
 const { width,height }  = Dimensions.get("screen");
 
 
-const HomeScreenChild = () =>{
+const HomeScreenChild = ({navigation}) =>{
 
    return(
-      
-
       
       <View style={{flex: 1, width: width, height: height}}>
          <StatusBar  backgroundColor='black'/>
@@ -76,7 +74,7 @@ const HomeScreenChild = () =>{
                            </TouchableOpacity>
                         </View>
    {/* Vệ sinh Sofa */}
-                        <View 
+                        <View  
                            style={{
                               flex:1,
                               width: width /1.1,
@@ -97,7 +95,9 @@ const HomeScreenChild = () =>{
                            </TouchableOpacity>
                         </View>
          {/* Nấn ăn */}
+         <TouchableHighlight underlayColor="white" onPress={()=>navigation.replace('CookingScreen')}>
                         <View 
+                           
                            style={{
                               flex:1,
                               width: width /1.1,
@@ -112,12 +112,12 @@ const HomeScreenChild = () =>{
                               alignItems: 'center'
                            }}
                         >
-                           <TouchableOpacity>
+                           <TouchableOpacity onPress={()=>navigation.replace('CookingScreen')} >
                               <Image source={require('../assets/images/pot(1).png')} style={{ width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Nấu ăn</Text>
                            </TouchableOpacity>
                         </View>
-         
+                        </TouchableHighlight>
       {/* Vệ sinh máy lạnh */}
                         <View 
                            style={{
