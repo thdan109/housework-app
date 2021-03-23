@@ -1,7 +1,13 @@
-import React from 'react'
-import {View, Text, Dimensions, TouchableOpacity, TextInput,ScrollView, StyleSheet, Button, KeyboardAvoidingView, Switch} from 'react-native'
-import {Ionicons} from 'react-native-vector-icons';
+import React from 'react';
+import {View, Text, Dimensions, TouchableOpacity, TextInput,ScrollView, StyleSheet, Switch, Animated, Modal, Pressable} from 'react-native'
+import {Ionicons , FontAwesome, Icon} from 'react-native-vector-icons';
 import RadioButton from '../../components/RadioButton';
+import { LinearGradient } from 'expo-linear-gradient';
+import AddressSelected from '../../components/AddressSelected';
+import axios from 'axios';
+import SelectedAD from 'react-native-dropdown-picker';
+import { ModalDatePicker } from "react-native-material-date-picker";
+import Moment from 'moment';
 
 
 const {width, height } = Dimensions.get('screen')
@@ -11,13 +17,14 @@ const CookingScreen = ({ navigation } )=>{
    const [selectedFruit, setSelectedFruit] = React.useState('0');
    const [selectedGo, setSelectedGo] = React.useState('0');
    const [isEnabled, setIsEnabled] = React.useState(false);
+   const [modalVisible, setModalVisible] = React.useState(true);
+   const [value1, setValue] = React.useState(1)
+   const [ numaddress, setNumaddress ] =  React.useState('')
+   const [datee, setdate] = React.useState(new Date())
+
    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
    
    const quantum = [
-      // {
-      //   key: 'pay',
-      //   text: '1',
-      // },
       {
         key: 'performance',
         text: '2',
@@ -54,7 +61,6 @@ const CookingScreen = ({ navigation } )=>{
       }
    ]
 
-   var array = [];
   
    //Function button Radio
    const onSelect = (item) => {
@@ -81,12 +87,99 @@ const CookingScreen = ({ navigation } )=>{
       }
    }
 
+   // Address
+   const [ province, setProvince] = React.useState([])
+   const [ district, setDistrict] = React.useState([])
+   const [ ward, setWard ] = React.useState([])
+   const [ dataSel, setDataSel ] = React.useState({
+      provincestate: '',
+      districtstate: '',
+      ward: ''
+   })
+   const [address, setAddress] = React.useState({
+      address: '',
+      totaladdress: ''
+   })
+
+
+   React.useEffect(() =>{
+      getAddressAPI()
+   },[])
+
+   const getAddressAPI = async() =>{
+      const getData =  await axios.get('https://thongtindoanhnghiep.co/api/city')
+      let datamap = getData.data.LtsItem
+      datamap = datamap.map(dt =>{
+         return {
+            'id': dt.ID,
+            'label': dt.Title,
+            'value': dt.Title
+         }
+      })
+      datamap.pop()
+      setProvince(datamap)
+   }
+
+   const changeCity = async(item) =>{
+      const provinceNow = province.filter(data => { return data.value == item.value   })
+      // console.log(provinceNow.length);
+      if (provinceNow.length){
+         const changeCT = await axios.get('https://thongtindoanhnghiep.co/api/city/'+provinceNow[0].id+'/district')
+         let dataCity = changeCT.data.map(dt =>{
+            return {
+               'id': dt.ID,
+               'label': dt.Title,
+               'value': dt.Title
+            }
+         }) 
+         setDistrict(dataCity)
+         // console.log(dataCity);
+         setDataSel({
+            ...dataSel,
+            provincestate: item.value
+         })
+      }
+      
+   }
+
+   const changeDistrict = async (item) =>{
+      const districtNow = district.filter(data => {return data.value == item.value })
+      if (districtNow.length){
+         const changeDT = await axios.get('https://thongtindoanhnghiep.co/api/district/' + districtNow[0].id + '/ward')
+         let dataDT  =  changeDT.data.map(dt =>{
+            return{
+               'id': dt.ID,
+               'label': dt.Title,
+               'value': dt.Title
+            }
+         })
+         setWard(dataDT)
+         setDataSel({
+            ...dataSel,
+            districtstate: item.value
+         })
+      }  
+   }
+
+
+   const changeAddress = async() =>{
+      console.log('aaa');
+      const addressdata = dataSel.ward+', '+dataSel.districtstate+', '+dataSel.provincestate
+      setAddress({
+         address: addressdata
+      })
+      console.log(address);
+   }
+   // End Address
+
+
+
+
    return(
          <View style={{
             flex: 1, 
-            backgroundColor: 'rgba(200,200,200,0.3)',
+            backgroundColor: 'rgba(250,250,250,0.3)',
          }}>
-
             <View style={{
                backgroundColor: '#043927',
                height: 120
@@ -112,7 +205,7 @@ const CookingScreen = ({ navigation } )=>{
             </View>
             
             <View style={{
-                  height: height-120,
+                  height: height-170,
                   marginTop: -40,
             }}>
                <ScrollView style={{
@@ -129,7 +222,94 @@ const CookingScreen = ({ navigation } )=>{
                   <View style={{
                      marginTop: 10,
                      marginHorizontal: 20
-                  }}>
+                  }}>           
+{/* Modal */}
+                  <Modal
+                     animationType="slide"
+                     transparent={true}
+                     visible={modalVisible}
+                     onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                        setModalVisible(!modalVisible);
+                     }}
+                     >
+                        <View style={{
+                           height: '100%',
+                           // borderWidth: 1,
+                           backgroundColor: 'rgba(0,0,0,0.6)',
+                           justifyContent: 'center' 
+                        }}>   
+                           <View style={{
+                              // borderWidth: 1,
+                              height: 380,
+                              backgroundColor: 'white',
+                              marginHorizontal: 10,
+                              borderRadius: 10,
+                              paddingHorizontal: 10,
+                              
+                           }}>
+                              <TouchableOpacity onPress={()=>{setModalVisible(!modalVisible), setAddress({address: 'Bạn chưa chọn địa chỉ'})}}>
+                                 <Ionicons  name='close-circle' size={26} color={'red'} style={{ marginTop: 10}} />
+                              </TouchableOpacity>
+                              
+                              <Text style={{marginTop: 0,marginBottom: 10, fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}>Địa chỉ</Text>
+                  {/* Modal dia chi */}
+                              <SelectedAD 
+                                 placeholder={'Chọn thành phố/tỉnh'}
+                                 containerStyle={{height: 50, marginTop: 10}}
+                                 // onValueChange={(val)=>changCity(val)}
+                                 items={province}
+                                 onChangeItem={(item) => changeCity(item) }
+                              />
+                              <SelectedAD
+                                 placeholder={'Chọn huyện/quận'}
+                                 containerStyle={{height: 50, marginTop: 10}}
+                                 onChangeItem={(item)=> changeDistrict(item) }
+                                 items={district}
+                                 value={dataSel.districtstate}
+                              />
+                              <SelectedAD
+                                 placeholder={'Chọn Xã/Phường'}
+                                 onChangeItem={(item)=>setDataSel({
+                                                         ...dataSel,
+                                                         ward: item.value
+                                                      })}
+                                 containerStyle={{height: 50, marginTop: 10}}
+                                 items={ward}
+                                 value={dataSel.wardstate}
+                              />
+
+
+                  {/* End dia chia */}
+                              <TouchableOpacity 
+                                 onPress={() => {setModalVisible(!modalVisible), changeAddress()}} style={{marginTop: 20}} >
+                                 <LinearGradient
+                                    colors={['#0ba360', '#3cba92']}
+                                    style={{ 
+                                       height: 50, justifyContent: 'center', 
+                                       alignContent:  'center',
+                                       alignItems: 'center',
+                                       height: 50, 
+                                       borderWidth: 1, 
+                                       justifyContent: "center", 
+                                       alignItems: 'center', 
+                                       marginBottom: 20    
+                                    }}
+                                 >
+                                       <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>Chọn địa chỉ này</Text>
+                                 </LinearGradient>
+                              </TouchableOpacity>
+                           </View>
+                           
+                        </View>
+                  </Modal>
+                  {/* <Pressable
+                     style={[styles.button, styles.buttonOpen]}
+                     onPress={() => setModalVisible(true)}
+                     >
+                     <Text style={styles.textStyle}>Show Modal</Text>
+                  </Pressable> */}
+{/* End Modal */}
                      <Text style={{ 
                         color: 'gray',
                         marginBottom: 3,
@@ -137,16 +317,23 @@ const CookingScreen = ({ navigation } )=>{
                      }}>
                         NƠI LÀM VIỆC
                      </Text>
-                     <TextInput
-                        style={{
-                           height: 45,
-                           borderWidth: 1,
-                           borderColor: '#228B22',
-                           borderRadius: 5,
-                           paddingHorizontal: 10
-                        }} 
-                        placeholder={'Địa chỉ đã chọn'}
-                     ></TextInput>
+                     <View style={{
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                     }}>
+                        <Text
+                           onPress={()=> setModalVisible(true)}
+                           style={{
+                              height: 45,
+                              borderWidth: 1,
+                              borderColor: '#228B22',
+                              borderRadius: 5,
+                              paddingHorizontal: 10,
+                              paddingVertical: 12
+                           }} 
+                        >{address.address}</Text>
+                     </View>
+                    
                   </View>
 
                   <View style={{
@@ -194,7 +381,7 @@ const CookingScreen = ({ navigation } )=>{
                            fontSize: 13
                         }}>Số người ăn</Text>
 
-                        <TextInput style={{borderWidth:1}}>3</TextInput>
+                        <TextInput keyboardType='number-pad' style={{borderBottomWidth:0.8 ,width: 120, borderBottomColor: 'gray'}} placeholder={'Nhập số người ăn'}></TextInput>
                      </View>
                      
                      <View style={{
@@ -260,7 +447,6 @@ const CookingScreen = ({ navigation } )=>{
                                        placeholder={'Nhập tên món ăn'}
                                     >
                                     </TextInput>
-                                    
                                  </View>
                               </View>
                            )
@@ -434,7 +620,14 @@ const CookingScreen = ({ navigation } )=>{
                         }}>
                            NGÀY ĂN
                         </Text>
-                        <TextInput
+                           <ModalDatePicker 
+                              locale="en" 
+                              onSelect={(date) => {setdate(date)} }
+                              isHideOnSelect={true}
+                              initialDate={new Date()}
+                              button={<Text style={{fontSize: 17, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center'}}>{Moment(datee).format('dddd  DD/MM/YYYY')}</Text>}
+                           />  
+                        {/* <TextInput
                            style={{
                               height: 45,
                               borderWidth: 1,
@@ -443,7 +636,7 @@ const CookingScreen = ({ navigation } )=>{
                               paddingHorizontal: 10
                            }} 
                            placeholder={'Địa chỉ đã chọn'}
-                        ></TextInput>
+                        ></TextInput> */}
                      </View>
 
                      <View style={{
@@ -571,7 +764,6 @@ const CookingScreen = ({ navigation } )=>{
                   </View>
                </ScrollView>
 
-
                <TouchableOpacity>
                   <View style={{
                      position: 'relative',
@@ -584,7 +776,7 @@ const CookingScreen = ({ navigation } )=>{
                      alignItems: 'center',
                      justifyContent: 'center'
                   }}>
-                     <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold'}}>Đặt</Text>
+                     <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold'}}>Xác nhận</Text>
                   </View>
                </TouchableOpacity>
             </View>
@@ -596,4 +788,46 @@ const CookingScreen = ({ navigation } )=>{
 
 export default CookingScreen;
 
-
+const styles = StyleSheet.create({
+   centeredView: {
+     flex: 1,
+     justifyContent: "center",
+     alignItems: "center",
+     marginTop: 22
+   },
+   modalView: {
+     margin: 20,
+     backgroundColor: "white",
+     borderRadius: 20,
+     padding: 35,
+     alignItems: "center",
+     shadowColor: "#000",
+     shadowOffset: {
+       width: 0,
+       height: 2
+     },
+     shadowOpacity: 0.25,
+     shadowRadius: 4,
+     elevation: 5
+   },
+   button: {
+     borderRadius: 20,
+     padding: 10,
+     elevation: 2
+   },
+   buttonOpen: {
+     backgroundColor: "#F194FF",
+   },
+   buttonClose: {
+     backgroundColor: "#2196F3",
+   },
+   textStyle: {
+     color: "white",
+     fontWeight: "bold",
+     textAlign: "center"
+   },
+   modalText: {
+     marginBottom: 15,
+     textAlign: "center"
+   }
+ });

@@ -16,6 +16,7 @@ import LoadingScreen from './screens/LoadingScreen';
 import UpdateProfileUser from './screens/UpdateProfileUser'
 import CookingScreen from './screens/ServicesScreen/CookingScreen'
 
+
 const store = configureStore();
 const AppStack = createStackNavigator();
 const handleRedux = () => {

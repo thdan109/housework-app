@@ -7,6 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ProfileUser from './ProfileUser';
 import HomeChild from './HomeScreenChild'
 import SettingScreen from './SettingScreen'
+import AddressSelected from '../components/AddressSelected';
 const Tab = createBottomTabNavigator();
 const {width, height} = Dimensions.get("screen")
 
@@ -67,7 +68,7 @@ const IndexScreen = () => {
                            ),
                         }}
             />
-            <Tab.Screen name="Notification" component={Notification} 
+            <Tab.Screen name="Notification" component={AddressSelected} 
                         options={{
                            tabBarLabel: 'Notification',
                            tabBarIcon: ({ color, size }) => (

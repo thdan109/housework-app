@@ -1,7 +1,7 @@
-import {USER_DATA, DELETE_FOOD} from '../action/types';
+import {USER_DATA, DELETE_FOOD, ADDRESS_DATA} from '../action/types';
 
 const initialState = {
-   foodList: {},
+   userList: {},
 }
 
 const foodReducer = (state = initialState, action) =>{
@@ -10,9 +10,13 @@ const foodReducer = (state = initialState, action) =>{
          return {
             data: action.data   
          };
+      // case ADDRESS_DATA:
+      //    return{
+      //       data: action.data
+      //    };
       case DELETE_FOOD:
          return 
-
+      
          default:
             return state;
     }
