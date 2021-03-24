@@ -4,7 +4,7 @@ import { View , TouchableOpacity, Text, Dimensions, AsyncStorage } from 'react-n
 import { MaterialIcons } from 'react-native-vector-icons';
 const { width, height } = new Dimensions.get('screen');
 import host from '../host/index';
-import Address from '../components/AddressSelected'
+
 
 
 const SettingScreen = ({ navigation }) =>{
@@ -25,6 +25,7 @@ const SettingScreen = ({ navigation }) =>{
       <View style={{
          flex: 1
       }}>
+         
          {/* <Address/> */}
           <View style={{ height: height/11, borderWidth: 0, marginTop: 30, justifyContent: "center", alignContent:"center", borderWidth: 0, bottom: 0, position: 'absolute' }}>
             <View>

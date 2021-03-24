@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, Dimensions, TouchableOpacity, TextInput,ScrollView, StyleSheet, Switch, Animated, Modal, Pressable} from 'react-native'
+import {View, Text, Dimensions, TouchableOpacity, TextInput,ScrollView, StyleSheet, Switch, Modal, Pressable, Alert} from 'react-native'
 import {Ionicons , FontAwesome, Icon} from 'react-native-vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RadioButton from '../../components/RadioButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import AddressSelected from '../../components/AddressSelected';
@@ -8,22 +9,74 @@ import axios from 'axios';
 import SelectedAD from 'react-native-dropdown-picker';
 import { ModalDatePicker } from "react-native-material-date-picker";
 import Moment from 'moment';
-
+import host from '../../host'
 
 const {width, height } = Dimensions.get('screen')
 
 const CookingScreen = ({ navigation } )=>{
-   const [selectedOption, setSelectedOption] = React.useState('2');
-   const [selectedFruit, setSelectedFruit] = React.useState('0');
-   const [selectedGo, setSelectedGo] = React.useState('0');
+   
+   const [selectedOption, setSelectedOption] = React.useState({
+      key: 'performance',
+      text: '2',
+    }); 
+   const [selectedFruit, setSelectedFruit] = React.useState({
+      key: '1',
+      text: 'Có'
+   });
+   const [selectedGo, setSelectedGo] = React.useState( {
+      "key": "1",
+      "text": "Có",
+    });
    const [isEnabled, setIsEnabled] = React.useState(false);
    const [modalVisible, setModalVisible] = React.useState(true);
-   const [value1, setValue] = React.useState(1)
-   const [ numaddress, setNumaddress ] =  React.useState('')
-   const [datee, setdate] = React.useState(new Date())
-
-   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+   const [ switchh , setSwitch] = React.useState(false)
+   const [ money , setMoney ] = React.useState()
    
+   // setState data
+   
+   const [ numaddress, setNumaddress ] =  React.useState({})
+   const [datee, setdate] = React.useState(new Date())
+   const [datatime, setDataTime] =  React.useState({
+      hour: '',
+      min: ''
+   })
+   const [numCustomer, setNumCustomer] = React.useState({})
+   const [ dish, setDish] = React.useState({})
+   const [km, setKM] = React.useState()
+
+   
+   const hours = [
+      {label: '1', value: 'itemHours1'},
+      {label: '2', value: 'itemHours2'},
+      {label: '3', value: 'itemHours3'},
+      {label: '4', value: 'itemHours4'},
+      {label: '5', value: 'itemHours5'},
+      {label: '6', value: 'itemHours6'},
+      {label: '7', value: 'itemHours7'},
+      {label: '8', value: 'itemHours8'},
+      {label: '9', value: 'itemHours9'},
+      {label: '10', value: 'itemHours10'},
+      {label: '11', value: 'itemHours11'},
+      {label: '12', value: 'itemHours12'},
+   ]
+   
+   const mins = [
+      {label: '00', value: 'itemMin1'},
+      {label: '05', value: 'itemMin2'},
+      {label: '10', value: 'itemMin3'},
+      {label: '15', value: 'itemMin4'},
+      {label: '20', value: 'itemMin5'},
+      {label: '25', value: 'itemMin6'},
+      {label: '30', value: 'itemMin7'},
+      {label: '35', value: 'itemMin8'},
+      {label: '40', value: 'itemMin9'},
+      {label: '45', value: 'itemMin10'},
+      {label: '50', value: 'itemMin11'},
+      {label: '55', value: 'itemMin12'},
+   ]
+
+   
+
    const quantum = [
       {
         key: 'performance',
@@ -80,8 +133,10 @@ const CookingScreen = ({ navigation } )=>{
    };
    
    const onSelectGo = (item) =>{
+     
       if (selectedOption && selectedOption.key === item.key){
-         selectedGo(null)
+         setSelectedGo(null)
+         
       }else{
          setSelectedGo(item)
       }
@@ -97,13 +152,14 @@ const CookingScreen = ({ navigation } )=>{
       ward: ''
    })
    const [address, setAddress] = React.useState({
-      address: '',
-      totaladdress: ''
-   })
+      address: null,
+      totaladdress: null  
+    })
 
 
    React.useEffect(() =>{
       getAddressAPI()
+      // console.log(hours);
    },[])
 
    const getAddressAPI = async() =>{
@@ -163,17 +219,70 @@ const CookingScreen = ({ navigation } )=>{
 
 
    const changeAddress = async() =>{
-      console.log('aaa');
       const addressdata = dataSel.ward+', '+dataSel.districtstate+', '+dataSel.provincestate
       setAddress({
+         ...address,
          address: addressdata
       })
       console.log(address);
    }
+ 
    // End Address
+   
+   const total = async() =>{
+      console.log('aaa');
+      // console.log(Number(numCustomer));
+      console.log(Number(selectedOption.text));
+      // console.log(Number(selectedFruit.key))
+      // console.log(Number(selectedGo.key));
+      console.log('aaa');
+      let money = Number(numCustomer)*75000 + Number(selectedGo.text)*75000 + Number(selectedFruit.key)*75000 + Number(selectedOption.key)*100000
+      setMoney(money)
+      // console.log(money);
+   }
 
+   const onSubmit = async() =>{
+      const token_val = await AsyncStorage.getItem('Token')
+      const addressfinal = numaddress +', '+address.address
+      // const dish = dish
+      const Fruit = selectedFruit.text
+      const goMarket = selectedGo
+      const promotion = km
+      const time = datatime.hour.label+' : '+datatime.min.label
+      // console.log(address.address);
+      // console.log(numaddress);
+      // console.log(dish);
+      // console.log(Fruit);
+      // console.log(goMarket);
+      // console.log(datatime.hour.label);
 
+      
+      if ((address.address != null) && (numaddress != null) && (dish != null) && (Fruit != null) && (!selectedGo.text) && (datatime.hour.label != null)){
+         // return Alert.alert('Nhap lai')
+         const createCooking = await axios.get(`${host}/cooking/create`, {
+            headers: {
+               Authorization: `Bearer ${token_val}`,
+            },
+            params: {
+               dtaddress: addressfinal,
+               dtdish: dish,
+               dtfruit: Fruit,
+               dtMarket: goMarket,
+               dtTime: time,
+               dtdate: datee,
+               dtnumCus: numCustomer
+            }
 
+         })
+      }else{
+         return Alert.alert('Nhập các thông tin để hoàn thành dịch vụ')
+      }
+   }
+
+   const toggleSwitch = () =>{ 
+      setIsEnabled(previousState => !previousState)
+      setSwitch(!switchh)
+   };
 
    return(
          <View style={{
@@ -271,9 +380,9 @@ const CookingScreen = ({ navigation } )=>{
                               <SelectedAD
                                  placeholder={'Chọn Xã/Phường'}
                                  onChangeItem={(item)=>setDataSel({
-                                                         ...dataSel,
-                                                         ward: item.value
-                                                      })}
+                                                ...dataSel,
+                                                ward: item.value
+                                             })}
                                  containerStyle={{height: 50, marginTop: 10}}
                                  items={ward}
                                  value={dataSel.wardstate}
@@ -282,7 +391,9 @@ const CookingScreen = ({ navigation } )=>{
 
                   {/* End dia chia */}
                               <TouchableOpacity 
-                                 onPress={() => {setModalVisible(!modalVisible), changeAddress()}} style={{marginTop: 20}} >
+                                 onPress={() => {setModalVisible(!modalVisible), changeAddress()}} 
+                                 style={{marginTop: 20}} 
+                              >
                                  <LinearGradient
                                     colors={['#0ba360', '#3cba92']}
                                     style={{ 
@@ -348,6 +459,7 @@ const CookingScreen = ({ navigation } )=>{
                         SỐ NHÀ
                      </Text>
                      <TextInput
+                        onChangeText={(val)=>{setNumaddress(val)}}
                         style={{
                            height: 45,
                            borderWidth: 1,
@@ -355,7 +467,7 @@ const CookingScreen = ({ navigation } )=>{
                            borderRadius: 5,
                            paddingHorizontal: 10
                         }} 
-                        placeholder={'Địa chỉ đã chọn'}
+                        placeholder={'Nhập số nhà'}
                      ></TextInput>
                   </View>
 
@@ -381,7 +493,13 @@ const CookingScreen = ({ navigation } )=>{
                            fontSize: 13
                         }}>Số người ăn</Text>
 
-                        <TextInput keyboardType='number-pad' style={{borderBottomWidth:0.8 ,width: 120, borderBottomColor: 'gray'}} placeholder={'Nhập số người ăn'}></TextInput>
+                        <TextInput 
+                           onChangeText={(val) => {setNumCustomer(val), total()}}
+                           keyboardType='number-pad' 
+                           style={{borderBottomWidth:0.8 ,width: 120, borderBottomColor: 'gray'}} 
+                           placeholder={'Nhập số người ăn'}
+                        >
+                        </TextInput>
                      </View>
                      
                      <View style={{
@@ -400,7 +518,7 @@ const CookingScreen = ({ navigation } )=>{
                            <View>
                               <RadioButton
                                  selectedOption={selectedOption}
-                                 onSelect={onSelect}
+                                 onSelect={(item)=>{onSelect(item)}}
                                  options={quantum}
                               />
                            </View>
@@ -418,6 +536,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 12 }} >Món 1</Text>
                                     <TextInput
+                                       onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish1: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -437,6 +559,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 12 }} >Món 2</Text>
                                     <TextInput
+                                        onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish2: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -461,6 +587,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 13 }} >Món 1</Text>
                                     <TextInput
+                                        onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish1: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -480,6 +610,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 13 }} >Món 2</Text>
                                     <TextInput
+                                        onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish2: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -500,6 +634,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 13 }} >Món 3</Text>
                                     <TextInput
+                                       onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish3: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -525,6 +663,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 13 }} >Món 1</Text>
                                     <TextInput
+                                        onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish1: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -544,6 +686,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 13 }} >Món 2</Text>
                                     <TextInput
+                                        onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish2: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -565,6 +711,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 13 }} >Món 3</Text>
                                     <TextInput
+                                        onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish3: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -585,6 +735,10 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 13 }} >Món 4</Text>
                                     <TextInput
+                                       onChangeText={(val)=>{setDish({
+                                          ...dish,
+                                          dish4: val
+                                       })}}
                                        style={{
                                           flex:1,
                                           marginLeft: 10,
@@ -625,7 +779,7 @@ const CookingScreen = ({ navigation } )=>{
                               onSelect={(date) => {setdate(date)} }
                               isHideOnSelect={true}
                               initialDate={new Date()}
-                              button={<Text style={{fontSize: 17, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center'}}>{Moment(datee).format('dddd  DD/MM/YYYY')}</Text>}
+                              button={<Text style={{fontSize: 17, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center', color: 'black'}}>{Moment(datee).format('dddd  DD/MM/YYYY')}</Text>}
                            />  
                         {/* <TextInput
                            style={{
@@ -640,7 +794,7 @@ const CookingScreen = ({ navigation } )=>{
                      </View>
 
                      <View style={{
-                        width: '40%',
+                        width: '40%',  
                         marginTop: 10,
                         marginHorizontal: 20
                      }}>
@@ -651,7 +805,30 @@ const CookingScreen = ({ navigation } )=>{
                         }}>
                            THỜI GIAN
                         </Text>
-                        <TextInput
+                        <SelectedAD
+                           placeholder=''
+                           items={
+                              hours
+                           }
+                           onChangeItem={(item) => setDataTime({
+                              ...datatime,
+                              hour: item
+                           }) }
+                        />
+                        <SelectedAD
+                           placeholder=''
+                           items={
+                              mins
+                           }
+                           onChangeItem={(item) => setDataTime({
+                              ...datatime,
+                              min: item
+                           }) }
+                        />
+
+
+
+                        {/* <TextInput
                            style={{
                               height: 45,
                               borderWidth: 1,
@@ -660,7 +837,7 @@ const CookingScreen = ({ navigation } )=>{
                               paddingHorizontal: 10
                            }} 
                            placeholder={'Địa chỉ đã chọn'}
-                        ></TextInput>
+                        ></TextInput> */}
                      </View>
                   </View>
      {/* ------------              */}
@@ -726,10 +903,11 @@ const CookingScreen = ({ navigation } )=>{
                            alignItems: 'center'
                         }}>
                            <TextInput
+                              onChangeText={(val)=>setKM(val)}
                               style={{
                                  flex: 1,
                                  height: 45,
-                                 borderWidth: 1,
+                                 // borderWidth: 1,
                                  borderColor: '#228B22',
                                  borderRadius: 5,
                                  paddingHorizontal: 10
@@ -757,14 +935,18 @@ const CookingScreen = ({ navigation } )=>{
                                  value={isEnabled}
                               />
                            </View>
-                             
+                           <View style={{borderWidth: 1, height: 40, marginTop: 20, borderColor: '#228B22', borderRadius: 5, flexDirection: 'row', alignItems:'center'}}>
+                              <Text style={{ paddingHorizontal: 10, fontSize: 16, flex:1 }}>
+                                 Thành tiền
+                              </Text>
+                              <Text style={{fontSize: 16, marginRight: 10}}>{money}</Text>
+                           </View> 
                         </View>
-
                      </View>
                   </View>
                </ScrollView>
 
-               <TouchableOpacity>
+               <TouchableOpacity onPress={onSubmit}>
                   <View style={{
                      position: 'relative',
                      marginHorizontal: 25,
