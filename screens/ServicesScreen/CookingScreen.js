@@ -6,6 +6,7 @@ import RadioButton from '../../components/RadioButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import AddressSelected from '../../components/AddressSelected';
 import axios from 'axios';
+
 import SelectedAD from 'react-native-dropdown-picker';
 import { ModalDatePicker } from "react-native-material-date-picker";
 import Moment from 'moment';
@@ -29,18 +30,19 @@ const CookingScreen = ({ navigation } )=>{
     });
    const [isEnabled, setIsEnabled] = React.useState(false);
    const [modalVisible, setModalVisible] = React.useState(true);
+   const [modalVisible1, setModalVisible1] = React.useState(false);
    const [ switchh , setSwitch] = React.useState(false)
-   const [ money , setMoney ] = React.useState()
+   const [ money , setMoney ] = React.useState(Number(selectedOption.text) * 50000 + Number(selectedFruit.key) * 50000 + Number(selectedGo.key) * 75000)
    
    // setState data
    
    const [ numaddress, setNumaddress ] =  React.useState({})
    const [datee, setdate] = React.useState(new Date())
    const [datatime, setDataTime] =  React.useState({
-      hour: '',
-      min: ''
+      hour: 'null',
+      min: 'null'
    })
-   const [numCustomer, setNumCustomer] = React.useState({})
+   const [numCustomer, setNumCustomer] = React.useState('1')
    const [ dish, setDish] = React.useState({})
    const [km, setKM] = React.useState()
 
@@ -133,7 +135,6 @@ const CookingScreen = ({ navigation } )=>{
    };
    
    const onSelectGo = (item) =>{
-     
       if (selectedOption && selectedOption.key === item.key){
          setSelectedGo(null)
          
@@ -229,55 +230,51 @@ const CookingScreen = ({ navigation } )=>{
  
    // End Address
    
-   const total = async() =>{
-      console.log('aaa');
-      // console.log(Number(numCustomer));
-      console.log(Number(selectedOption.text));
-      // console.log(Number(selectedFruit.key))
-      // console.log(Number(selectedGo.key));
-      console.log('aaa');
-      let money = Number(numCustomer)*75000 + Number(selectedGo.text)*75000 + Number(selectedFruit.key)*75000 + Number(selectedOption.key)*100000
-      setMoney(money)
-      // console.log(money);
+   const total = async(item) =>{
+      if ((address.address != 'Bạn chưa chọn địa chỉ') && (numaddress != null) && (dish != null) && (datatime.hour.label) && (datatime.min.label) && (numCustomer != 'null')){
+         let money = Number(selectedFruit.key)*50000 + Number(selectedGo.key)*50000 + Number(selectedOption.text)*35000 + Number(numCustomer)*30000
+         setMoney(money)
+         setModalVisible1(true)
+      }else{
+         
+         return Alert.alert('Nhập đầy đủ thông tin')
+         // setModalVisible1(false)
+      }
    }
 
    const onSubmit = async() =>{
       const token_val = await AsyncStorage.getItem('Token')
-      const addressfinal = numaddress +', '+address.address
-      // const dish = dish
-      const Fruit = selectedFruit.text
-      const goMarket = selectedGo
-      const promotion = km
-      const time = datatime.hour.label+' : '+datatime.min.label
-      // console.log(address.address);
-      // console.log(numaddress);
-      // console.log(dish);
-      // console.log(Fruit);
-      // console.log(goMarket);
-      // console.log(datatime.hour.label);
 
-      
-      if ((address.address != null) && (numaddress != null) && (dish != null) && (Fruit != null) && (!selectedGo.text) && (datatime.hour.label != null)){
-         // return Alert.alert('Nhap lai')
+      const sendAddress = numaddress+', '+ address.address;
+      const sendTime = datatime.hour.label+' : '+datatime.min.label;
+
+      // console.log(numaddress+', '+ address.address);
+      // console.log( dish )  ;
+      // console.log(selectedFruit.key);
+      // console.log(datee);
+      // console.log(datatime.hour.label+' : '+datatime.min.label);
          const createCooking = await axios.get(`${host}/cooking/create`, {
             headers: {
                Authorization: `Bearer ${token_val}`,
             },
             params: {
-               dtaddress: addressfinal,
+               dtaddress: sendAddress,
                dtdish: dish,
-               dtfruit: Fruit,
-               dtMarket: goMarket,
-               dtTime: time,
+               dtfruit: selectedFruit.text,
+               dtMarket: selectedGo.text,
+               dtTime: sendTime,
                dtdate: datee,
-               dtnumCus: numCustomer
+               dtnumCus: numCustomer,
+               dtMoney: money
             }
 
          })
-      }else{
-         return Alert.alert('Nhập các thông tin để hoàn thành dịch vụ')
-      }
+     
    }
+
+   // const onNext = async() =>{
+      
+   // }
 
    const toggleSwitch = () =>{ 
       setIsEnabled(previousState => !previousState)
@@ -387,8 +384,6 @@ const CookingScreen = ({ navigation } )=>{
                                  items={ward}
                                  value={dataSel.wardstate}
                               />
-
-
                   {/* End dia chia */}
                               <TouchableOpacity 
                                  onPress={() => {setModalVisible(!modalVisible), changeAddress()}} 
@@ -420,6 +415,97 @@ const CookingScreen = ({ navigation } )=>{
                      >
                      <Text style={styles.textStyle}>Show Modal</Text>
                   </Pressable> */}
+                  <Modal
+                     animationType="slide"
+                     transparent={true}
+                     visible={modalVisible1}
+                     onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                        setModalVisible1(!modalVisible1);
+                     }}
+                     >
+                        <View style={{
+                           height: '100%',
+                           // borderWidth: 1,
+                           backgroundColor: 'rgba(0,0,0,0.6)',
+                           justifyContent: 'center' 
+                        }}>   
+                           <View style={{
+                              // borderWidth: 1,
+                              height: 420,
+                              backgroundColor: 'white',
+                              marginHorizontal: 10,
+                              borderRadius: 10,
+                              paddingHorizontal: 10,
+                              
+                           }}>
+                              <TouchableOpacity onPress={()=>{setModalVisible1(!modalVisible1)}}>
+                                 <Ionicons  name='close-circle' size={26} color={'red'} style={{ marginTop: 10}} />
+                              </TouchableOpacity>
+                              
+                              <Text style={{marginTop: 0,marginBottom: 10, fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}>Nấu ăn</Text>
+                  {/* Modal dia chi */}
+                              <View>
+                                 <ScrollView>
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <Text style={{ marginRight: 10}}>Địa chỉ: </Text>
+                                       <Text style={{ flex:1, textAlign: 'right' }} >{numaddress +','+address.address}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <Text style={{flex:1}}>Số người ăn:  </Text>
+                                       <Text>{numCustomer}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <Text style={{flex:1}}>Số món:  </Text>
+                                       <Text>{selectedOption.text}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <Text style={{flex:1}}>Ngày:   </Text>
+                                       <Text>{Moment(datee).format('dddd  DD/MM/YYYY')}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <Text style={{flex:1}}>Thời gian:  </Text>
+                                       <Text>{datatime.hour.label +' giờ '+ datatime.min.label+' phút'}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <Text style={{flex:1}}>Trái cây:  </Text>
+                                       <Text>{selectedFruit.text}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <Text style={{flex:1}}>Đi chợ:  </Text>
+                                       <Text>{selectedGo.text}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <Text style={{flex:1}}>Tổng tiền:  </Text>
+                                       <Text>{money} VNĐ</Text>
+                                    </View>
+                                 </ScrollView>
+                              </View>
+                  {/* End dia chia */}
+                              <TouchableOpacity 
+                                 onPress={() => {onSubmit(),setModalVisible1(!modalVisible1)}} 
+                                 style={{marginTop: 20}} 
+                              >
+                                 <LinearGradient
+                                    colors={['#0ba360', '#3cba92']}
+                                    style={{ 
+                                       height: 50, justifyContent: 'center', 
+                                       alignContent:  'center',
+                                       alignItems: 'center',
+                                       height: 50, 
+                                       borderWidth: 1, 
+                                       justifyContent: "center", 
+                                       alignItems: 'center', 
+                                       marginBottom: 20    
+                                    }}
+                                 >
+                                       <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>Xác nhận</Text>
+                                 </LinearGradient>
+                              </TouchableOpacity>
+                           </View>
+                           
+                        </View>
+                  </Modal>
 {/* End Modal */}
                      <Text style={{ 
                         color: 'gray',
@@ -494,7 +580,7 @@ const CookingScreen = ({ navigation } )=>{
                         }}>Số người ăn</Text>
 
                         <TextInput 
-                           onChangeText={(val) => {setNumCustomer(val), total()}}
+                           onChangeText={(val) => {setNumCustomer(val)}}
                            keyboardType='number-pad' 
                            style={{borderBottomWidth:0.8 ,width: 120, borderBottomColor: 'gray'}} 
                            placeholder={'Nhập số người ăn'}
@@ -781,16 +867,6 @@ const CookingScreen = ({ navigation } )=>{
                               initialDate={new Date()}
                               button={<Text style={{fontSize: 17, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center', color: 'black'}}>{Moment(datee).format('dddd  DD/MM/YYYY')}</Text>}
                            />  
-                        {/* <TextInput
-                           style={{
-                              height: 45,
-                              borderWidth: 1,
-                              borderColor: '#228B22',
-                              borderRadius: 5,
-                              paddingHorizontal: 10
-                           }} 
-                           placeholder={'Địa chỉ đã chọn'}
-                        ></TextInput> */}
                      </View>
 
                      <View style={{
@@ -858,7 +934,7 @@ const CookingScreen = ({ navigation } )=>{
                         <View>
                            <RadioButton
                               selectedOption={selectedFruit}
-                              onSelect={onSelectfruit}
+                              onSelect={(item)=>{onSelectfruit(item)}}
                               options={fruits}
                            />
                         </View>
@@ -878,7 +954,7 @@ const CookingScreen = ({ navigation } )=>{
                         <View>
                            <RadioButton
                               selectedOption={selectedGo}
-                              onSelect={onSelectGo}
+                              onSelect={(item)=>{onSelectGo(item)}}
                               options={go}
                            />
                         </View>
@@ -907,7 +983,7 @@ const CookingScreen = ({ navigation } )=>{
                               style={{
                                  flex: 1,
                                  height: 45,
-                                 // borderWidth: 1,
+                                 borderWidth: 1,
                                  borderColor: '#228B22',
                                  borderRadius: 5,
                                  paddingHorizontal: 10
@@ -935,18 +1011,21 @@ const CookingScreen = ({ navigation } )=>{
                                  value={isEnabled}
                               />
                            </View>
-                           <View style={{borderWidth: 1, height: 40, marginTop: 20, borderColor: '#228B22', borderRadius: 5, flexDirection: 'row', alignItems:'center'}}>
+                           {/* <View style={{borderWidth: 1, height: 40, marginTop: 20, borderColor: '#228B22', borderRadius: 5, flexDirection: 'row', alignItems:'center'}}>
                               <Text style={{ paddingHorizontal: 10, fontSize: 16, flex:1 }}>
                                  Thành tiền
                               </Text>
                               <Text style={{fontSize: 16, marginRight: 10}}>{money}</Text>
-                           </View> 
+                           </View>  */}
+                           <View>
+
+                           </View>
                         </View>
                      </View>
                   </View>
                </ScrollView>
 
-               <TouchableOpacity onPress={onSubmit}>
+               <TouchableOpacity onPress={()=>{total()}}>
                   <View style={{
                      position: 'relative',
                      marginHorizontal: 25,
@@ -958,7 +1037,7 @@ const CookingScreen = ({ navigation } )=>{
                      alignItems: 'center',
                      justifyContent: 'center'
                   }}>
-                     <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold'}}>Xác nhận</Text>
+                     <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold'}}>Tiếp tục</Text>
                   </View>
                </TouchableOpacity>
             </View>

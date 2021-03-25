@@ -8,6 +8,7 @@ import ProfileUser from './ProfileUser';
 import HomeChild from './HomeScreenChild'
 import SettingScreen from './SettingScreen'
 import AddressSelected from '../components/AddressSelected';
+import OrderScreen from '../screens/OrderScreen'
 const Tab = createBottomTabNavigator();
 const {width, height} = Dimensions.get("screen")
 
@@ -52,9 +53,9 @@ const IndexScreen = () => {
                            ),
                         }}
             />
-            <Tab.Screen name="Chat" component={Chat} 
+            <Tab.Screen name="Order" component={OrderScreen} 
                         options={{
-                           tabBarLabel: 'Chat',
+                           tabBarLabel: 'Việc',
                            tabBarIcon: ({ color, size }) => (
                               <MaterialIcons name="chat" color={'#043927'} size={30} />
                            ),
