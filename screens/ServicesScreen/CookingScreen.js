@@ -43,9 +43,12 @@ const CookingScreen = ({ navigation } )=>{
       min: 'null'
    })
    const [numCustomer, setNumCustomer] = React.useState('1')
-   const [ dish, setDish] = React.useState({})
+   const [ dish, setDish] = React.useState()
    const [km, setKM] = React.useState()
-
+   const [ dish1, setDish1] = React.useState()
+   const [ dish2, setDish2] = React.useState()
+   const [ dish3, setDish3] = React.useState()
+   const [ dish4, setDish4] = React.useState()
    
    const hours = [
       {label: '1', value: 'itemHours1'},
@@ -123,6 +126,10 @@ const CookingScreen = ({ navigation } )=>{
         setSelectedOption(null);
       } else {
         setSelectedOption(item);
+        setDish1(null)
+        setDish2(null)
+        setDish3(null)
+        setDish4(null)
       }
    };
     
@@ -247,12 +254,8 @@ const CookingScreen = ({ navigation } )=>{
 
       const sendAddress = numaddress+', '+ address.address;
       const sendTime = datatime.hour.label+' : '+datatime.min.label;
-
-      // console.log(numaddress+', '+ address.address);
-      // console.log( dish )  ;
-      // console.log(selectedFruit.key);
-      // console.log(datee);
-      // console.log(datatime.hour.label+' : '+datatime.min.label);
+      console.log(dish);
+      
          const createCooking = await axios.get(`${host}/cooking/create`, {
             headers: {
                Authorization: `Bearer ${token_val}`,
@@ -622,7 +625,9 @@ const CookingScreen = ({ navigation } )=>{
                                  }}>
                                     <Text style={{ color: 'black', fontSize: 12 }} >Món 1</Text>
                                     <TextInput
-                                       onChangeText={(val)=>{setDish({
+                                       onChangeText={(val)=>{setDish(
+                                          // val)}}
+                                          {
                                           ...dish,
                                           dish1: val
                                        })}}
@@ -647,7 +652,7 @@ const CookingScreen = ({ navigation } )=>{
                                     <TextInput
                                         onChangeText={(val)=>{setDish({
                                           ...dish,
-                                          dish2: val
+                                          dish2:val
                                        })}}
                                        style={{
                                           flex:1,
