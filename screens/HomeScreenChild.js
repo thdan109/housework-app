@@ -53,6 +53,7 @@ const HomeScreenChild = ({navigation}) =>{
                   <ScrollView>
                      <View>
         {/* Dọn nhà */}
+                     <TouchableHighlight underlayColor="white" onPress={()=>navigation.navigate('ClearScreen')}>
                         <View 
                            style={{
                               flex:1,
@@ -68,11 +69,12 @@ const HomeScreenChild = ({navigation}) =>{
                               alignItems: 'center',                              
                            }}
                         >
-                           <TouchableOpacity>
+                           <TouchableOpacity onPress={()=>navigation.navigate('ClearScreen')}>
                               <Image source={require('../assets/images/cleaning-tools(1).png')} style={{ width: 100 , height: 100, opacity: 1}} />
                               <Text style={{textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Dọn dẹp nhà</Text>
                            </TouchableOpacity>
                         </View>
+                     </TouchableHighlight>
    {/* Vệ sinh Sofa */}
                         <View  
                            style={{
@@ -95,7 +97,7 @@ const HomeScreenChild = ({navigation}) =>{
                            </TouchableOpacity>
                         </View>
          {/* Nấn ăn */}
-         <TouchableHighlight underlayColor="white" onPress={()=>navigation.replace('CookingScreen')}>
+         <TouchableHighlight underlayColor="white" onPress={()=>navigation.navigate('CookingScreen')}>
                         <View 
                            
                            style={{
@@ -112,7 +114,7 @@ const HomeScreenChild = ({navigation}) =>{
                               alignItems: 'center'
                            }}
                         >
-                           <TouchableOpacity onPress={()=>navigation.replace('CookingScreen')} >
+                           <TouchableOpacity onPress={()=>navigation.navigate('CookingScreen')} >
                               <Image source={require('../assets/images/pot(1).png')} style={{ width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Nấu ăn</Text>
                            </TouchableOpacity>
@@ -207,6 +209,7 @@ const HomeScreenChild = ({navigation}) =>{
                         </View>            
 
       {/*Khử khuẩn */}
+                     <TouchableOpacity onPress={()=>navigation.navigate('WashingScreen')}>
                         <View 
                            style={{
                               flex:1,
@@ -222,12 +225,12 @@ const HomeScreenChild = ({navigation}) =>{
                               alignItems: 'center'
                            }}
                         >
-                           <TouchableOpacity>
+                           <TouchableOpacity onPress={()=>navigation.navigate('WashingScreen')}>
                               <Image source={require('../assets/images/washing-machine.png')} style={{ width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Giặc ủi</Text>
                            </TouchableOpacity>
                         </View> 
-
+                     </TouchableOpacity>
          {/* Làm vườn               */}
                         <View 
                            style={{

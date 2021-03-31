@@ -3,6 +3,7 @@ import {View, Text, KeyboardAvoidingView, Dimensions, Animated} from 'react-nati
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Ionicons } from '@expo/vector-icons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ProfileUser from './ProfileUser';
 import HomeChild from './HomeScreenChild'
@@ -57,7 +58,7 @@ const IndexScreen = () => {
                         options={{
                            tabBarLabel: 'Việc',
                            tabBarIcon: ({ color, size }) => (
-                              <MaterialIcons name="chat" color={'#043927'} size={30} />
+                              <Ionicons name="list-sharp" size={size} color="#043927" />
                            ),
                         }}
             />
@@ -78,14 +79,14 @@ const IndexScreen = () => {
                         }}
             />
 
-            <Tab.Screen name="Setting" component={SettingScreen} 
+            {/* <Tab.Screen name="Setting" component={SettingScreen} 
                         options={{
                            tabBarLabel: 'Setting',
                            tabBarIcon: ({ color, size }) => (
                               <MaterialIcons name="settings" color={'#043927'} size={30} />
                            ),
                         }}
-            />
+            /> */}
          </Tab.Navigator>  
    )
 }

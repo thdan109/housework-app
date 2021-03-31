@@ -79,6 +79,7 @@ const CookingScreen = ({ navigation } )=>{
       {label: '50', value: 'itemMin11'},
       {label: '55', value: 'itemMin12'},
    ]
+  
 
    
 
@@ -114,7 +115,7 @@ const CookingScreen = ({ navigation } )=>{
          text: 'Có'
       },
       {
-         key: '0',
+         key: '0', 
          text: 'Không'
       }
    ]
@@ -1007,14 +1008,14 @@ const CookingScreen = ({ navigation } )=>{
                            <View style={{
                               flexDirection: 'row'
                            }}>
-                              <Text style={{ fontSize: 16,  flex: 1}} >Chọn người làm</Text>
+                              {/* <Text style={{ fontSize: 16,  flex: 1}} >Chọn người làm</Text>
                               <Switch
                                  trackColor={{ false: "#767577", true: "#043927" }}
                                  thumbColor={isEnabled ? "#228B22" : "#f4f3f4"}
                                  ios_backgroundColor="#3e3e3e"
                                  onValueChange={toggleSwitch}
                                  value={isEnabled}
-                              />
+                              /> */}
                            </View>
                            {/* <View style={{borderWidth: 1, height: 40, marginTop: 20, borderColor: '#228B22', borderRadius: 5, flexDirection: 'row', alignItems:'center'}}>
                               <Text style={{ paddingHorizontal: 10, fontSize: 16, flex:1 }}>

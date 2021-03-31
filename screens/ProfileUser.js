@@ -21,8 +21,15 @@ const  ProfileUser= ({ navigation }) => {
       // getProfile()
    },[])
 
-   const handleSignOut = async() => {
-      await AsyncStorage.removeItem("Login")
+   const handleSignOut = async() =>{
+      const token_val = await AsyncStorage.getItem('Token')
+      const logout = await axios.get(`${host}/user/logout`,{
+         headers: {
+            Authorization: `Bearer ${token_val}`
+         }
+      })
+      console.log(logout.data);
+      await AsyncStorage.removeItem("Token")
       navigation.replace("Login")
    }
 
@@ -141,7 +148,7 @@ const  ProfileUser= ({ navigation }) => {
              
             </View>
          </View>
-         {/* <View style={{ height: height/11, borderWidth: 0, marginTop: 30, justifyContent: "center", alignContent:"center", borderWidth: 0, bottom: 0, position: 'absolute' }}>
+         <View style={{ height: height/11, borderWidth: 0, marginTop: 30, justifyContent: "center", alignContent:"center", borderWidth: 0, bottom: 0, position: 'absolute' }}>
             <View>
                <TouchableOpacity
                   onPress={handleSignOut}
@@ -152,7 +159,7 @@ const  ProfileUser= ({ navigation }) => {
                   </View>
                </TouchableOpacity>
             </View>
-         </View> */}
+         </View> 
         
      </View>
    );

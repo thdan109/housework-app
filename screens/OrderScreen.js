@@ -1,7 +1,7 @@
 import React from 'react';
 import {View,Text, Dimensions, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 import axios from 'axios'
 import NumberFormat from 'react-number-format';
 import Moment from 'moment'
@@ -16,7 +16,11 @@ const OrderScreen = ({ navigation }) =>{
       getOrder()
    },[])
 
-   const [menu, setMenu] = React.useState(false) 
+   // const [menu, setMenu] = React.useState(false) 
+   const [menu, setMenu] = React.useState({
+      status: false,
+      idOrder: null
+   }) 
    const [ dataCooking, setDataCooking] = React.useState([])
    const [ dataClear, setDataClear] = React.useState([])
 
@@ -47,7 +51,7 @@ const OrderScreen = ({ navigation }) =>{
 
          <View style={{ marginTop: -30 ,height: 600 }} >
          <ScrollView>
-            <TouchableOpacity onPress={()=>getOrder()}>
+            <TouchableOpacity onPress={()=>console.log(dataCooking)}>
                <Text>aaa</Text>
             </TouchableOpacity>
            {
@@ -62,54 +66,95 @@ const OrderScreen = ({ navigation }) =>{
                <View style={styles.renderlist} key={Math.random()}>
                   <View style={{ marginHorizontal: 10, marginVertical: 5}}>
                     <View style={{flexDirection:'row'}}>
-                       <Text style={{ fontSize: 17, fontWeight: 'bold', flex: 1}} >---------</Text>
-                       <TouchableOpacity onPress={()=>{setMenu(!menu)}} >
-                          {menu===false ?
-                          <Entypo name="chevron-down" size={30} color="black" />
-                             :
-                             <Entypo name="chevron-up" size={30} color="black" />
-                          }
-                          
+                       <Text style={{ fontSize: 17, fontWeight: 'bold', flex: 1}} >----------------------------------------------------</Text>
+                       {/* <TouchableOpacity onPress={()=>{setMenu(!menu)}} > */}
+                       <TouchableOpacity onPress={()=>{setMenu({ status: !menu.status, idOrder: data._id })}} >
+                           {( (menu.status === true) && (menu.idOrder === data._id) )?
+                              <Entypo name="chevron-up" size={30} color="red" />
+                              :
+                              <Entypo name="chevron-down" size={30} color="black" />
+                           }
                        </TouchableOpacity>
                     </View>
                   {
-                     ((menu===true) && (dataCooking)) &&
+                     ((menu.status===true) && (dataCooking) && (menu.idOrder == data._id)) &&
                         <View style={styles.details} key={Math.random()}>
-                           <View style={styles.rowdetail} key={Math.random()}>
+                           {/* <View style={styles.rowdetail} key={Math.random()}>
                               <Text>Loại dịch vụ</Text>
-                              <Text key={Math.random()} style={{flex:1,textAlign: "right"}}>{data.idUser}</Text>
-                           </View>
+                              <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>{data.idUser}</Text>
+                           </View> */}
                         
                            <View style={styles.rowdetail} key={Math.random()}>
                               <Text>Ngày</Text>
-                              <Text  key={Math.random()} style={{flex:1,textAlign: "right"}}>{Moment(data.date).format('dddd  DD/MM/YYYY')}</Text>
+                              <Text  key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>{Moment(data.date).format('dddd  DD/MM/YYYY')}</Text>
                            </View>
-
                            <View style={styles.rowdetail} key={Math.random()}>
                               <Text>Món ăn</Text>
-                              <Text key={Math.random()} style={{flex:1,textAlign: "right"}}>{" "+data.dishList} </Text>
+                              <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>{" "+data.dishList} </Text>
                            </View>
                            
                            <View style={styles.rowdetail} key={Math.random()}>
                               <Text>Đi chợ</Text>
-                              <Text key={Math.random()} style={{flex:1,textAlign: "right"}}>{data.goMarket}</Text>
+                              <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>{data.goMarket}</Text>
                            </View>
 
                            <View style={styles.rowdetail} key={Math.random()}>
                               <Text>Thời gian đến</Text>
-                              <Text key={Math.random()} style={{flex:1,textAlign: "right"}}> {data.time} </Text>
+                              <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.time} </Text>
                            </View>
                            
                            <View style={styles.rowdetail} key={Math.random()}>
                               <Text>Số người ăn</Text>
-                              <Text key={Math.random()} style={{flex:1,textAlign: "right"}}> {data.number} </Text>
+                              <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.number} </Text>
                            </View>
+
+                           {
+                              (data.staff.length != 0)? 
+                              <View style={styles.rowdetail} key={Math.random()}>
+                              <Text >Nhân viên</Text>
+                              <View key={Math.random() } style={{flex: 1}}>
+                              {data.staff.map(dt =>
+                                    <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                          <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
+                                          <TouchableOpacity>
+                                             <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                          </TouchableOpacity>
+                                    </View>
+                              )}
+                              </View>
+                           </View> 
+                              :
+                              <View style={styles.rowdetail} key={Math.random()}>
+                                 <Text>Nhân viên</Text>
+                                 <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
+                              </View>
+                           }
                            
                            <View style={styles.rowdetail} key={Math.random()}>
                               <Text>Tổng tiền</Text>
-                              <Text key={Math.random()} style={{flex:1,textAlign: "right"}}>
+                              <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>
                               <NumberFormat key={Math.random()} value={data.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
                               </Text>
+                           </View>
+                           
+                           {/* <View style={styles.rowdetail} key={Math.random()}>
+                              <Text >Nhân viên</Text>
+                              <View style={{flex: 1}}>
+                              {data.staff.map(dt =>
+                                    <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                          <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
+                                          <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color="black" style={{marginLeft: 10}} /> 
+                                    </View>
+                              )}
+                              </View>
+                              
+                              
+                           </View>    */}
+                           <View style={{ flexDirection: 'row'}} key={Math.random()}>
+                              <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
+                              <TouchableOpacity>
+                                 <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
+                              </TouchableOpacity>
                            </View>   
                         </View>
                   }
@@ -126,8 +171,6 @@ const OrderScreen = ({ navigation }) =>{
 }
 
 export default OrderScreen;
-
-
 const styles = StyleSheet.create({
    container:{
       flex:1,
