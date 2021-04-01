@@ -18,8 +18,10 @@ const WashingScreen = ( { navigation}  ) =>{
    const [modalVisible, setModalVisible] = React.useState(true);
    const [modalVisible1, setModalVisible1] = React.useState(false);
 
-   const [ dateSend, setDateSend] = React.useState(new Date())
-   const [ dateTake, setDateTake] = React.useState(new Date())
+   const [ dataKG, setDataKG ] = React.useState({})
+   const [ dataNote, setDataNote] = React.useState([])
+   const [ dateSend, setDateSend] = React.useState(new Date(Date.now()+1*24*60*60*1000))
+   const [ dateTake, setDateTake] = React.useState(new Date(Date.now()+2*24*60*60*1000))
    const [ province, setProvince] = React.useState([])
    const [ district, setDistrict] = React.useState([])
    const [ ward, setWard ] = React.useState([])
@@ -82,36 +84,23 @@ const WashingScreen = ( { navigation}  ) =>{
       {label: '50', value: 'itemMin11'},
       {label: '55', value: 'itemMin12'},
    ]
+   const KG = [
+      { label: '3KG  --------  45.000đ', value: 45000},
+      { label: '4KG  --------  60.000đ', value: 60000},
+      { label: '5KG  --------  75.000đ', value: 75000},
+      { label: '6KG  --------  90.000đ', value: 90000},
+      { label: '7KG  --------  105.000đ', value: 105000},
+      { label: '8KG  --------  120.000đ', value: 120000},
+      { label: '9KG  --------  135.000đ', value: 135000},
+      { label: '10KG --------  150.000đ', value: 150000},
+   ]
+   // const Gia = [
+   //    { label: '15,000đ', value: 15000},
+   //    { label: '15,000đ', value: 15000},
+   // ]
+   
 
-   const workhours = [
-      {label: '3h', value: 3},
-      {label: '4h', value: 2},
-      {label: '5h', value: 6},
-   ]
-
-   const area = [
-      { label: '80 m2', value: 0.8},
-      { label: '120 m2', value: 1.2},
-      { label: '180 m2', value: 1.8}
-   ]
-   const number_room = [
-      { label: '3', value: 3},
-      { label: '4', value: 4},
-      { label: '5', value: 5},
-      { label: '6', value: 6},
-      
-   ]
-
-   const loop = [
-      {
-         key: '1',
-         text: 'Có'
-      },
-      {
-         key: '0',
-         text: 'Không'
-      }
-   ]
+   
 
 //addressAPI
    const getAddressAPI = async() =>{
@@ -200,7 +189,7 @@ const WashingScreen = ( { navigation}  ) =>{
    const changeDateTake = async(date) =>{
       const dateChoosed = date
       // const nowdate = new Date(Date.now()+1*24*60*60*1000)
-      const nowdate = new Date(Date.now()+2*24*60*60*1000)
+      const nowdate = new Date(Date.now()+1*24*60*60*1000)
       if ((dateChoosed.getTime() > nowdate.getTime())){
          setDateTake(dateChoosed)
       }else{
@@ -218,33 +207,35 @@ const WashingScreen = ( { navigation}  ) =>{
             setAddress({...address, totaladdress: dataTotal})
             console.log(dataTotal);
             // console.log(address.address);
-            console.log(dataTimeTake.hourTake+', '+ dataTimeTake.minTake);
-            console.log(dataTimeSend.hourSend+', '+dataTimeSend.minSend);
-            console.log(dateSend,dateTake);
+            // console.log(dataTimeTake.hourTake+', '+ dataTimeTake.minTake);
+            // console.log(dataTimeSend.hourSend+', '+dataTimeSend.minSend);
+            // console.log(dateSend,dateTake);
+            // console.log(dataKG.value);
             // console.log(datatime.hour, datatime.min);
             // console.log(dataClear);
-            // const totalBill = dataClear.workhour.value * 25000 + dataClear.area.value * 200000 + dataClear.numberroom.value * 25000
+            const totalBill = dataKG.value + 60000
             // console.log(totalBill);  
-            // setBill(totalBill)
+            setBill(totalBill)
          }
    }
-   // const onSubmit = async() =>{
-   //    console.log('aaaaa');
-   //    // console.log(user.users.data._id, user.users.data.fullname);
-   //    const sendtime = datatime.hour.label + ':' + datatime.min.label
-   //    // console.log(sendtime);
-   //    const cleardata = await axios.post(`${host}/clear/create`,{
-   //       userID: user.users.data._id,
-   //       userName: user.users.data.fullname,
-   //       address: address.totaladdress,
-   //       date: datee, 
-   //       time: sendtime,
-   //       timework: dataClear.workhour.value,
-   //       area: dataClear.area.value,
-   //       numberroom: dataClear.numberroom.value,
-   //       money: totalBill
-   //    })
-   // }
+   const onSubmit = async() =>{
+      console.log('aaaaa');
+      // console.log(user.users.data._id, user.users.data.fullname);
+      const sendtime = dataTimeSend.hourSend.label+ ':' +dataTimeSend.minSend.label
+      const taketime = dataTimeTake.hourTake.label+ ':' + dataTimeTake.minTake.label
+      // console.log(sendtime);
+      const washingdata = await axios.post(`${host}/washing/create`,{
+         userID: user.users.data._id,
+         userName: user.users.data.fullname,
+         address: address.totaladdress,
+         dateSend: dateSend, 
+         dateTake: dateTake ,
+         sendTime: sendtime,
+         takeTime: taketime,
+         note: dataNote,
+         money: totalBill
+      })
+   }
 
    return(
       <View style={{flex:1 , backgroundColor: 'rgba(200,200,200,0.8)'}}>
@@ -298,7 +289,7 @@ const WashingScreen = ( { navigation}  ) =>{
                                  onSelect={ (date) => changeDateSend(date) }
                                  isHideOnSelect={true}
                                  initialDate={new Date(Date.now()+1*24*60*60*1000)}
-                                 button={<Text style={{backgroundColor:'white', fontSize: 17, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center', color: 'black',height: 45}}>{Moment(dateSend).format('dddd  DD/MM/YYYY')}</Text>}
+                                 button={<Text style={{backgroundColor:'white', fontSize: 15, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center', color: 'black',height: 45}}>{Moment(dateSend).format('dddd  DD/MM/YYYY')}</Text>}
                               />  
                            </View>
 
@@ -331,7 +322,7 @@ const WashingScreen = ( { navigation}  ) =>{
                                  onSelect={ (date) => changeDateTake(date) }
                                  isHideOnSelect={true}
                                  initialDate={new Date(Date.now()+1*24*60*60*1000)}
-                                 button={<Text style={{backgroundColor:'white', fontSize: 17, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center', color: 'black',height: 45}}>{Moment(dateTake).format('dddd  DD/MM/YYYY')}</Text>}
+                                 button={<Text style={{backgroundColor:'white', fontSize: 15, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center', color: 'black',height: 45}}>{Moment(dateTake).format('dddd  DD/MM/YYYY')}</Text>}
                               />  
                            </View>
 
@@ -355,11 +346,23 @@ const WashingScreen = ( { navigation}  ) =>{
                               />
                            </View>
                         </View>
+                        
+                        <View style={{ marginTop: 10, flexDirection:'row' }}>
+                           <View style={{width: '100%',  marginRight: 15 }}>
+                              <Text style={{color: 'gray',marginBottom: 3}}>Số KG (15.000/Kg)</Text>
+                              <SelectedAD placeholder='Chọn số kg' 
+                                 style={{marginBottom: 5, borderColor: '#228B22'}}
+                                 items={KG}
+                                 onChangeItem={(item) => setDataKG(item) }
+                              />
+                           </View>
+                        </View>
 
                         <View style={{ marginTop: 10, flexDirection:'row' }}>
                            <View style={{width: '100%',  marginRight: 15 }}>
                               <Text style={{color: 'gray',marginBottom: 3}}>Ghi chú</Text>
                               <TextInput 
+                                 onChangeText ={(val)=>setDataNote(val)}
                                  placeholder="Bạn cần ghi chú"  
                                  multiline={true}
                                  numberOfLines={10}
@@ -371,7 +374,7 @@ const WashingScreen = ( { navigation}  ) =>{
                               color: 'gray',
                               marginBottom: 3,
                               fontSize: 11,
-                              marginTop: 30
+                              marginTop: 20
                            }}>
                            MÃ GIẢM GIÁ
                            </Text>
@@ -538,7 +541,7 @@ const WashingScreen = ( { navigation}  ) =>{
                                  <Ionicons  name='close-circle' size={26} color={'red'} style={{ marginTop: 10}} />
                               </TouchableOpacity>
                               
-                              <Text style={{marginTop: 0,marginBottom: 10, fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}>Nấu ăn</Text>
+                              <Text style={{marginTop: 0,marginBottom: 10, fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}>Giặt ủi</Text>
                   {/* Modal dia chi */}
                               {
                                  ((dataTimeTake.hourTake === null) || (dataTimeSend.minSend === null) 
@@ -548,34 +551,38 @@ const WashingScreen = ( { navigation}  ) =>{
                                  :
                                  <View>
                                     <ScrollView>
-                                       {/* <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                       <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
                                           <Text style={{ marginRight: 10}}>Địa chỉ: </Text>
-                                          <Text style={{ flex:1, textAlign: 'right' }} >{address.totaladdress}</Text>
+                                          <Text style={{ flex:1, textAlign: 'right', fontWeight: 'bold' }} >{address.totaladdress}</Text>
                                        </View>
                                        <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
-                                          <Text style={{flex:1}}>Ngày:   </Text>
-                                          <Text>{Moment(datee).format('dddd  DD/MM/YYYY')}</Text>
+                                          <Text style={{flex:1}}>Ngày gửi đồ:   </Text>
+                                          <Text style={{ fontWeight: 'bold' }}>{Moment(dateSend).format('dddd  DD/MM/YYYY')}</Text>
                                        </View>
                                        <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
-                                          <Text style={{flex:1}}>Thời gian:  </Text>
-                                          <Text>{datatime.hour.label +' giờ '+ datatime.min.label+' phút'}</Text>
+                                          <Text style={{flex:1}}>Thời gian gửi:  </Text>
+                                          <Text style={{ fontWeight: 'bold' }}>{dataTimeSend.hourSend.label +' giờ '+ dataTimeSend.minSend.label+' phút'}</Text>
                                        </View>
                                        <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
-                                          <Text style={{flex:1}}>Diện tích:  </Text>
-                                          <Text>{dataClear.area.label}</Text>
+                                          <Text style={{flex:1}}>Ngày trả đồ   </Text>
+                                          <Text style={{ fontWeight: 'bold' }}>{Moment(dateTake).format('dddd  DD/MM/YYYY')}</Text>
                                        </View>
                                        <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
-                                          <Text style={{flex:1}}>Số phòng:  </Text>
-                                          <Text>{dataClear.numberroom.label} phòng</Text>
+                                          <Text style={{flex:1}}>Thời gian trả  </Text>
+                                          <Text style={{ fontWeight: 'bold' }}>{dataTimeTake.hourTake.label +' giờ '+ dataTimeTake.minTake.label+' phút'}</Text>
                                        </View>
                                        <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
-                                          <Text style={{flex:1}}>Thời gian làm:  </Text>
-                                          <Text>{dataClear.workhour.label}</Text>
+                                          <Text style={{flex:1}}>Ghi chú </Text>
+                                          <Text style={{ fontWeight: 'bold' }}>{dataNote}</Text>
+                                       </View>
+                                       <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
+                                          <Text style={{flex:1}}>Phí ship </Text>
+                                          <Text style={{ fontWeight: 'bold' }}>{60000}</Text>
                                        </View>
                                        <View style={{flexDirection: 'row', paddingHorizontal: 5, borderBottomColor: 'gray', borderBottomWidth: 0.8,marginBottom: 10}}>
                                           <Text style={{flex:1}}>Tổng tiền:  </Text>
-                                          <Text>{totalBill} VNĐ</Text>
-                                       </View> */}
+                                          <Text style={{ fontWeight: 'bold' }}>{totalBill} VNĐ</Text>
+                                       </View>
                                     </ScrollView>
                                  </View>
                               }
@@ -583,7 +590,8 @@ const WashingScreen = ( { navigation}  ) =>{
                               
                   {/* End dia chia */}
                               <TouchableOpacity 
-                                 onPress={() => { onSubmit(),setModalVisible1(!modalVisible1), navigation.navigate('Home') }} 
+                                 onPress={() => { onSubmit(),setModalVisible1(!modalVisible1), navigation.navigate('Home') }}
+                                 // onPress={() => { onSubmit()}} 
                                  style={{marginTop: 20}} 
                               >
                                  <LinearGradient
