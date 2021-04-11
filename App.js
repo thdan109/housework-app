@@ -8,6 +8,8 @@ import { Provider } from 'react-redux'
 import { name as appName} from './app.json';
 
 import configureStore from './store/store';
+
+//customer
 import OnboardingScreen from './screens/OnboardingScreens';
 import LoginScreen from './screens/LoginScreen';
 import IndexScreen from './screens/HomeScreen';
@@ -17,6 +19,11 @@ import UpdateProfileUser from './screens/UpdateProfileUser'
 import CookingScreen from './screens/ServicesScreen/CookingScreen'
 import ClearScreen from './screens/ServicesScreen/ClearScreen'
 import WashingScreen from './screens/ServicesScreen/WashingScreen'
+
+//staff
+import NavigatorStaff from './screens/staff/NavigatorStaff'
+import HomeStaff from './screens/staff/HomeStaff'
+import LoginStaff from './screens/staff/LoginStaffScreen'
 
 const store = configureStore();
 const AppStack = createStackNavigator();
@@ -45,6 +52,9 @@ const handleRedux = () => {
                   <AppStack.Screen name="ClearScreen" component={ClearScreen} />
                   <AppStack.Screen name='WashingScreen' component={WashingScreen} />
                   {/* <App.Screen name="Test" component={TestScreen} /> */}
+                  <AppStack.Screen name='NavigatorStaff' component={NavigatorStaff} />
+                  <AppStack.Screen name='HomeStaff' component={HomeStaff} />
+                  <AppStack.Screen name='LoginStaff' component={LoginStaff} />
                </AppStack.Navigator>
             </NavigationContainer>
          </Provider>    

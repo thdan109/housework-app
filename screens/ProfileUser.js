@@ -7,6 +7,7 @@ import { addUser } from '../action/user';
 import Moment from 'moment';
 import { abs } from 'react-native-reanimated';
 import host  from '../host/index'
+import axios from 'axios';
 
 
 

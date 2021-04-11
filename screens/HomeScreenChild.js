@@ -76,7 +76,7 @@ const HomeScreenChild = ({navigation}) =>{
                         </View>
                      </TouchableHighlight>
    {/* Vệ sinh Sofa */}
-                        <View  
+                        {/* <View  
                            style={{
                               flex:1,
                               width: width /1.1,
@@ -95,9 +95,9 @@ const HomeScreenChild = ({navigation}) =>{
                               <Image source={require('../assets/images/sofa(1).png')} style={{ width: 100 , height: 100}} />
                               <Text style={{textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Vệ sinh Sofa</Text>
                            </TouchableOpacity>
-                        </View>
+                        </View> */}
          {/* Nấn ăn */}
-         <TouchableHighlight underlayColor="white" onPress={()=>navigation.navigate('CookingScreen')}>
+                     <TouchableHighlight underlayColor="white" onPress={()=>navigation.navigate('CookingScreen')}>
                         <View 
                            
                            style={{
@@ -119,9 +119,9 @@ const HomeScreenChild = ({navigation}) =>{
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Nấu ăn</Text>
                            </TouchableOpacity>
                         </View>
-                        </TouchableHighlight>
+                     </TouchableHighlight>
       {/* Vệ sinh máy lạnh */}
-                        <View 
+                        {/* <View 
                            style={{
                               flex:1,
                               width: width /1.1,
@@ -140,10 +140,10 @@ const HomeScreenChild = ({navigation}) =>{
                               <Image source={require('../assets/images/air-conditioner.png')} style={{ alignSelf: 'center', width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Vệ sinh máy lạnh</Text>
                            </TouchableOpacity>
-                        </View>
+                        </View> */}
                    
          {/* Đi chợ */}
-                        <View 
+                        {/* <View 
                            style={{
                               flex:1,
                               width: width /1.1,
@@ -162,10 +162,10 @@ const HomeScreenChild = ({navigation}) =>{
                               <Image source={require('../assets/images/groceries.png')} style={{ width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Đi chợ</Text>
                            </TouchableOpacity>
-                        </View>
+                        </View> */}
 
       {/*Vệ sinh nhà */}
-                        <View 
+                        {/* <View 
                            style={{
                               flex:1,
                               width: width /1.1,
@@ -184,10 +184,10 @@ const HomeScreenChild = ({navigation}) =>{
                               <Image source={require('../assets/images/house-cleaning.png')} style={{ width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Vệ sinh nhà</Text>
                            </TouchableOpacity>
-                        </View>      
+                        </View>       */}
 
          {/*Khử khuẩn */}
-                        <View 
+                        {/* <View 
                            style={{
                               flex:1,
                               width: width /1.1,
@@ -206,7 +206,7 @@ const HomeScreenChild = ({navigation}) =>{
                               <Image source={require('../assets/images/disinfection.png')} style={{ width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Khử khuẩn</Text>
                            </TouchableOpacity>
-                        </View>            
+                        </View>             */}
 
       {/*Khử khuẩn */}
                      <TouchableOpacity onPress={()=>navigation.navigate('WashingScreen')}>
