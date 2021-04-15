@@ -28,20 +28,20 @@ const OnboardingScreen = ({navigation}) => {
          pages={[
             {
                backgroundColor: '#00A6B4',
-               image: <Image source={require('../assets/clear4.png')} style={ styles.image1} />,
+               image: <Image source={require('../../assets/clear4.png')} style={ styles.image1} />,
                title: 'Bạn bận rộn',
                subtitle: 'Vì công việc quá nhiều',
             },
             {
                backgroundColor: '#00B672',
-               image: <Image source={require('../assets/clear1.png')}   />,
+               image: <Image source={require('../../assets/clear1.png')}   />,
                title: 'Bạn cần dọn dẹp',
                // subtitle: 'Done with React Native Onboarding Swiper',
                subtitle: ""
             },
             {
                backgroundColor: '#F9952B',
-               image: <Image source={require('../assets/clear2.png')} style={styles.image2} />,
+               image: <Image source={require('../../assets/clear2.png')} style={styles.image2} />,
                title: 'Đừng lo lắng!',
                subtitle: 'Vì đã có chúng tôi giúp bạn!',
             }

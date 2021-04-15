@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Image, Dimensions, Animated , Easing, Text, TextInput, CheckBox, AsyncStorage, Alert, StatusBar} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { styles } from '../styles/styleLogin';
+import { styles } from '../../styles/styleLogin';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 // import * as Notifications from 'expo-no'
 
 import axios from 'axios';
-import host from '../host';
+import host from '../../host';
 
-import { addUser } from '../action/user';
+import { addUser } from '../../action/user';
 import { setStatusBarBackgroundColor } from 'expo-status-bar';
 
 
@@ -105,12 +105,7 @@ const LoginScreen = ({navigation}) => {
          usernameCus: data.username,
          passwordCus: data.password,
       })
-
-      // await AsyncStorage.setItem('Login', user.data._id)
-      // dispatch(addUser(user.data))
-      // navigation.replace('Home');
-
-
+      console.log(user.data.user);
       await AsyncStorage.setItem('Token', user.data.token)
       dispatch(addUser(user.data.user))
       navigation.replace('Home')
@@ -121,7 +116,7 @@ const LoginScreen = ({navigation}) => {
          <Animated.View style={[ styles.container,  Animatedcontainer ]}>
             <StatusBar/>
              <LinearGradient colors={[ "#043927","#043927" ]} style={[ styles.container, styles.centerAlign ]}>
-                  <Image source={require('../assets/logo4.png')} style={styles.logo} />
+                  <Image source={require('../../assets/logo4.png')} style={styles.logo} />
             </LinearGradient>
             <View style={[ styles.centerAlign, { marginTop: 2, backgroundColor: 'rgba(210,210,210,0.9)', height: height }]}>
                <Animated.View style={[ styles.inputContainer,  AnimatedInput] } >
@@ -202,7 +197,7 @@ const LoginScreen = ({navigation}) => {
                         <Text onPress={()=>navigation.navigate('Signup')} >Đăng ký</Text>        
                      </TouchableOpacity>
                   </View>
-                  <View style={{ justifyContent: "center", alignItems: 'center', flexDirection: "row", marginVertical: 10 }}>
+                  <View style={{ justifyContent: "center", alignItems: 'center', flexDirection: "row", marginTop: 10 }}>
                      <TouchableOpacity style={{ marginLeft: 5 }}>
                         <Text onPress={()=>navigation.navigate('LoginStaff')} >For Staff</Text>        
                      </TouchableOpacity>

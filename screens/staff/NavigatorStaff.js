@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import CustomDrawer from '../../components/staff/CustomeDrawer';
 import HomeStaff from './HomeStaff'
+import ProfileStaff from './ProfileStaff';
 
 const Drawer = createDrawerNavigator()
 
@@ -53,7 +54,7 @@ const NavigatorStaff  = ({navigation, props}) =>{
             drawerContent={(props) => <CustomDrawer {...props} />}
          >
             <Drawer.Screen name='Home' component={HomeStaff} />
-            <Drawer.Screen name='Profile' component={Chat} />
+            {/* <Drawer.Screen name='Profile' component={ProfileStaff} /> */}
             <Drawer.Screen name='Notification' component={Notification} />
             <Drawer.Screen name='History' component={History} />   
          </Drawer.Navigator>

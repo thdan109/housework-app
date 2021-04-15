@@ -3,8 +3,7 @@ import foodReducer from '../reducers/UserReducer';
 import userReducers from '../reducers/UserReducer';
 
 const rootReducer = combineReducers({
-   users: userReducers
-
+   users: userReducers,
 })
 
 const configureStore = () => createStore(rootReducer);

@@ -3,10 +3,10 @@ import { View, Text, StatusBar, Dimensions, Button , AsyncStorage, TouchableOpac
 import {Entypo, FontAwesome, MaterialIcons, Ionicons, FontAwesome5 } from 'react-native-vector-icons'
 const {width, height} = Dimensions.get('screen');
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../action/user';
+import { addUser } from '../../action/user';
 import Moment from 'moment';
 import { abs } from 'react-native-reanimated';
-import host  from '../host/index'
+import host  from '../../host/index'
 import axios from 'axios';
 
 
@@ -18,7 +18,7 @@ const  ProfileUser= ({ navigation }) => {
    const [modalVisible, setModalVisible] = React.useState(false);
    
    React.useEffect(()=>{
-      // console.log(user);
+      console.log(user);
       // getProfile()
    },[])
 

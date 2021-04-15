@@ -6,7 +6,7 @@ import axios from 'axios'
 import NumberFormat from 'react-number-format';
 import Moment from 'moment'
 
-import host from '../host'
+import host from '../../host'
 
 const {width, height} = Dimensions.get('screen')
 
@@ -270,7 +270,7 @@ const OrderScreen = ({ navigation }) =>{
                                     </View>    */}
                                     <View style={{ flexDirection: 'row'}} key={Math.random()}>
                                        <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                       <TouchableOpacity>
+                                       <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') } >
                                           <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
                                        </TouchableOpacity>
                                     </View>   
@@ -371,7 +371,7 @@ const OrderScreen = ({ navigation }) =>{
                               </View>    */}
                               <View style={{ flexDirection: 'row'}} key={Math.random()}>
                                  <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                 <TouchableOpacity>
+                                 <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') }>
                                     <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
                                  </TouchableOpacity>
                               </View>   
@@ -476,7 +476,7 @@ const OrderScreen = ({ navigation }) =>{
                               </View>    */}
                               <View style={{ flexDirection: 'row'}} key={Math.random()}>
                                  <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                 <TouchableOpacity>
+                                 <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') }>
                                     <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
                                  </TouchableOpacity>
                               </View>   

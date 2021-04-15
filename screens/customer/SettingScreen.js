@@ -3,7 +3,7 @@ import  React from 'react';
 import { View , TouchableOpacity, Text, Dimensions, AsyncStorage } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons';
 const { width, height } = new Dimensions.get('screen');
-import host from '../host/index';
+import host from '../../host/index';
 
 
 

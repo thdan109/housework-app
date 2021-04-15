@@ -17,12 +17,12 @@ const { width,height }  = Dimensions.get("screen");
 
 const LoginStaffScreen = ({navigation}) => {
    const dispatch = useDispatch();
-   const user = useSelector(state => state)
+   const staff = useSelector(state => state)
 
    const [data, setData] = React.useState(
       {
-         username: '',
-         password: ''
+         usernameStaff: '',
+         passwordStaff: ''
       }
    )
    const screenAnimation = React.useRef(new Animated.Value(height)).current;
@@ -68,25 +68,25 @@ const LoginStaffScreen = ({navigation}) => {
    const handleChangeUsername = (val) =>{
       setData({
          ...data,
-         username: val,
+         usernameStaff: val,
       })
    }
    const handleChangePassword = (val) =>{
       setData({
          ...data,
-         password: val
+         passwordStaff: val
       })
    }
    
    const loginStaff = async () =>{
-      // const staff = await axios.post(`${host}/staff/login`,{
-      //    usernameStaff: data.usernameStaff,
-      //    passwordStaff: data.passwordStaff,
-      // })
-
-      // await AsyncStorage.setItem('Token', staff.data.token)
-      // dispatch(addUser(user.data.user))
-      // navigation.replace('Home')
+      const user = await axios.post(`${host}/staff/login`,{
+         usernameStaff: data.usernameStaff,
+         passwordStaff: data.passwordStaff,
+      })
+      console.log(user.data.staff);
+      await AsyncStorage.setItem('TokenStaff', user.data.token)
+      dispatch(addUser(user.data.staff))
+      navigation.replace('NavigatorStaff')
    }
 
       return(
@@ -103,10 +103,10 @@ const LoginStaffScreen = ({navigation}) => {
                         <MaterialCommunityIcons name="account" color="#696969" size={30} style={{ marginVertical: 10, marginLeft: 10, marginRight: 10 }} />
                         <View style={{ flex: 1, alignItems: 'center' }}>
                            <TextInput  
-                                       value={data.username}
-                                       placeholder='Username' 
-                                       style={{ flex: 1 , fontSize: 18 }} 
-                                       onChangeText={(val) => handleChangeUsername(val)}
+                              value={data.username}
+                              placeholder='Username' 
+                              style={{ flex: 1 , fontSize: 18 }} 
+                              onChangeText={(val) => handleChangeUsername(val)}
                            />    
                         </View>
                         <MaterialCommunityIcons name="account" size={35} style={{ marginVertical: 10, marginLeft: 10, marginRight: 10, opacity: 0 }} />
@@ -115,11 +115,11 @@ const LoginStaffScreen = ({navigation}) => {
                         <MaterialCommunityIcons name="onepassword" color="#696969" size={30} style={{ marginVertical: 10, marginLeft: 10, marginRight: 10 }} />
                         <View style={{ flex: 1, alignItems: 'center' }}>
                            <TextInput  
-                                       value={data.password}
-                                       secureTextEntry={true}
-                                       placeholder='Password' 
-                                       style={{ flex: 1 , fontSize: 18 }} 
-                                       onChangeText={(val) => handleChangePassword(val)}
+                              value={data.password}
+                              secureTextEntry={true}
+                              placeholder='Password' 
+                              style={{ flex: 1 , fontSize: 18 }} 
+                              onChangeText={(val) => handleChangePassword(val)}
                            />    
                         </View>
                         <MaterialCommunityIcons name="account" size={35} style={{ marginVertical: 10, marginLeft: 10, marginRight: 10, opacity: 0 }} />
@@ -140,12 +140,17 @@ const LoginStaffScreen = ({navigation}) => {
                   <View style={{ marginTop: 10, alignItems: 'center' }}>
                      <TouchableOpacity  >
                         <LinearGradient style={{ width: width / 1.35, padding: 10, borderRadius: 20}}  colors={[ "#D2691E","#D2691E" ]}>
-                           <Text onPress={()=>{loginUser()}} 
+                           <Text onPress={()=>{loginStaff()}} 
                               style={{ color: "white", textAlign: 'center', fontSize: 16, fontWeight: 'bold' 
                            }}>
                               Đăng nhập
                            </Text>
                         </LinearGradient>
+                     </TouchableOpacity>
+                  </View>
+                  <View style={{ justifyContent: "center", alignItems: 'center', flexDirection: "row", marginTop: 30 }}>
+                     <TouchableOpacity style={{ marginLeft: 5 }}>
+                        <Text onPress={()=>navigation.navigate('Login')} >For Customer</Text>        
                      </TouchableOpacity>
                   </View>
                </Animated.View >

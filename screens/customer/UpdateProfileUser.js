@@ -6,10 +6,10 @@ import * as ImagePicker from 'expo-image-picker';
 import { ModalDatePicker } from "react-native-material-date-picker";
 import Moment from 'moment'
 import axios from 'axios';
-import host from '../host';
+import host from '../../host';
 import Constants from 'expo-constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../action/user';
+import { addUser } from '../../action/user';
 
 const { width, height } = Dimensions.get("screen");
 

@@ -10,20 +10,22 @@ import { name as appName} from './app.json';
 import configureStore from './store/store';
 
 //customer
-import OnboardingScreen from './screens/OnboardingScreens';
-import LoginScreen from './screens/LoginScreen';
-import IndexScreen from './screens/HomeScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import LoadingScreen from './screens/LoadingScreen';
-import UpdateProfileUser from './screens/UpdateProfileUser'
+import OnboardingScreen from './screens/customer/OnboardingScreens';
+import LoginScreen from './screens/customer/LoginScreen';
+import IndexScreen from './screens/customer/HomeScreen';
+import RegisterScreen from './screens/customer/RegisterScreen';
+import LoadingScreen from './screens/customer/LoadingScreen';
+import UpdateProfileUser from './screens/customer/UpdateProfileUser'
 import CookingScreen from './screens/ServicesScreen/CookingScreen'
 import ClearScreen from './screens/ServicesScreen/ClearScreen'
 import WashingScreen from './screens/ServicesScreen/WashingScreen'
+import ScanQRScreen from './screens/customer/ScanQRScreen'
 
 //staff
 import NavigatorStaff from './screens/staff/NavigatorStaff'
 import HomeStaff from './screens/staff/HomeStaff'
 import LoginStaff from './screens/staff/LoginStaffScreen'
+import ProfileStaff from './screens/staff/ProfileStaff';
 
 const store = configureStore();
 const AppStack = createStackNavigator();
@@ -51,10 +53,13 @@ const handleRedux = () => {
                   <AppStack.Screen name="CookingScreen" component={CookingScreen} />
                   <AppStack.Screen name="ClearScreen" component={ClearScreen} />
                   <AppStack.Screen name='WashingScreen' component={WashingScreen} />
+                  <AppStack.Screen name='ScanQRScreen' component={ScanQRScreen} /> 
+
                   {/* <App.Screen name="Test" component={TestScreen} /> */}
                   <AppStack.Screen name='NavigatorStaff' component={NavigatorStaff} />
                   <AppStack.Screen name='HomeStaff' component={HomeStaff} />
                   <AppStack.Screen name='LoginStaff' component={LoginStaff} />
+                  <AppStack.Screen name='ProfileStaff' component={ProfileStaff} />
                </AppStack.Navigator>
             </NavigationContainer>
          </Provider>    

@@ -9,9 +9,9 @@ import Moment from 'moment';
 
 
 import axios from 'axios';
-import host from '../host';
+import host from '../../host';
 
-import { addUser } from '../action/user';
+import { addUser } from '../../action/user';
 
 
 const { width,height }  = Dimensions.get("screen");

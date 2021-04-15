@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import { View, Text, Dimensions, ScrollView, StatusBar,TextInput, KeyboardAvoidingView,Image, TouchableOpacity, TouchableHighlight } from 'react-native';
 const { width,height }  = Dimensions.get("screen");
@@ -70,7 +71,7 @@ const HomeScreenChild = ({navigation}) =>{
                            }}
                         >
                            <TouchableOpacity onPress={()=>navigation.navigate('ClearScreen')}>
-                              <Image source={require('../assets/images/cleaning-tools(1).png')} style={{ width: 100 , height: 100, opacity: 1}} />
+                              <Image source={require('../../assets/images/cleaning-tools(1).png')} style={{ width: 100 , height: 100, opacity: 1}} />
                               <Text style={{textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Dọn dẹp nhà</Text>
                            </TouchableOpacity>
                         </View>
@@ -115,7 +116,7 @@ const HomeScreenChild = ({navigation}) =>{
                            }}
                         >
                            <TouchableOpacity onPress={()=>navigation.navigate('CookingScreen')} >
-                              <Image source={require('../assets/images/pot(1).png')} style={{ width: 100 , height: 100}} />
+                              <Image source={require('../../assets/images/pot(1).png')} style={{ width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Nấu ăn</Text>
                            </TouchableOpacity>
                         </View>
@@ -226,7 +227,7 @@ const HomeScreenChild = ({navigation}) =>{
                            }}
                         >
                            <TouchableOpacity onPress={()=>navigation.navigate('WashingScreen')}>
-                              <Image source={require('../assets/images/washing-machine.png')} style={{ width: 100 , height: 100}} />
+                              <Image source={require('../../assets/images/washing-machine.png')} style={{ width: 100 , height: 100}} />
                               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Giặc ủi</Text>
                            </TouchableOpacity>
                         </View> 
@@ -248,7 +249,7 @@ const HomeScreenChild = ({navigation}) =>{
                            }}
                         >
                            <TouchableOpacity>
-                              <Image source={require('../assets/images/farming.png')} style={{ alignSelf:'center', width: 100 , height: 100}} />
+                              <Image source={require('../../assets/images/farming.png')} style={{ alignSelf:'center', width: 100 , height: 100}} />
                               <Text style={{ fontSize: 16, marginTop: 10, color: 'gray' }}>Chăm sóc sân vườn</Text>
                            </TouchableOpacity>
                         </View>
@@ -257,7 +258,7 @@ const HomeScreenChild = ({navigation}) =>{
 
                      </View>
                   </ScrollView>
-                  {/* <TextInput placeholder={'aaaaaaaaaaa'}></TextInput> */}
+                  <Text onPress={()=>AsyncStorage.removeItem('Token')} >aaaaaaaaaa</Text>
                </View>
             </View>
          </View>
