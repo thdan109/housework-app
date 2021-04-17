@@ -10,6 +10,7 @@ import HomeChild from './HomeScreenChild'
 import SettingScreen from './SettingScreen'
 import AddressSelected from '../../components/AddressSelected';
 import OrderScreen from './OrderScreen'
+import TestScreen from './TestScreen'
 const Tab = createBottomTabNavigator();
 const {width, height} = Dimensions.get("screen")
 
@@ -70,7 +71,7 @@ const IndexScreen = () => {
                            ),
                         }}
             />
-            <Tab.Screen name="Notification" component={SettingScreen} 
+            <Tab.Screen name="Notification" component={TestScreen} 
                         options={{
                            tabBarLabel: 'Notification',
                            tabBarIcon: ({ color, size }) => (

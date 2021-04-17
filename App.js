@@ -20,6 +20,7 @@ import CookingScreen from './screens/ServicesScreen/CookingScreen'
 import ClearScreen from './screens/ServicesScreen/ClearScreen'
 import WashingScreen from './screens/ServicesScreen/WashingScreen'
 import ScanQRScreen from './screens/customer/ScanQRScreen'
+import TestScreen from './screens/customer/TestScreen'
 
 //staff
 import NavigatorStaff from './screens/staff/NavigatorStaff'
@@ -54,6 +55,7 @@ const handleRedux = () => {
                   <AppStack.Screen name="ClearScreen" component={ClearScreen} />
                   <AppStack.Screen name='WashingScreen' component={WashingScreen} />
                   <AppStack.Screen name='ScanQRScreen' component={ScanQRScreen} /> 
+                  <AppStack.Screen name='TestScreen' component={TestScreen} />
 
                   {/* <App.Screen name="Test" component={TestScreen} /> */}
                   <AppStack.Screen name='NavigatorStaff' component={NavigatorStaff} />
