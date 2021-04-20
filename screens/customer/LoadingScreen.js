@@ -63,7 +63,7 @@ const LoadingSreen = ({navigation}) => {
                dispatch(addUser(user.data))
                navigation.replace('Home')
             }else if (tokenStaff_val){
-               const user = await axios.get(`${host}/staff/getStaffById`,{
+               const user = await axios.get(`${host}/staff/getStaffByIdLoading`,{
                   headers: {
                      Authorization: `Bearer ${tokenStaff_val}`,
                      },

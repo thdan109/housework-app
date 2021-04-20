@@ -12,13 +12,56 @@ const ModalShowInforStaff = (props) => {
       getDataStaff()
    },[props.idStaff])
 
+   const ChangeStatus = async() =>{
+      console.log('Den roi! Xac nhan Thoi');
+      const listStaff = props.staff
+      const idStaff = props.idStaff
+      const idUpdate = props.idWork
+      const typeWork = props.typeWork
+      
+      const result = listStaff.filter(staff =>{return staff === idStaff})
+      // console.log(result.length);
+
+      if ( result.length === 1 ){
+         if (typeWork === "cooking"){
+            await axios.post(`${host}/cooking/updateStatusWorking`,{
+               id : idUpdate
+            })
+            return Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
+         }else if (typeWork === "washing"){
+            console.log("giat ui");
+            await axios.post(`${host}/washing/updateStatusWorking`,{
+               id : idUpdate
+            })
+            return Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
+         }else if ( typeWork === "clear"){
+            console.log("Don nha")
+            await axios.post(`${host}/clear/updateStatusWorking`,{
+               id : idUpdate
+            })
+            return Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
+         }
+         setData(null)
+      }else if ( result.length === 0 ){
+         return Alert.alert('Nhân viên không đúng bộ phận!')
+      }
+
+      
+   }
+
    const getDataStaff = async()=>{
       const id = props.idStaff
       const staff = await axios.post(`${host}/staff/getStaffById`,{
          id: id
       })
-      setData(staff.data)
-      console.log(staff.data);
+      // setData(staff.data)
+      // console.log(staff.data);
+      // console.log(staff.data.error);
+      if (staff.data.error){
+         setData(null)
+      }else{
+         setData(staff.data)
+      }
    }
 
 
@@ -35,7 +78,47 @@ const ModalShowInforStaff = (props) => {
       >
          <View style={styles.ContainerInfor} >
             {
-               !data?<Text>wait</Text>:
+               !data?
+                  <View style={{height: 300,  width: '96%', backgroundColor: 'white',borderRadius: 40,padding: 10}}>
+                     <Text style={{ textAlign: 'center', height: 30, fontSize: 20, fontWeight: 'bold', color: 'black', marginBottom: 20}}>Nhân viên không tồn tại</Text>
+                     <View style={{ justifyContent: 'center',alignItems: 'center',padding: 10,height: 590,marginBottom:20,backgroundColor: 'rgba(100,100,100,0.1)', height: 150}}>
+                        <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Đây không phải nhân viên của chúng tôi!!!</Text>
+                     </View>
+                  <View style={{flexDirection: 'row'}}>
+                     <TouchableOpacity
+                        style={{
+                           marginHorizontal: 10,
+                           width: '45%', borderWidth:0, 
+                           height: 45, borderRadius: 20, 
+                           justifyContent: 'center', alignItems: "center", 
+                           backgroundColor:'red' 
+                        }}
+                        onPress={async() => {
+                                       // Alert.alert('Nhân viên đã đến!')
+                                       setData(null)
+                                       props.setModalVisible(!props.isModalVisible)
+                        }}
+                     >
+                        <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 16}}>Xác nhận</Text>
+                     </TouchableOpacity>
+                     <TouchableOpacity
+                        style={{
+                           marginHorizontal: 10,
+                           width: '45%', borderWidth:0, 
+                           height: 45, borderRadius: 20, 
+                           justifyContent: 'center', alignItems: "center", 
+                           backgroundColor:'gray' 
+                        }}
+                        onPress={() => {
+                           setData(null)
+                           props.setModalVisible(!props.isModalVisible)}}
+                     >
+                        <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 16}}>Đóng</Text>
+                     </TouchableOpacity>
+                  </View>
+                  
+               </View>
+               :
             <View style={styles.Infor}>
                   <Text style={{ textAlign: 'center', height: 30, fontSize: 20, fontWeight: 'bold', color: 'black', marginBottom: 20}}>Thông tin nhân viên</Text>
                   <View style={styles.InforStaff}>
@@ -79,8 +162,12 @@ const ModalShowInforStaff = (props) => {
                         justifyContent: 'center', alignItems: "center", 
                         backgroundColor:'green' 
                      }}
-                     onPress={async() => {Alert.alert('Nhân viên đã đến!')
-                                    props.setModalVisible(!props.isModalVisible)
+                     onPress={async() => {
+                        setData(null)
+                        // Alert.alert('Nhân viên đã đến!')
+                        props.setModalVisible(!props.isModalVisible)
+                        ChangeStatus()
+                       
                      }}
                   >
                      <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 16}}>Xác nhận</Text>
@@ -93,7 +180,9 @@ const ModalShowInforStaff = (props) => {
                         justifyContent: 'center', alignItems: "center", 
                         backgroundColor:'gray' 
                      }}
-                     onPress={() => props.setModalVisible(!props.isModalVisible)}
+                     onPress={() => {
+                        setData(null)
+                        props.setModalVisible(!props.isModalVisible)}}
                   >
                      <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 16}}>Đóng</Text>
                   </TouchableOpacity>

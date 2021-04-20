@@ -43,11 +43,11 @@ const CustomDrawer = ({ navigation, ...props}) =>{
             <DrawerContentScrollView {...props} >
                <DrawerItemList {...props} />
                <DrawerItem
-                  label='Profile'
-                  onPress={()=>navigation.replace('ProfileStaff')}
+                  label='Hồ sơ cá nhân'
+                  onPress={()=>navigation.navigate('ProfileStaff')}
                />
                <DrawerItem
-                  label='About us'
+                  label='Xin phép'
                   onPress={()=>Alert.alert('aaaaaaa')}
                />
             </DrawerContentScrollView>

@@ -11,12 +11,13 @@ import host from '../../host'
 
 const {width, height} = Dimensions.get('screen')
 
-const OrderScreen = ({ navigation }) =>{
+const OrderScreen = ({ navigation,props }) =>{
 
    React.useEffect( ()=>{
       getOrder()
-   },[])
-
+      // setInterval(getOrder(), 1500);
+   },[dataClear])
+   
    const [expanded, setExpanded] = React.useState(true);
 
    const handlePress = () => setExpanded(!expanded);
@@ -467,7 +468,7 @@ const OrderScreen = ({ navigation }) =>{
                               title={Moment(data.date).format('dddd  DD/MM/YYYY')}
                               left={props => <List.Icon {...props} icon="calendar-month-outline" />}
                            >
-                              <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)'}} >
+                              <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
                                  
                                  <View style={styles.rowdetail} key={Math.random()}>
                                     <Text style={{fontSize: 16}}>Diện tích</Text>
@@ -498,31 +499,39 @@ const OrderScreen = ({ navigation }) =>{
                                  </View>
                                  {
                                     (data.nameStaff.length != 0)? 
+                                    <View>
                                     <View style={styles.rowdetail} key={Math.random()}>
                                     <Text style={{fontSize: 16}} >Nhân viên</Text>
-                                    <View key={Math.random() } style={{flex: 1}}>
-                                       {data.nameStaff.map(dt =>
-                                          <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                             <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                             <TouchableOpacity>
-                                                <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                             </TouchableOpacity>
-                                          </View>
-                                       )}
+                                       <View key={Math.random() } style={{flex: 1}}>
+                                          {data.nameStaff.map(dt =>
+                                             <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
+                                                <TouchableOpacity>
+                                                   <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                                </TouchableOpacity>
+                                             </View>
+                                          )}
+                                       </View>
                                     </View>
+                                    <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
+                                       <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
+                                       <TouchableOpacity onPress={()=> {navigation.navigate('ScanQRScreen', {idWork: data._id, type: "clear",staff: data.idStaff})} }>
+                                          <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
+                                       </TouchableOpacity>
                                     </View> 
+                                    </View>
                                     :
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text  style={{fontSize: 16}}>Nhân viên</Text>
                                        <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
                                     </View>
                                  }
-                                 <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
-                                 <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                 <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') }>
-                                    <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
-                                 </TouchableOpacity>
-                              </View>  
+                                 {/* <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
+                                    <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
+                                    <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') }>
+                                       <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
+                                    </TouchableOpacity>
+                                 </View>   */}
                               </View>
 
                            </List.Accordion>
@@ -546,7 +555,7 @@ const OrderScreen = ({ navigation }) =>{
                                  title={Moment(data.timeTake).format('dddd  DD/MM/YYYY')}
                                  left={props => <List.Icon {...props} icon="calendar-month-outline" />}
                               >
-                                 <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)'}} >
+                                 <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
                                     
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Ngày nhận</Text>
@@ -573,31 +582,39 @@ const OrderScreen = ({ navigation }) =>{
                                     </View>
                                     {
                                        (data.staff.length != 0)? 
-                                       <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text  style={{fontSize: 16}} >Nhân viên</Text>
-                                       <View key={Math.random() } style={{flex: 1}}>
-                                          {data.staff.map(dt =>
-                                             <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                                <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                                <TouchableOpacity>
-                                                   <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                                </TouchableOpacity>
+                                       <View>
+                                          <View style={styles.rowdetail} key={Math.random()}>
+                                          <Text  style={{fontSize: 16}} >Nhân viên</Text>
+                                             <View key={Math.random() } style={{flex: 1}}>
+                                                {data.staff.map(dt =>
+                                                   <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                      <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
+                                                      <TouchableOpacity>
+                                                         <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                                      </TouchableOpacity>
+                                                   </View>
+                                                )}
                                              </View>
-                                          )}
+                                          </View> 
+                                          <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
+                                             <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
+                                             <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "washing"}) }>
+                                                <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
+                                             </TouchableOpacity>
+                                          </View> 
                                        </View>
-                                       </View> 
                                        :
                                        <View style={styles.rowdetail} key={Math.random()}>
                                           <Text  style={{fontSize: 16}}>Nhân viên</Text>
                                           <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
                                        </View>
                                     }
-                                    <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
+                                    {/* <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
                                     <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
                                     <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') }>
                                        <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
                                     </TouchableOpacity>
-                                 </View>  
+                                 </View>   */}
                                  </View>
 
                               </List.Accordion>
@@ -622,7 +639,7 @@ const OrderScreen = ({ navigation }) =>{
                                  title={Moment(data.date).format('dddd  DD/MM/YYYY')}
                                  left={props => <List.Icon {...props} icon="calendar-month-outline" />}
                               >
-                                 <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)'}} >
+                                 <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
                                     
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Món ăn</Text>
@@ -661,31 +678,34 @@ const OrderScreen = ({ navigation }) =>{
                                     </View>
                                     {
                                        (data.staff.length != 0)? 
+                                       <View>
                                        <View style={styles.rowdetail} key={Math.random()}>
                                        <Text  style={{fontSize: 16}} >Nhân viên</Text>
-                                       <View key={Math.random() } style={{flex: 1}}>
-                                          {data.staff.map(dt =>
-                                             <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                                <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                                <TouchableOpacity>
-                                                   <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                                </TouchableOpacity>
-                                             </View>
-                                          )}
-                                       </View>
+                                          <View key={Math.random() } style={{flex: 1}}>
+                                             {data.staff.map(dt =>
+                                                <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                   <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
+                                                   <TouchableOpacity>
+                                                      <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                                   </TouchableOpacity>
+                                                </View>
+                                             )}
+                                          </View>
                                        </View> 
+                                       <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
+                                          <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
+                                          <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "cooking"}) }>
+                                             <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
+                                          </TouchableOpacity>
+                                       </View> 
+                                       </View>
                                        :
                                        <View style={styles.rowdetail} key={Math.random()}>
                                           <Text  style={{fontSize: 16}}>Nhân viên</Text>
                                           <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
                                        </View>
                                     }
-                                    <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
-                                    <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                    <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') }>
-                                       <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
-                                    </TouchableOpacity>
-                                 </View>  
+                                     
                                  </View>
 
                               </List.Accordion>

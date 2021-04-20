@@ -1,9 +1,10 @@
 import React from 'react'
-import {View, Text, Modal, TouchableOpacity, Pressable, StyleSheet, TouchableHighlight} from 'react-native'
+import {View, Text, Modal, TouchableOpacity, Pressable, StyleSheet, TouchableHighlight, ScrollView} from 'react-native'
 import axios from 'axios'
 import NumberFormat from 'react-number-format';
 import host from '../../host'
 import Moment from 'moment'
+import {List } from 'react-native-paper'
 
 const ModalWork = (props) =>{
 
@@ -15,17 +16,41 @@ const ModalWork = (props) =>{
    },[props.idWork])
 
    const getDataWorkById = async() =>{
+      const department = props.department
       const idStaff = props.idStaff
       const idWork = props.idWork
-      const work = await axios.post(`${host}/clear/workStaffById`,{
-         idWork: idWork,
-         idStaff: idStaff
-      })
-      if (work.status === 200){
-         setWork(work.data)
-      }else{
-         setWork(null)
+      if (department === "Bộ phận Vệ sinh nhà"){
+         const work = await axios.post(`${host}/clear/workStaffById`,{
+            idWork: idWork,
+            idStaff: idStaff
+         })
+         if (work.status === 200){
+            setWork(work.data)
+         }else{
+            setWork(null)
+         }
+      }else if (department === "Bộ phận Giặt ủi"){
+         const work = await axios.post(`${host}/washing/workStaffById`,{
+            idWork: idWork,
+            idStaff: idStaff
+         })
+         if (work.status === 200){
+            setWork(work.data)
+         }else{
+            setWork(null)
+         }
+      }else if (department === "Bộ phận Nấu ăn"){
+         const work = await axios.post(`${host}/cooking/workStaffById`,{
+            idWork: idWork,
+            idStaff: idStaff
+         })
+         if (work.status === 200){
+            setWork(work.data)
+         }else{
+            setWork(null)
+         }
       }
+      
    }
 
    if(!props.idWork) return <></>
@@ -45,46 +70,122 @@ const ModalWork = (props) =>{
                <View style={styles.ContainerContent}>
                   {/* Noi dung */}
                   <View style={styles.Content}>
-                     <Text style={{fontWeight: 'bold', fontSize: 19, textAlign: 'center', marginBottom: 60}} >Chi tiết công việc</Text>
+                     <Text style={{fontWeight: 'bold', fontSize: 19, textAlign: 'center', marginBottom: 30}} >Chi tiết công việc</Text>
                {
                   (!work?<Text>wait</Text>:
-                     <View>
-                        <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
-                           <Text style={{fontSize: 14, fontWeight: 'bold'}}>Tên Khách hàng</Text>
-                           <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.username}</Text>
-                        </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
-                           <Text style={{fontSize: 14, fontWeight: 'bold'}}>Ngày làm việc</Text>
-                           <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{Moment(work.date).format('dddd  DD/MM/YYYY')}</Text>
-                        </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
-                           <Text style={{fontSize: 14, fontWeight: 'bold'}}>Địa chỉ</Text>
-                           <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.address}</Text>
-                        </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
-                           <Text style={{fontSize: 14, fontWeight: 'bold'}}>Diện tích</Text>
-                           <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{Number(work.area)*100} m2</Text>
-                        </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
-                           <Text style={{fontSize: 14, fontWeight: 'bold'}}>Số phòng</Text>
-                           <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.numRoom} phòng</Text>
-                        </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
-                           <Text style={{fontSize: 14, fontWeight: 'bold'}}>Giờ bắt đầu làm</Text>
-                           <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.timeStart}</Text>
-                        </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
-                           <Text style={{fontSize: 14, fontWeight: 'bold'}}>Thời gian làm việc</Text>
-                           <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.timeWork} giờ</Text>
-                        </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
-                           <Text style={{fontSize: 14, fontWeight: 'bold'}}>Tổng tiền</Text>
-                           {/* <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.money}</Text> */}
-                           <NumberFormat style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}  value={work.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
-                        </View>
+                    <View>
+                        {
+                           (props.department === "Bộ phận Giặt ủi")?
+                           <View>
+                              <Text>Giặt ủi</Text>
+                              <ScrollView style={{height: 300}}
+                                 showsHorizontalScrollIndicator={false}
+                                 showsVerticalScrollIndicator={false}   
+                              >
 
-                        {/* <Text onPress={()=>getDataWorkById()} >aaaaaa</Text> */}
-                     </View>
+                              </ScrollView>
+                           </View>
+                           :
+                           (props.department === "Bộ phận Nấu ăn")?
+                           <ScrollView style={{height: 300}} 
+                              showsHorizontalScrollIndicator={false}
+                              showsVerticalScrollIndicator={false}   >
+                              <View >
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Tên Khách hàng</Text>
+                                    <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.fullname}</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Ngày làm việc</Text>
+                                    <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{Moment(work.date).format('dddd  DD/MM/YYYY')}</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Địa chỉ</Text>
+                                    <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.address}</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Số món</Text>
+                                    <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.number}</Text>
+                                 </View>
+                                 <View key={Math.random()} style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text  key={Math.random()} style={{flex:1,fontSize: 14, fontWeight: 'bold'}}>Món</Text>
+                                 {
+                                    work.dishList.map(dt =>(
+                                          <Text key={Math.random()} style={{flex: 1, textAlign: 'right',paddingRight: 8, fontSize: 14, fontWeight: 'bold', borderRightWidth: 1}}>{dt}</Text>
+                                    ))
+                                 }
+                                 </View>
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Đi chợ</Text>
+                                    <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.goMarket}</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Trái cây</Text>
+                                    <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.fruit}</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Giờ bắt đầu làm</Text>
+                                    <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.timeStart}</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Trạng thái</Text>
+                                    <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold', color: 'red'}}>{work.status}</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>Tổng tiền</Text>
+                                    {/* <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.money}</Text> */}
+                                    <NumberFormat style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}  value={work.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                                 </View>
+                              
+                              </View>
+                           </ScrollView>:
+                           (props.department === 'Bộ phận Vệ sinh nhà')?
+                           <View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Tên Khách hàng</Text>
+                                 <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.username}</Text>
+                              </View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Ngày làm việc</Text>
+                                 <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{Moment(work.date).format('dddd  DD/MM/YYYY')}</Text>
+                              </View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Địa chỉ</Text>
+                                 <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.address}</Text>
+                              </View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Diện tích</Text>
+                                 <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{Number(work.area)*100} m2</Text>
+                              </View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Số phòng</Text>
+                                 <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.numRoom} phòng</Text>
+                              </View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Giờ bắt đầu làm</Text>
+                                 <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.timeStart}</Text>
+                              </View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Thời gian làm việc</Text>
+                                 <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.timeWork} giờ</Text>
+                              </View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Trạng thái</Text>
+                                 <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold', color: 'red'}}>{work.status}</Text>
+                              </View>
+                              <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                 <Text style={{fontSize: 14, fontWeight: 'bold'}}>Tổng tiền</Text>
+                                 {/* <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.money}</Text> */}
+                                 <NumberFormat style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}  value={work.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                              </View>
+
+                              {/* <Text onPress={()=>getDataWorkById()} >aaaaaa</Text> */}
+                           </View>
+                           :
+                           <View></View>
+                     }
+                    </View> 
+
                   )
                }
                   </View>

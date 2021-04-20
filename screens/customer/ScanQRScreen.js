@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import ModalShowInforStaff from '../../components/customer/ModalShowInforStaff'
-const ScanQRScreen = () => {
+const ScanQRScreen = ({navigation,route}) => {
    const [hasPermission, setHasPermission] = useState(null);
    const [scanned, setScanned] = useState(false);
    const [modalVisible, setModalVisible] = useState(false);
    const [ id , setID ] = React.useState()
+   const idWork = route.params.idWork
+   const typeWork = route.params.type
+   const listStaff = route.params.staff
 
    useEffect(() => {
       (async () => {
@@ -17,6 +20,7 @@ const ScanQRScreen = () => {
 
    const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
+      
       if ((data !== null) && (type !== null) ){
          setID(data)
          setModalVisible(true)
@@ -40,10 +44,11 @@ const ScanQRScreen = () => {
             />
         
             <View>
-               {scanned && <Button title={'Nhấn tiếp tục để quét'} onPress={() => setScanned(false)} />}   
+               {scanned && <Button title={'Nhấn tiếp tục để quét'} onPress={() => {setScanned(false), setID(null)}} />}   
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center', width: '100%', backgroundColor: 'white'}}> 
-               <ModalShowInforStaff isModalVisible={modalVisible} setModalVisible={setModalVisible} idStaff={id} />                  
+               <ModalShowInforStaff isModalVisible={modalVisible} setModalVisible={setModalVisible} idStaff={id} idWork={idWork} typeWork={typeWork} staff={listStaff}/>   
+               <Text onPress={()=>console.log(listStaff)}>aaaaaaaaaaaaaaaaaaa</Text>               
             </View>
       </View>
    );

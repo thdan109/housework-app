@@ -258,7 +258,6 @@ const HomeScreenChild = ({navigation}) =>{
 
                      </View>
                   </ScrollView>
-                  <Text onPress={()=>AsyncStorage.removeItem('Token')} >aaaaaaaaaa</Text>
                </View>
             </View>
          </View>

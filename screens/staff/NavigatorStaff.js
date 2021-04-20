@@ -50,13 +50,13 @@ const NavigatorStaff  = ({navigation, props}) =>{
       <View style={{flex:1}} >
          <StatusBar  backgroundColor='black'/>
          <Drawer.Navigator 
-            initialRouteName="Home" 
+            initialRouteName="Trang chủ" 
             drawerContent={(props) => <CustomDrawer {...props} />}
          >
-            <Drawer.Screen name='Home' component={HomeStaff} />
+            <Drawer.Screen name='Trang chủ' component={HomeStaff} />
             {/* <Drawer.Screen name='Profile' component={ProfileStaff} /> */}
-            <Drawer.Screen name='Notification' component={Notification} />
-            <Drawer.Screen name='History' component={History} />   
+            <Drawer.Screen name='Thông báo' component={Notification} />
+            <Drawer.Screen name='Lịch sử' component={History} />   
          </Drawer.Navigator>
       </View>
       

@@ -14,7 +14,7 @@ const {width, height} = Dimensions.get('screen')
 const  HomeStaff = ({navigation}) =>{
    const [work, setWork] = React.useState([])
    const staff = useSelector(state => state)
-   const [modalVisible, setModalVisible] = React.useState({visible: false,id: null});
+   const [modalVisible, setModalVisible] = React.useState({visible: false,id: null,department: null});
    const [id,setID] = React.useState(null);
    React.useEffect(()=>{
       // console.log(staff);
@@ -23,14 +23,42 @@ const  HomeStaff = ({navigation}) =>{
 
    const getDataWork = async() =>{
       const id = staff.users.data._id
-      // const nowdate= new Dat  e()
-      const nowdate = '2021-03-31T17:00:00.000Z'
-      const work = await axios.post(`${host}/clear/workStaff`,{
-         id: id,
-         nowDate: nowdate
-      })
-      // console.log(work.data)
-      setWork(work.data)
+      const department = staff.users.data.department
+
+      if (department === 'Bộ phận Vệ sinh nhà'){
+         const nowdate = '2021-03-31T17:00:00.000Z'
+         const work = await axios.post(`${host}/clear/workStaff`,{
+            id: id,
+            nowDate: nowdate
+         })
+         if (work.data.work === 'Failed'){
+            setWork(null)
+         }else{
+            setWork(work.data)
+         }  
+      }else if (department === 'Bộ phận Giặt ủi'){
+         const nowdate = '2021-03-31T17:00:00.000Z'
+         const work = await axios.post(`${host}/washing/workStaff`,{
+            id: id,
+            nowDate: nowdate
+         })
+         if (work.data.work === 'Failed'){
+            setWork(null)
+         }else{
+            setWork(work.data)
+         }  
+      }else if (department === 'Bộ phận Nấu ăn'){
+         const nowdate = '2021-03-31T17:00:00.000Z'
+         const work = await axios.post(`${host}/cooking/workStaff`,{
+            id: id,
+            nowDate: nowdate
+         })
+         if (work.data.work === 'Failed'){
+            setWork(null)
+         }else{
+            setWork(work.data)
+         }  
+      }
    }
 
    return(
@@ -61,52 +89,64 @@ const  HomeStaff = ({navigation}) =>{
             <View style={{ alignItems: 'center'}} >
                <ScrollView style={styles.scrollview}>
                   {/* Show work */}
-               {work.map((dt) =>(
-                  <TouchableOpacity key={Math.random()} onPress={async () => {
-                     setModalVisible({visible: true,id: dt._id});
-                     // console.log({visible: true,id: dt._id});
-
-                  }}>
-                     <View key={Math.random()} style={{marginVertical: 20, marginHorizontal: 10}}>
-                       
-                           <View key={Math.random()} style={styles.showSchedule}>
-                              <View key={Math.random()} 
-                                 style={{flexDirection:'column', 
-                                       width: '25%', 
-                                       borderWidth: 0, 
-                                       borderBottomLeftRadius: 27,  
-                                       backgroundColor: '#AFEEEE',
-                                       paddingVertical: 10, 
-                                       paddingHorizontal: 5, 
-                                       justifyContent:'center', 
-                                       alignItems: 'center'
-                                 }}>
-                                 {/* <Text style={{fontWeight: 'bold'}}>Thời gian: </Text> */}
-                                 <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27}}>{dt.timeStart}</Text>
-                              </View>
-                              <View style={{flex:1, borderColor: '#AFEEEE', borderWidth:1,paddingVertical: 10, paddingHorizontal: 5, borderTopRightRadius: 27}}>
-                                 <View key={Math.random()} style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: 'bold'}}>Ngày làm: </Text>
-                                    <Text style={{flex:1, textAlign: 'right'}}>{Moment(dt.date).format('dddd  DD/MM/YYYY')}</Text>
-                                 </View>
-                                 <View key={Math.random()} style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: 'bold'}}>Địa chỉ </Text>
-                                    <Text style={{flex:1, textAlign: 'right'}}>{dt.address}</Text>
-                                 </View>
-                              </View>
-                             
-                              
-                           </View>
+               {
+                  (work.length === 0)? 
+                  <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                     <View style={{justifyContent:'center', marginVertical: 60}}>
+                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Không có công việc nào hôm nay!</Text>
                      </View>
-                  </TouchableOpacity>
-               ))}
-              
+                  </View>
+                     :
+                  <View>
+                  {work.map((dt) =>(
+                     <TouchableOpacity key={Math.random()} onPress={async () => {
+                        setModalVisible({visible: true,id: dt._id,department: staff.users.data.department});
+                        // console.log({visible: true,id: dt._id});
+
+                     }}>
+                        <View key={Math.random()} style={{marginVertical: 20, marginHorizontal: 10}}>
+                        
+                              <View key={Math.random()} style={styles.showSchedule}>
+                                 <View key={Math.random()} 
+                                    style={{flexDirection:'column', 
+                                          width: '25%', 
+                                          borderWidth: 0, 
+                                          borderBottomLeftRadius: 27,  
+                                          backgroundColor: '#AFEEEE',
+                                          paddingVertical: 10, 
+                                          paddingHorizontal: 5, 
+                                          justifyContent:'center', 
+                                          alignItems: 'center'
+                                    }}>
+                                    {/* <Text style={{fontWeight: 'bold'}}>Thời gian: </Text> */}
+                                    <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27}}>{dt.timeStart}</Text>
+                                 </View>
+                                 <View style={{flex:1, borderColor: '#AFEEEE', borderWidth:1,paddingVertical: 10, paddingHorizontal: 5, borderTopRightRadius: 27}}>
+                                    <View key={Math.random()} style={{flexDirection: 'row'}}>
+                                       <Text style={{fontWeight: 'bold'}}>Ngày làm: </Text>
+                                       <Text style={{flex:1, textAlign: 'right'}}>{Moment(dt.date).format('dddd  DD/MM/YYYY')}</Text>
+                                    </View>
+                                    <View key={Math.random()} style={{flexDirection: 'row'}}>
+                                       <Text style={{fontWeight: 'bold'}}>Địa chỉ </Text>
+                                       <Text style={{flex:1, textAlign: 'right'}}>{dt.address}</Text>
+                                    </View>
+                                 </View>
+                              
+                                 
+                              </View>
+                        </View>
+                        
+                     </TouchableOpacity>
+                     
+                  ))}
+                  </View>
+              }
                </ScrollView>
                
             </View>
             
             <View style={styles.containerModal}>
-                <ModalWork isModalVisible={modalVisible.visible} idWork={modalVisible.id} setModalVisible={setModalVisible} idStaff={staff.users.data._id} />
+                <ModalWork isModalVisible={modalVisible.visible} idWork={modalVisible.id} setModalVisible={setModalVisible} idStaff={staff.users.data._id} department={modalVisible.department} />
             </View>
          </LinearGradient>
          {/* <Text onPress={()=>console.log(work)}></Text> */}

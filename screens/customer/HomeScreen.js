@@ -63,14 +63,6 @@ const IndexScreen = () => {
                            ),
                         }}
             />
-            <Tab.Screen name="Account" component={ProfileUser} 
-                        options={{
-                           tabBarLabel: 'Account',
-                           tabBarIcon: ({ color, size }) => (
-                                 <MaterialCommunityIcons name="account-alert" color={'#043927'} size={size} />
-                           ),
-                        }}
-            />
             <Tab.Screen name="Notification" component={TestScreen} 
                         options={{
                            tabBarLabel: 'Notification',
@@ -79,6 +71,15 @@ const IndexScreen = () => {
                            ),
                         }}
             />
+            <Tab.Screen name="Account" component={ProfileUser} 
+                        options={{
+                           tabBarLabel: 'Account',
+                           tabBarIcon: ({ color, size }) => (
+                                 <MaterialCommunityIcons name="account-alert" color={'#043927'} size={size} />
+                           ),
+                        }}
+            />
+           
 
             {/* <Tab.Screen name="Setting" component={SettingScreen} 
                         options={{
