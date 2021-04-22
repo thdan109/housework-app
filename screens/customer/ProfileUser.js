@@ -18,7 +18,7 @@ const  ProfileUser= ({ navigation }) => {
    const [modalVisible, setModalVisible] = React.useState(false);
    
    React.useEffect(()=>{
-      console.log(user);
+      // console.log(user);
       // getProfile()
    },[])
 
@@ -29,7 +29,7 @@ const  ProfileUser= ({ navigation }) => {
             Authorization: `Bearer ${token_val}`
          }
       })
-      console.log(logout.data);
+      // console.log(logout.data);
       await AsyncStorage.removeItem("Token")
       navigation.replace("Login")
    }

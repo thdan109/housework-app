@@ -1,10 +1,10 @@
-import {USER_DATA, DELETE_FOOD, ADDRESS_DATA} from '../action/types';
+import {USER_DATA, DELETE_FOOD} from '../action/types';
 
 const initialState = {
    userList: {},
 }
 
-const foodReducer = (state = initialState, action) =>{
+const userReducer = (state = initialState, action) =>{
     switch (action.type){
       case USER_DATA:
          return {
@@ -16,10 +16,9 @@ const foodReducer = (state = initialState, action) =>{
       //    };
       case DELETE_FOOD:
          return 
-      
          default:
             return state;
     }
 }
 
-export default foodReducer;
+export default userReducer;

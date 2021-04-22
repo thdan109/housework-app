@@ -1,4 +1,4 @@
-import { USER_DATA, DELETE_USER, ADDRESS_DATA } from './types';
+import { USER_DATA, DELETE_USER} from './types';
 
 
 export const addUser = (user) => (
@@ -7,12 +7,6 @@ export const addUser = (user) => (
       data: user
    }
 )
-
-// export const addAddress = (addre) =>({
-//       type: ADDRESS_DATA,
-//       data: addre
-//    }
-// )
 
 export const deleteUse = (key) =>(
    {

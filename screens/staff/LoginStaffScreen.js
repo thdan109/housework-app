@@ -1,10 +1,12 @@
 import React from 'react';
+import Constants from 'expo-constants';
 import { View, Image, Dimensions, Animated , Easing, Text, TextInput, CheckBox, AsyncStorage, Alert, StatusBar} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from '../../styles/styleLogin';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
+import * as Notifications from 'expo-notifications';
 
 import axios from 'axios';
 import host from '../../host';
@@ -27,9 +29,10 @@ const LoginStaffScreen = ({navigation}) => {
    )
    const screenAnimation = React.useRef(new Animated.Value(height)).current;
    const inputAnimation = React.useRef(new Animated.Value(0)).current;
-
+   const [expoPushToken, setExpoPushToken] = React.useState();
    React.useEffect(() => {
       AnimateContainer();
+      registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
     }, []);
    
    const AnimateContainer = () =>{
@@ -77,11 +80,32 @@ const LoginStaffScreen = ({navigation}) => {
          passwordStaff: val
       })
    }
+   const registerForPushNotificationsAsync = async() =>{
+      let token
+      if (Constants.isDevice) {
+         const { status: existingStatus } = await Notifications.getPermissionsAsync();
+         let finalStatus = existingStatus;
+         if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+         }
+         if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+         }
+         token = (await Notifications.getExpoPushTokenAsync()).data;
+         console.log(token);
+      } else {
+         alert('Must use physical device for Push Notifications');
+      }
+       return token;
+   }
    
    const loginStaff = async () =>{
       const user = await axios.post(`${host}/staff/login`,{
          usernameStaff: data.usernameStaff,
          passwordStaff: data.passwordStaff,
+         tokenDevice: expoPushToken 
       })
       console.log(user.data.staff);
       await AsyncStorage.setItem('TokenStaff', user.data.token)

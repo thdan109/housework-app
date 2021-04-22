@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity, Image } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import host from '../../host';
 import axios from 'axios'
 import Moment from 'moment'
+import {useDispatch, useSelector} from 'react-redux'
+import  { addWorkClear, addWorkCooking, addWorkWashing } from '../../action/workAction'
 
 const ModalShowInforStaff = (props) => {
    const [modalVisible, setModalVisible] = useState(false);
+   const dispatch = useDispatch()
    const [data, setData] = useState()
    React.useEffect(()=>{
       // console.log(props.idStaff);
@@ -22,24 +26,68 @@ const ModalShowInforStaff = (props) => {
       const result = listStaff.filter(staff =>{return staff === idStaff})
       // console.log(result.length);
 
+      const getOrder = async() =>{
+         // console.log('aaa');
+         const token_val = await AsyncStorage.getItem('Token')
+         // console.log(token_val);
+         
+         const dataOrder = await axios.get(`${host}/user/getOrder`,{
+            headers: {
+               Authorization: `Bearer ${token_val}`,
+            }
+         })
+         if (dataOrder.data.orderClear){      
+            dispatch(addWorkClear(dataOrder.data.orderClear))
+         }
+         if (dataOrder.data.orderCooking){
+            dispatch(addWorkCooking(dataOrder.data.orderCooking))
+      
+         }
+         if (dataOrder.data.orderWashing){
+            dispatch(addWorkWashing(dataOrder.data.orderWashing))
+         }
+         // console.log(dataWashing);
+      }
+
       if ( result.length === 1 ){
          if (typeWork === "cooking"){
             await axios.post(`${host}/cooking/updateStatusWorking`,{
                id : idUpdate
             })
+            // await getOrder()
             return Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
          }else if (typeWork === "washing"){
             console.log("giat ui");
             await axios.post(`${host}/washing/updateStatusWorking`,{
                id : idUpdate
+            }).then(data =>{
+               console.log('aaaaaaaa');
+            }).then(data =>{
+               // console.log(data.data);
+               getOrder()
+            }).catch(err =>{
+               console.log(err);
             })
+            // await getOrder()
             return Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
          }else if ( typeWork === "clear"){
-            console.log("Don nha")
+            // console.log("Don nha")
             await axios.post(`${host}/clear/updateStatusWorking`,{
                id : idUpdate
+            }).then(data =>{
+               // console.log(data.data);
+               getOrder()
+            }).catch(err =>{
+               console.log(err);
+            }).then(data =>{
+               // console.log(data.data);
+               getOrder()
+            }).catch(err =>{
+               console.log(err);
             })
-            return Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
+            // console.log("Don nha")
+            // await getOrder()
+            Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
          }
          setData(null)
       }else if ( result.length === 0 ){
@@ -54,9 +102,6 @@ const ModalShowInforStaff = (props) => {
       const staff = await axios.post(`${host}/staff/getStaffById`,{
          id: id
       })
-      // setData(staff.data)
-      // console.log(staff.data);
-      // console.log(staff.data.error);
       if (staff.data.error){
          setData(null)
       }else{
