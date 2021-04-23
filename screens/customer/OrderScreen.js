@@ -13,16 +13,16 @@ import { addWorkCooking, addWorkWashing, addWorkClear } from '../../action/workA
 const {width, height} = Dimensions.get('screen')
 
 const OrderScreen = ({ navigation,props }) =>{
-
+   const [isLoad,setIsLoad] = React.useState(true)
 
 
    React.useEffect( ()=>{
       getOrder()
-   },[])
+   },[isLoad])
    
    const dispatch = useDispatch()
    const work = useSelector(state => state)
-
+   
    const [expanded, setExpanded] = React.useState(true);
 
    const handlePress = () => setExpanded(!expanded);
@@ -58,13 +58,54 @@ const OrderScreen = ({ navigation,props }) =>{
       // console.log(dataWashing);
    }
 
+const confirmWork = async ( id,typee ) =>{
+      const idWork = id
+      const type = typee
+      const status = "Chờ thu tiền"
+      // console.log(idWork, type);
+      if ( type === "clear" ){
+         await axios.post(`${host}/clear/confirmWork`,{
+            id : idWork,
+            status: status
+         }).then(res =>{
+            
+            // getOrder()
+            setIsLoad(!isLoad)
+            // console.log("áda");
+
+         })
+         
+      }else if ( type==="cooking" ){
+         await axios.post(`{host}/cooking/confirmWork`,{
+            id: idWork,
+            status: status
+         }).then(res=>{
+            // getOrder()
+      setIsLoad(!isLoad)
+      // console.log("áda");
+
+         })
+         
+      }else if( type==="washing"){
+         await axios.post(`${host}/washing/confirmWork`,{
+            id: idWork,
+            status: status
+         }).then(res =>{
+            // getOrder()
+      setIsLoad(!isLoad)
+      // console.log("áda");
+
+         })
+         
+      }
+   }
    
    return(
       <View style={styles.container}>
          <View style={styles.header}>
             <Text style={{fontSize:20, color: 'white', fontWeight:'bold', textAlign: 'center', marginTop: 30}}>Việc của bạn</Text>
          </View>
-
+         
          <View style={{ marginTop: -30 ,height: 600 }} >
          <ScrollView>
             <View style={{marginVertical: 10}}>
@@ -339,6 +380,7 @@ const OrderScreen = ({ navigation,props }) =>{
                :
                (dataClear.length === 0 )?<View></View>:
                <View style={styles.containerWork}>
+                  
                   <List.Section title="Dọn nhà"  >
                      {
                         work.works.clearList.map(dt =>(
@@ -406,13 +448,22 @@ const OrderScreen = ({ navigation,props }) =>{
                                        <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
                                     </View>
                                  }
-                                 {/* <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
-                                    <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                    <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') }>
-                                       <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
-                                    </TouchableOpacity>
-                                 </View>   */}
-                              </View>
+                                 {/* <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}> */}
+                                    {
+                                       (data.status === "Đang thực hiện")?
+                                          (<TouchableOpacity onPress = {()=> confirmWork(data._id,"clear")} >
+                                             <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
+                                             </View>
+                                          </TouchableOpacity>)
+                                       :
+                                       (
+                                          <View></View>
+                                       )
+                                    }
+                                    
+                                 </View>  
+                              {/* </View> */}
 
                            </List.Accordion>
                            ))
@@ -489,12 +540,18 @@ const OrderScreen = ({ navigation,props }) =>{
                                           <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
                                        </View>
                                     }
-                                    {/* <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
-                                    <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                    <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen') }>
-                                       <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
-                                    </TouchableOpacity>
-                                 </View>   */}
+                                    {
+                                       (data.status === "Đang thực hiện")?
+                                          (<TouchableOpacity >
+                                             <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
+                                             </View>
+                                          </TouchableOpacity>)
+                                       :
+                                       (
+                                          <View></View>
+                                       )
+                                    }
                                  </View>
 
                               </List.Accordion>
@@ -585,7 +642,18 @@ const OrderScreen = ({ navigation,props }) =>{
                                           <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
                                        </View>
                                     }
-                                     
+                                    {
+                                       (data.status === "Đang thực hiện")?
+                                          (<TouchableOpacity  >
+                                             <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
+                                             </View>
+                                          </TouchableOpacity>)
+                                       :
+                                       (
+                                          <View></View>
+                                       )
+                                    }
                                  </View>
 
                               </List.Accordion>
@@ -597,6 +665,7 @@ const OrderScreen = ({ navigation,props }) =>{
                </View>
             }
          </ScrollView>  
+         
          </View>
          
       </View>
