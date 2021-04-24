@@ -62,17 +62,12 @@ const confirmWork = async ( id,typee ) =>{
       const idWork = id
       const type = typee
       const status = "Chờ thu tiền"
-      // console.log(idWork, type);
       if ( type === "clear" ){
          await axios.post(`${host}/clear/confirmWork`,{
             id : idWork,
             status: status
          }).then(res =>{
-            
-            // getOrder()
             setIsLoad(!isLoad)
-            // console.log("áda");
-
          })
          
       }else if ( type==="cooking" ){
@@ -80,23 +75,15 @@ const confirmWork = async ( id,typee ) =>{
             id: idWork,
             status: status
          }).then(res=>{
-            // getOrder()
-      setIsLoad(!isLoad)
-      // console.log("áda");
-
+            setIsLoad(!isLoad)
          })
-         
       }else if( type==="washing"){
          await axios.post(`${host}/washing/confirmWork`,{
             id: idWork,
             status: status
          }).then(res =>{
-            // getOrder()
-      setIsLoad(!isLoad)
-      // console.log("áda");
-
+            setIsLoad(!isLoad)
          })
-         
       }
    }
    

@@ -13,6 +13,7 @@ const {width, height} = Dimensions.get('screen')
 
 const  HomeStaff = ({navigation}) =>{
    const [work, setWork] = React.useState([])
+   const [workWash, setWorkWash] = React.useState([])
    const staff = useSelector(state => state)
    const [modalVisible, setModalVisible] = React.useState({visible: false,id: null,department: null});
    const [id,setID] = React.useState(null);
@@ -76,6 +77,7 @@ const  HomeStaff = ({navigation}) =>{
                      fontWeight: 'bold', 
                      color: 'black'
                   }}>HÔM NAY</Text>
+                   <Text onPress={()=>console.log(work)} style={{fontSize: 18, fontWeight: 'bold'}}>aaaaaaaaaaaaaaaaaaa</Text> 
                </View>
                <View style={{
                         flexDirection: 'row', 
@@ -83,16 +85,20 @@ const  HomeStaff = ({navigation}) =>{
                         marginTop: 10
                }}>
                      <Text style={{color: 'black', fontWeight: 'bold'}}>Số công việc:</Text>
+                     
                </View>
+               
             </View>
 
             <View style={{ alignItems: 'center'}} >
                <ScrollView style={styles.scrollview}>
                   {/* Show work */}
+                  
                {
-                  (work.length === 0)? 
+                  ((work.length === 0))? 
                   <View style={{justifyContent: 'center', alignItems: 'center'}}>
                      <View style={{justifyContent:'center', marginVertical: 60}}>
+                       
                         <Text style={{fontSize: 18, fontWeight: 'bold'}}>Không có công việc nào hôm nay!</Text>
                      </View>
                   </View>

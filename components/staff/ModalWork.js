@@ -49,7 +49,41 @@ const ModalWork = (props) =>{
          }else{
             setWork(null)
          }
-      }
+      }  
+   }
+
+   const SaveOrder = async() =>{
+      // const id = idWork
+      // console.log(work);
+      const department = props.department
+      if (department === "Bộ phận Vệ sinh nhà"){
+         const process = await axios.post(`${host}/clearsave/create`,{
+            work: work
+         })
+         if (process.status === 200){
+            getDataWorkById()
+         }else{
+            // setWork(null)
+         }
+      }else if (department === "Bộ phận Giặt ủi"){
+         const process = await axios.post(`${host}/washingsave/create`,{
+            work: work
+         })
+         if (process.status === 200){
+            getDataWorkById()
+         }else{
+            // setWork(null)
+         }
+      }else if (department === "Bộ phận Nấu ăn"){
+         const process = await axios.post(`${host}/cookingsave/create`,{
+            work: work
+         })
+         if (process.status === 200){
+            getDataWorkById()
+         }else{
+            // setWork(null)
+         }
+      } 
       
    }
 
@@ -77,12 +111,47 @@ const ModalWork = (props) =>{
                         {
                            (props.department === "Bộ phận Giặt ủi")?
                            <View>
-                              <Text>Giặt ủi</Text>
+                              {/* <Text>Giặt ủi</Text> */}
                               <ScrollView style={{height: 300}}
                                  showsHorizontalScrollIndicator={false}
                                  showsVerticalScrollIndicator={false}   
                               >
+                                 <View>
+                                    <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>Tên Khách hàng</Text>
+                                       <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.fullname}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>Ngày nhận</Text>
+                                       <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{Moment(work.dateSend).format('dddd  DD/MM/YYYY')}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>Giờ nhận</Text>
+                                       <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.timeSend}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>Ngày trả</Text>
+                                       <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{Moment(work.dateTake).format('dddd  DD/MM/YYYY')}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>Giờ trả</Text>
+                                       <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.timeTake}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>Ghi chú</Text>
+                                       <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.note}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>Trạng thái</Text>
+                                       <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold', color:'red'}}>{work.status}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', paddingBottom: 3, borderBottomWidth: 1, marginBottom: 10, borderBottomColor: '#008B8B'}}>
+                                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>Tổng tiền</Text>
+                                       {/* <Text style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}>{work.money}</Text> */}
+                                       <NumberFormat style={{flex: 1, textAlign: 'right', fontSize: 14, fontWeight: 'bold'}}  value={work.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                                    </View>
 
+                                 </View>  
                               </ScrollView>
                            </View>
                            :
@@ -182,29 +251,42 @@ const ModalWork = (props) =>{
                               {/* <Text onPress={()=>getDataWorkById()} >aaaaaa</Text> */}
                            </View>
                            :
-                           <View></View>
-                     }
-                    </View> 
+                           <View>
 
-                  )
-               }
-                  </View>
-                  
-                  <View style={styles.close}>
-                     <TouchableHighlight
-                        style={{
+                           </View>
+                     }
+                     <View style={styles.close}>
+                     
+                     {
+                        ((work.status === "Chờ thu tiền"))?
+                        <TouchableHighlight
+                           style={{
+                              marginHorizontal: 10,
+                              width: '45%', borderWidth:0, 
+                              height: 40, borderRadius: 20, 
+                              justifyContent: 'center', alignItems: "center", 
+                              backgroundColor:'green' 
+                           }}
+                           onPress={() => {
+                              // console.log(work._id)
+                              SaveOrder()
+                              props.setModalVisible(!props.isModalVisible);
+                           }}
+                        >
+                           <Text style={{fontWeight: 'bold', color:'white'}}>Đã thu</Text>
+                        </TouchableHighlight>
+                        :
+                        <View style={{
                            marginHorizontal: 10,
                            width: '45%', borderWidth:0, 
                            height: 40, borderRadius: 20, 
                            justifyContent: 'center', alignItems: "center", 
-                           backgroundColor:'green' 
-                        }}
-                        onPress={() => {
-                           props.setModalVisible(!props.isModalVisible);
-                        }}
-                     >
-                        <Text style={{fontWeight: 'bold', color:'white'}}>Đã thu</Text>
-                     </TouchableHighlight>
+                           backgroundColor:'green' ,
+                           opacity: 0
+                        }}></View>
+                     }
+                     
+                     
                      <TouchableHighlight
                         style={{
                            marginHorizontal: 10,
@@ -220,6 +302,13 @@ const ModalWork = (props) =>{
                         <Text style={{fontWeight: 'bold', color:'white'}}>Đóng</Text>
                      </TouchableHighlight>
                   </View>
+                    </View> 
+
+                  )
+               }
+                  </View>
+                  
+                  
                   
                </View>
             </View>
@@ -250,7 +339,9 @@ const styles = StyleSheet.create({
       height: '91%'
    },
    close:{
-      flexDirection: 'row'
+      flexDirection: 'row',
+      marginTop: 20,
+      // borderWidth: 1
    }
 
 })

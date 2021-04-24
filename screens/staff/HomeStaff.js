@@ -76,6 +76,7 @@ const  HomeStaff = ({navigation}) =>{
                      fontWeight: 'bold', 
                      color: 'black'
                   }}>HÔM NAY</Text>
+                  {/* <Text onPress={()=>console.log(work)} style={{fontSize: 18, fontWeight: 'bold'}}>aaaaaaaaaaaaaaaaaaa</Text>  */}
                </View>
                <View style={{
                         flexDirection: 'row', 
@@ -119,7 +120,13 @@ const  HomeStaff = ({navigation}) =>{
                                           alignItems: 'center'
                                     }}>
                                     {/* <Text style={{fontWeight: 'bold'}}>Thời gian: </Text> */}
-                                    <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27}}>{dt.timeStart}</Text>
+                                    {
+                                       (dt.timeStart)?
+                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27}}>{dt.timeStart}</Text>
+                                       :
+                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27}}>{dt.timeSend}</Text>
+                                    }
+                                    
                                  </View>
                                  <View style={{flex:1, borderColor: '#008B8B', borderWidth:1,paddingVertical: 10, paddingHorizontal: 5, borderTopRightRadius: 27}}>
                                     <View key={Math.random()} style={{flexDirection: 'row'}}>
