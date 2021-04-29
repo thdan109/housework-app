@@ -1,11 +1,21 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import { View, Text, Dimensions, ScrollView, StatusBar,TextInput, KeyboardAvoidingView,Image, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { View, Text, Dimensions, ScrollView, StatusBar,TextInput, KeyboardAvoidingView,Image, TouchableOpacity, TouchableHighlight, AsyncStorage } from 'react-native';
 const { width,height }  = Dimensions.get("screen");
-
+import axios from 'axios'
+import host from '../../host'
 
 const HomeScreenChild = ({navigation}) =>{
-
+   const handleSignOut = async() =>{
+      const token_val = await AsyncStorage.getItem('Token')
+      const logout = await axios.get(`${host}/user/logout`,{
+         headers: {
+            Authorization: `Bearer ${token_val}`
+         }
+      })
+      // console.log(logout.data);
+      await AsyncStorage.removeItem("Token")
+      navigation.replace("Login")
+   }
    return(
       
       <View style={{flex: 1, width: width, height: height}}>
@@ -33,6 +43,7 @@ const HomeScreenChild = ({navigation}) =>{
                >
                   DỊCH VỤ
                </Text>
+               
             </View>
 
             <View 
@@ -52,6 +63,7 @@ const HomeScreenChild = ({navigation}) =>{
                >
 {/* Menu dịch vụ */}
                   <ScrollView>
+                  
                      <View>
         {/* Dọn nhà */}
                      <TouchableHighlight underlayColor="white" onPress={()=>navigation.navigate('ClearScreen')}>
@@ -261,7 +273,9 @@ const HomeScreenChild = ({navigation}) =>{
                </View>
             </View>
          </View>
-
+         {/* <Text onPress={()=>{
+            console.log('aaaaaaa')
+            AsyncStorage.removeItem("Token")}}>aaaaaaaaaaa</Text> */}
       </View>
       
    )

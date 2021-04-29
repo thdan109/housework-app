@@ -28,6 +28,8 @@ import HomeStaff from './screens/staff/HomeStaff'
 import LoginStaff from './screens/staff/LoginStaffScreen'
 import ProfileStaff from './screens/staff/ProfileStaff';
 import FormForLeave from './screens/staff/FormForLeave'
+import WorkStaffAll from './screens/staff/WorkStaffScreen'
+
 
 const store = configureStore();
 const AppStack = createStackNavigator();
@@ -64,6 +66,7 @@ const handleRedux = () => {
                   <AppStack.Screen name='LoginStaff' component={LoginStaff} />
                   <AppStack.Screen name='ProfileStaff' component={ProfileStaff} />
                   <AppStack.Screen name='FormForLeave' component={FormForLeave} />
+                  <AppStack.Screen name='WorkStaffAll' component={WorkStaffAll} />
                </AppStack.Navigator>
             </NavigationContainer>
          </Provider>    

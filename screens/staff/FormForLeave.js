@@ -1,10 +1,10 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { View, Text, Dimensions, StyleSheet,ScrollView, Image, TextInput,Alert} from 'react-native' 
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons,FontAwesome5 } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
-import ModalShowQR from '../../components/staff/ModalShowQR'
+import ModalShowDayLeave from '../../components/staff/ModalShowDayLeave'
 import host from '../../host'
 import { ModalDatePicker } from "react-native-material-date-picker";
 import Moment from 'moment'
@@ -12,7 +12,7 @@ import axios from 'axios'
 
 const {width, height} = Dimensions.get('screen')
 
-const FormForLeave = ({navigation}) =>{
+const FormForLeave = ({navigation,props}) =>{
 
    React.useEffect(()=>{
       getLeave()
@@ -51,20 +51,26 @@ const FormForLeave = ({navigation}) =>{
       const id = staff.users.data._id
       const name = staff.users.data.fullnameStaff
       const department = staff.users.data.department
-      const form =  await  axios.post(`${host}/leave/create`,{
-         id : id,
-         name:  name,
-         department : department,
-         date : datee,
-         reason : reason
-      })
-
-      if (form.data.status === 'Successfully!'){
-         navigation.navigate('NavigatorStaff')
-         getLeave()
+      console.log('aaaaa',reason);
+      if ( reason  ){
+         const form =  await  axios.post(`${host}/leave/create`,{
+            id : id,
+            name:  name,
+            department : department,
+            date : datee,
+            reason : reason
+         })
+         if (form.data.status === 'Successfully!'){
+            navigation.navigate('NavigatorStaff')
+            getLeave()
+         }else{
+            Alert.alert('Chưa gửi được!')
+         }
       }else{
-         Alert.alert('Chưa gửi được!')
+         return Alert.alert('Vui lòng điền lý do')
       }
+     
+      
    }
 
    return(
@@ -99,7 +105,7 @@ const FormForLeave = ({navigation}) =>{
                {/* <ScrollView style={styles.scrollview} > */}
                   <View>
                      <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 30}}>
-                        <Text style={{fontSize: 16, fontWeight: 'bold', color: 'red'}} >Ngày đã nghỉ/tháng: </Text>
+                        <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}} >Ngày đã nghỉ/tháng: </Text>
                         { 
                            // (leave && leave.length < 2)?
                            // (
@@ -115,8 +121,30 @@ const FormForLeave = ({navigation}) =>{
                               <Text style={{fontSize: 16, fontWeight: 'bold', color: 'red'}}>0</Text>
                            )
                         }
-                       
                      </View>
+                     { 
+                           // (leave && leave.length < 2)?
+                           // (
+                           //    <Text style={{fontSize: 14, fontWeight: 'bold', color: 'red'}}>1</Text>
+                           // )
+                           // :
+                           (leave && leave.length)?
+                           (
+                              <View style={{ }}>
+                                 <TouchableOpacity onPress={()=>setModalVisible(true)} >
+                                    <View style={{flexDirection: 'row',marginLeft: 20, marginTop: 10 }}>
+                                       <FontAwesome5 name="clipboard-list" size={24} color="#008B8B" /> 
+                                       <Text style={{fontWeight: 'bold', fontSize: 16, color: 'black',marginLeft: 5}}>Xem</Text>
+                                    </View>
+                                 </TouchableOpacity>   
+                              </View>
+                           )
+                           :
+                           (
+                              <View></View>
+                           )
+                        }
+                     
                   </View>
                   <View style={styles.information}> 
                      <View style={{flexDirection: 'row',marginBottom: 15, justifyContent: 'center', marginBottom: 30  }}>
@@ -175,7 +203,7 @@ const FormForLeave = ({navigation}) =>{
                   
                {/* </ScrollView> */}
                
-               <ModalShowQR isModalVisible={modalVisible} setModalVisible={setModalVisible} />
+               <ModalShowDayLeave isModalVisible={modalVisible} setModalVisible={setModalVisible} idStaff={staff.users.data._id}  />
             </View>
          </LinearGradient>
       </View>

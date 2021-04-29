@@ -48,7 +48,7 @@ const ScanQRScreen = ({navigation,route}) => {
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center', width: '100%', backgroundColor: 'white'}}> 
                <ModalShowInforStaff isModalVisible={modalVisible} setModalVisible={setModalVisible} idStaff={id} idWork={idWork} typeWork={typeWork} staff={listStaff}/>   
-               <Text onPress={()=>console.log(listStaff)}>aaaaaaaaaaaaaaaaaaa</Text>               
+               {/* <Text onPress={()=>console.log(listStaff)}>aaaaaaaaaaaaaaaaaaa</Text>                */}
             </View>
       </View>
    );

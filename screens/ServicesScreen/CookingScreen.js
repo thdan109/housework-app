@@ -120,7 +120,26 @@ const CookingScreen = ({ navigation } )=>{
       }
    ]
 
-  
+   React.useEffect(() =>{
+      getAddressAPI()
+      // console.log(hours);
+      getDataService()
+   },[])
+
+   const [dataForApp , setDataForApp ] = React.useState()
+   const getDataService = async() =>{
+
+      const dataService = await axios.get(`${host}/cooking/getDataForApp`)
+
+      if (dataService.data.data){
+         setDataForApp(dataService.data.data)
+      }else{
+         console.log('err');
+      }
+
+   }
+
+
    //Function button Radio
    const onSelect = (item) => {
       if (selectedOption && selectedOption.key === item.key) {
@@ -166,10 +185,7 @@ const CookingScreen = ({ navigation } )=>{
     })
 
 
-   React.useEffect(() =>{
-      getAddressAPI()
-      // console.log(hours);
-   },[])
+  
 
    const getAddressAPI = async() =>{
       const getData =  await axios.get('https://thongtindoanhnghiep.co/api/city')
@@ -240,7 +256,7 @@ const CookingScreen = ({ navigation } )=>{
    
    const total = async(item) =>{
       if ((address.address != 'Bạn chưa chọn địa chỉ') && (numaddress != null) && (dish != null) && (datatime.hour.label) && (datatime.min.label) && (numCustomer != 'null')){
-         let money = Number(selectedFruit.key)*50000 + Number(selectedGo.key)*50000 + Number(selectedOption.text)*35000 + Number(numCustomer)*30000
+         let money = Number(selectedFruit.key)*dataForApp[3] + Number(selectedGo.key)*dataForApp[0] + Number(selectedOption.text)*dataForApp[1] + Number(numCustomer)*dataForApp[2]
          setMoney(money)
          setModalVisible1(true)
       }else{
@@ -273,6 +289,11 @@ const CookingScreen = ({ navigation } )=>{
             }
 
          })
+         if ( createCooking.data.status === 'Oke' ){
+            navigation.replace('Home')
+         }else{
+            return Alert.alert('Chưa thêm được viêc. Có lỗi, vui lòng thử lại!')
+         }
      
    }
 

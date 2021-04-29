@@ -94,31 +94,6 @@ const  ProfileUser= ({ navigation }) => {
             </View>
             
             <View style={{ height: height/2, borderWidth: 0, paddingHorizontal: 0, marginVertical: 10}}>
-
-               {/* <View style={{flexDirection: "row", alignItems: "flex-end",paddingVertical: 3 , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3,  paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <Entypo name="cake" size={18} color="#043927" style={{marginRight: 3, marginBottom: 3}} />
-                  <Text style={{flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Ngày sinh </Text>
-                  <Text style={{  }}>{Moment(user.users.data.birthday).format('dddd MM yyyy')}</Text> 
-               </View>
-               
-               <View style={{ flexDirection: "row",alignItems: "flex-end",paddingVertical: 3 ,flex: 1/10 ,backgroundColor: 'white', borderWidth: 0, marginVertical:1, marginHorizontal: 3,paddingHorizontal: 7,  borderBottomWidth: 1}}>
-                  <Entypo name="phone" size={18} color="#043927" style={{marginRight: 3}} />
-                  <Text style={{flex:1, marginLeft: 0, fontSize: 14, fontWeight: "bold"}} >Số điện thoại</Text>
-                  <Text style={{  }}> {user.users.data.phone}</Text> 
-               </View>
-               
-               <View style={{flexDirection: "row", alignItems: "flex-end",paddingVertical: 3 , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1, marginHorizontal: 3,paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <Entypo name="email" size={18} color="#043927" style={{marginRight: 3}} />
-                  <Text style={{ flex:1, marginLeft: 0, fontSize: 14, fontWeight: "bold"}} >Email:</Text>
-                  <Text style={{  }}>{user.users.data.email}</Text> 
-               </View>
-               
-               <View style={{flexDirection: "row",alignItems: "flex-end",paddingVertical: 3 , flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3,  paddingHorizontal: 7, borderBottomWidth: 1 }}>
-                  <Entypo name="address" size={18} color="#043927" style={{marginRight: 3}} />
-                  <Text style={{flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Địa chỉ</Text>
-                  <Text style={{  }}>{user.users.data.address}</Text> 
-               </View>
-                */}
                <View style={{flexDirection: "row",alignItems: "flex-end",paddingVertical: 3, flex: 1/10, backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3, paddingHorizontal: 7, borderBottomWidth: 1 }}>
                   <Entypo name="medal" size={16} color="#043927" style={{marginRight: 2}} />
                   <Text style={{ flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Xếp loại khách hàng</Text>
@@ -130,8 +105,7 @@ const  ProfileUser= ({ navigation }) => {
                   <Text style={{ flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Lịch sử</Text>
                   
                </View>
-
-               
+ 
                <View style={{flexDirection: "row", alignItems: "flex-end",paddingVertical: 3 , flexDirection: "row", flex: 1/10 , backgroundColor: 'white', borderWidth: 0,marginVertical:1,marginHorizontal: 3, paddingHorizontal: 7, borderBottomWidth: 1 }}>
                   <Ionicons name="gift" size={18} color="#043927" style={{marginRight: 3}} />
                   <Text style={{flex:1, marginLeft: 0,fontSize: 14, fontWeight: "bold"}} >Khuyến mãi</Text>

@@ -17,6 +17,7 @@ const ClearScreen = ( { navigation}  ) =>{
 // state
    const [modalVisible, setModalVisible] = React.useState(true);
    const [modalVisible1, setModalVisible1] = React.useState(false);
+   const [dataForApp, setDataForApp] = React.useState()
 
    const [ datee, setdate] = React.useState(new Date())
    const [ province, setProvince] = React.useState([])
@@ -45,6 +46,7 @@ const ClearScreen = ( { navigation}  ) =>{
 // end state
    React.useEffect(() =>{
       getAddressAPI()
+      getDataService()
       // console.log(hours);
    },[])
 
@@ -107,6 +109,18 @@ const ClearScreen = ( { navigation}  ) =>{
          text: 'Không'
       }
    ]
+//getDataSerive
+   const getDataService = async() =>{
+      const dataService =  await axios.get(`${host}/clear/getDataForApp`)
+      if (dataService.data.data){
+         setDataForApp(dataService.data.data)
+      }else{
+         console.log('err');
+      }
+      
+
+   }
+
 
 //addressAPI
    const getAddressAPI = async() =>{
@@ -207,7 +221,7 @@ const ClearScreen = ( { navigation}  ) =>{
             // console.log(datee);
             // console.log(datatime.hour, datatime.min);
             // console.log(dataClear);
-            const totalBill = dataClear.workhour.value * 25000 + dataClear.area.value * 200000 + dataClear.numberroom.value * 25000
+            const totalBill = dataClear.workhour.value * dataForApp[1] + dataClear.area.value * dataForApp[2] + dataClear.numberroom.value * dataForApp[0]
             // console.log(totalBill);  
             setBill(totalBill)
          }
@@ -247,6 +261,8 @@ const ClearScreen = ( { navigation}  ) =>{
 
 {/* ScrollView */}
                <View style={{ marginVertical: 10, marginHorizontal: 10,height: '100%' }}>
+
+                  {/* <Text onPress={()=>console.log(dataForApp)}>aaaaaaaa</Text> */}
                   <ScrollView
                      showsHorizontalScrollIndicator={false}
                      showsVerticalScrollIndicator={false}   

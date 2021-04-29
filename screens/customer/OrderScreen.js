@@ -1,7 +1,7 @@
 import React from 'react';
 import {View,Text, Dimensions, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Entypo, Ionicons } from '@expo/vector-icons';
+import { Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import {List } from 'react-native-paper'
 import axios from 'axios'
 import NumberFormat from 'react-number-format';
@@ -9,6 +9,7 @@ import Moment from 'moment'
 import {useDispatch, useSelector} from 'react-redux'
 import host from '../../host'
 import { addWorkCooking, addWorkWashing, addWorkClear } from '../../action/workAction';
+import ModalReportStaff from '../../components/customer/ModalReportStaff';
 
 const {width, height} = Dimensions.get('screen')
 
@@ -26,11 +27,18 @@ const OrderScreen = ({ navigation,props }) =>{
    const [expanded, setExpanded] = React.useState(true);
 
    const handlePress = () => setExpanded(!expanded);
-  
+   const [modalVisible, setModalVisible]=React.useState({visible: false,idStaff: null, idWork: null})
 
    const [ dataCooking, setDataCooking] = React.useState([])
    const [ dataClear, setDataClear] = React.useState([])
    const [ dataWashing, setDataWashing]= React.useState([])
+
+   const handChangemodalVisible = ()=>{
+      setModalVisible(pre=>{
+         return {...pre, visible: !pre.visible}
+      })
+   }
+
 
    const getOrder = async() =>{
       // console.log('aaa');
@@ -98,265 +106,6 @@ const confirmWork = async ( id,typee ) =>{
             <View style={{marginVertical: 10}}>
                
             </View>
-           
-            {/* {
-               (dataClear.length === 0) && (dataCooking.length === 0) && (dataWashing.length === 0)?
-                  <View style={{ height: 600, justifyContent: "center", alignItems: 'center', backgroundColor: 'white', marginHorizontal: 10, borderRadius: 10}} >
-                     <Text style={{ fontSize: 16, color: "gray", textAlign:'center'}}>
-                        Chưa có việc nào được đăng
-                     </Text>
-                  </View>
-               :
-               (dataClear.length === 0 )?<View></View>:
-               <View style={styles.containerWork}>
-                  <List.Section title="Dọn nhà"  >
-                  <Text onPress={()=>console.log(work.works.clearList)}>aaaaaaaaa</Text>
-                     {
-                        dataClear.map(data =>(
-                           
-                           <List.Accordion
-                              key={Math.random()}
-                              title={Moment(data.date).format('dddd  DD/MM/YYYY')}
-                              left={props => <List.Icon {...props} icon="calendar-month-outline" />}
-                           >
-                              <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
-                                 
-                                 <View style={styles.rowdetail} key={Math.random()}>
-                                    <Text style={{fontSize: 16}}>Diện tích</Text>
-                                    <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold', fontSize: 16}}>{Number(data.area)*100} M2</Text>
-                                 </View>
-                                 <View style={styles.rowdetail} key={Math.random()}>
-                                    <Text style={{fontSize: 16}}>Thời gian đến</Text>
-                                    <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.timeStart} </Text>
-                                 </View>
-                                 
-                                 <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text style={{fontSize: 16}}>Thời gian làm việc</Text>
-                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.timeWork} </Text>
-                                 </View>
-                                 <View style={styles.rowdetail} key={Math.random()}>
-                                    <Text style={{fontSize: 16}}>Số phòng</Text>
-                                    <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.numRoom} </Text>
-                                 </View>
-                                 <View style={styles.rowdetail} key={Math.random()}>
-                                    <Text style={{fontSize: 16}}>Trạng thái</Text>
-                                    <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.status} </Text>
-                                 </View>
-                                 <View style={styles.rowdetail} key={Math.random()}>
-                                    <Text  style={{fontSize: 16}}>Tổng tiền</Text>
-                                    <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>
-                                    <NumberFormat key={Math.random()} value={data.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
-                                    </Text>
-                                 </View>
-                                 {
-                                    (data.nameStaff.length != 0)? 
-                                    <View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                    <Text style={{fontSize: 16}} >Nhân viên</Text>
-                                       <View key={Math.random() } style={{flex: 1}}>
-                                          {data.nameStaff.map(dt =>
-                                             <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                                <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                                <TouchableOpacity>
-                                                   <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                                </TouchableOpacity>
-                                             </View>
-                                          )}
-                                       </View>
-                                    </View>
-                                    <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
-                                       <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                       <TouchableOpacity onPress={()=> {navigation.navigate('ScanQRScreen', {idWork: data._id, type: "clear",staff: data.idStaff})} }>
-                                          <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
-                                       </TouchableOpacity>
-                                    </View> 
-                                    </View>
-                                    :
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text  style={{fontSize: 16}}>Nhân viên</Text>
-                                       <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
-                                    </View>
-                                 }
-                                
-                              </View>
-
-                           </List.Accordion>
-                  
-                        ))
-                     }
-                     
-                  </List.Section>
-               </View>
-            }
-         
-            {
-               (dataWashing.length === 0)? <View></View>:
-               <View style={styles.containerWork}>
-                  <List.Section title="Giặt ủi"  >
-                     {
-                        dataWashing.map(data =>(
-                           
-                              <List.Accordion
-                                 key={Math.random()}
-                                 title={Moment(data.timeTake).format('dddd  DD/MM/YYYY')}
-                                 left={props => <List.Icon {...props} icon="calendar-month-outline" />}
-                              >
-                                 <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
-                                    
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text style={{fontSize: 16}}>Ngày nhận</Text>
-                                       <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold', fontSize: 16}}>{Moment(data.dateSend).format('dddd  DD/MM/YYYY')}</Text>
-                                    </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text style={{fontSize: 16}}>Ngày trả</Text>
-                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {Moment(data.dateTake).format('dddd  DD/MM/YYYY')} </Text>
-                                    </View>
-                                    
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                          <Text style={{fontSize: 16}}>Thời gian nhận</Text>
-                                          <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.timeSend} </Text>
-                                    </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text style={{fontSize: 16}}>Thời gian trả</Text>
-                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.timeTake} </Text>
-                                    </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text  style={{fontSize: 16}}>Tổng tiền</Text>
-                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>
-                                       <NumberFormat key={Math.random()} value={data.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
-                                       </Text>
-                                    </View>
-                                    {
-                                       (data.staff.length != 0)? 
-                                       <View>
-                                          <View style={styles.rowdetail} key={Math.random()}>
-                                          <Text  style={{fontSize: 16}} >Nhân viên</Text>
-                                             <View key={Math.random() } style={{flex: 1}}>
-                                                {data.staff.map(dt =>
-                                                   <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                                      <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                                      <TouchableOpacity>
-                                                         <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                                      </TouchableOpacity>
-                                                   </View>
-                                                )}
-                                             </View>
-                                          </View> 
-                                          <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
-                                             <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                             <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "washing"}) }>
-                                                <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
-                                             </TouchableOpacity>
-                                          </View> 
-                                       </View>
-                                       :
-                                       <View style={styles.rowdetail} key={Math.random()}>
-                                          <Text  style={{fontSize: 16}}>Nhân viên</Text>
-                                          <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
-                                       </View>
-                                    }
-                                   
-                                 </View>
-
-                              </List.Accordion>
-                  
-                        ))
-                     }
-                     
-                  </List.Section>
-               </View>
-               
-            }
-
-            {
-               (dataCooking.length === 0)? <View></View>:
-               <View style={styles.containerWork}>
-                  <List.Section title="Nấu ăn"  >
-                     {
-                        dataCooking.map(data =>(
-                           
-                              <List.Accordion
-                                 key={Math.random()}
-                                 title={Moment(data.date).format('dddd  DD/MM/YYYY')}
-                                 left={props => <List.Icon {...props} icon="calendar-month-outline" />}
-                              >
-                                 <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
-                                    
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text style={{fontSize: 16}}>Món ăn</Text>
-                                       <View style={{ flex:1}}>
-                                          {
-                                             data.dishList.map(dt=>
-                                                <Text key={Math.random()} style={{ textAlign: "right", fontWeight: 'bold', fontSize: 16}}>{dt}</Text>          
-                                             )
-                                          }
-                                       </View>
-                                       
-                                       
-                                    </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text style={{fontSize: 16}}>Số người ăn</Text>
-                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>  {data.number}</Text>
-                                    </View>
-                                    
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                          <Text style={{fontSize: 16}}>Đi chợ</Text>
-                                          <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.goMarket} </Text>
-                                    </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text style={{fontSize: 16}}>Trái cây</Text>
-                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.fruit} </Text>
-                                    </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text style={{fontSize: 16}}>Trạng thái</Text>
-                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.status} </Text>
-                                    </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text  style={{fontSize: 16}}>Tổng tiền</Text>
-                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>
-                                       <NumberFormat key={Math.random()} value={data.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
-                                       </Text>
-                                    </View>
-                                    {
-                                       (data.staff.length != 0)? 
-                                       <View>
-                                       <View style={styles.rowdetail} key={Math.random()}>
-                                       <Text  style={{fontSize: 16}} >Nhân viên</Text>
-                                          <View key={Math.random() } style={{flex: 1}}>
-                                             {data.staff.map(dt =>
-                                                <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                                   <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                                   <TouchableOpacity>
-                                                      <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                                   </TouchableOpacity>
-                                                </View>
-                                             )}
-                                          </View>
-                                       </View> 
-                                       <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
-                                          <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                          <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "cooking"}) }>
-                                             <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
-                                          </TouchableOpacity>
-                                       </View> 
-                                       </View>
-                                       :
-                                       <View style={styles.rowdetail} key={Math.random()}>
-                                          <Text  style={{fontSize: 16}}>Nhân viên</Text>
-                                          <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
-                                       </View>
-                                    }
-                                     
-                                 </View>
-
-                              </List.Accordion>
-                  
-                        ))
-                     }
-                     
-                  </List.Section>
-               </View>
-            } */}
             {
                (dataClear.length === 0) && (dataCooking.length === 0) && (dataWashing.length === 0)?
                   <View style={{ height: 600, justifyContent: "center", alignItems: 'center', backgroundColor: 'white', marginHorizontal: 10, borderRadius: 10}} >
@@ -373,6 +122,7 @@ const confirmWork = async ( id,typee ) =>{
                         work.works.clearList.map(dt =>(
                            dt.map(data =>(
                            <List.Accordion
+                              style={{backgroundColor: '#8FBC8B', marginBottom: 10}}
                               key={Math.random()}
                               title={Moment(data.date).format('dddd  DD/MM/YYYY')}
                               left={props => <List.Icon {...props} icon="calendar-month-outline" />}
@@ -381,7 +131,7 @@ const confirmWork = async ( id,typee ) =>{
                                  
                                  <View style={styles.rowdetail} key={Math.random()}>
                                     <Text style={{fontSize: 16}}>Diện tích</Text>
-                                    <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold', fontSize: 16}}>{Number(data.area)*100} M2</Text>
+                                    <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold'}}>{Number(data.area)*100} M2</Text>
                                  </View>
                                  <View style={styles.rowdetail} key={Math.random()}>
                                     <Text style={{fontSize: 16}}>Thời gian đến</Text>
@@ -408,18 +158,44 @@ const confirmWork = async ( id,typee ) =>{
                                  </View>
                                  {
                                     (data.nameStaff.length != 0)? 
+                                   
                                     <View>
+
                                     <View style={styles.rowdetail} key={Math.random()}>
                                     <Text style={{fontSize: 16}} >Nhân viên</Text>
                                        <View key={Math.random() } style={{flex: 1}}>
-                                          {data.nameStaff.map(dt =>
-                                             <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                                <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                                <TouchableOpacity>
-                                                   <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                                </TouchableOpacity>
+                                          <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                                             <View>
+                                                {data.nameStaff.map(dt =>
+                                                   <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                      <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
+                                                   </View>
+                                                )
+                                                }
                                              </View>
-                                          )}
+                                             <View>
+                                                {
+                                                   data.idStaff.map(dt1=>
+                                                      <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                      <View style={{flexDirection:'row'}}>
+                                                         <TouchableOpacity>
+                                                            <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                                         </TouchableOpacity>
+                                                         {
+                                                            (data.status !== "Đã xác nhận")?
+                                                            <TouchableOpacity onPress={()=> setModalVisible({visible: true, idStaff: dt1, idWork: data._id})}>
+                                                               <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} /> 
+                                                            </TouchableOpacity>
+                                                            :
+                                                            <View></View>
+                                                         }
+                                                      </View>
+                                                   </View>
+                                                   )
+                                                   
+                                                }   
+                                             </View>
+                                          </View>  
                                        </View>
                                     </View>
                                     <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
@@ -466,18 +242,19 @@ const confirmWork = async ( id,typee ) =>{
                <View style={styles.containerWork}>
                   <List.Section title="Giặt ủi"  >
                      {
-                        work.works.washingList(dt =>(
+                        work.works.washingList.map(dt =>(
                            dt.map(data =>(
                               <List.Accordion
+                              style={{backgroundColor: '#BDB76B', marginBottom: 10}}
                                  key={Math.random()}
-                                 title={Moment(data.timeTake).format('dddd  DD/MM/YYYY')}
+                                 title={Moment(data.dateSend).format('dddd  DD/MM/YYYY')}
                                  left={props => <List.Icon {...props} icon="calendar-month-outline" />}
                               >
                                  <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
                                     
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Ngày nhận</Text>
-                                       <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold', fontSize: 16}}>{Moment(data.dateSend).format('dddd  DD/MM/YYYY')}</Text>
+                                       <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold'}}>{Moment(data.dateSend).format('dddd  DD/MM/YYYY')}</Text>
                                     </View>
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Ngày trả</Text>
@@ -493,6 +270,11 @@ const confirmWork = async ( id,typee ) =>{
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.timeTake} </Text>
                                     </View>
                                     <View style={styles.rowdetail} key={Math.random()}>
+                                       <Text style={{fontSize: 16}}>Thời gian trả</Text>
+                                       <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.status} </Text>
+                                    </View>
+
+                                    <View style={styles.rowdetail} key={Math.random()}>
                                        <Text  style={{fontSize: 16}}>Tổng tiền</Text>
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>
                                        <NumberFormat key={Math.random()} value={data.money} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
@@ -504,14 +286,39 @@ const confirmWork = async ( id,typee ) =>{
                                           <View style={styles.rowdetail} key={Math.random()}>
                                           <Text  style={{fontSize: 16}} >Nhân viên</Text>
                                              <View key={Math.random() } style={{flex: 1}}>
-                                                {data.staff.map(dt =>
-                                                   <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                                      <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                                      <TouchableOpacity>
-                                                         <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                                      </TouchableOpacity>
-                                                   </View>
-                                                )}
+                                                
+                                             <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                                                <View>
+                                                   {data.staff.map(dt =>
+                                                      <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                         <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
+                                                      </View>
+                                                   )
+                                                   }
+                                                </View>
+                                                <View>
+                                                   {
+                                                      data.idStaff.map(dt1=>
+                                                         <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                         <View style={{flexDirection:'row'}}>
+                                                            <TouchableOpacity>
+                                                               <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                                            </TouchableOpacity>
+                                                            {
+                                                               (data.status !== "Đã xác nhận")?
+                                                               <TouchableOpacity onPress={()=> setModalVisible({visible: true, idStaff: dt1, idWork: data._id})}>
+                                                                  <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} /> 
+                                                               </TouchableOpacity>
+                                                               :
+                                                               <View></View>
+                                                            }
+                                                         </View>
+                                                      </View>
+                                                      )
+                                                   }   
+                                                </View>
+                                             </View>
+                                                
                                              </View>
                                           </View> 
                                           <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
@@ -519,6 +326,7 @@ const confirmWork = async ( id,typee ) =>{
                                              <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "washing"}) }>
                                                 <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
                                              </TouchableOpacity>
+                                             
                                           </View> 
                                        </View>
                                        :
@@ -559,6 +367,7 @@ const confirmWork = async ( id,typee ) =>{
                         work.works.cookingList.map(dt=>(
                            dt.map(data =>(
                               <List.Accordion
+                              style={{backgroundColor: '#D2B48C', marginBottom: 10}}
                                  key={Math.random()}
                                  title={Moment(data.date).format('dddd  DD/MM/YYYY')}
                                  left={props => <List.Icon {...props} icon="calendar-month-outline" />}
@@ -570,7 +379,7 @@ const confirmWork = async ( id,typee ) =>{
                                        <View style={{ flex:1}}>
                                           {
                                              data.dishList.map(dt=>
-                                                <Text key={Math.random()} style={{ textAlign: "right", fontWeight: 'bold', fontSize: 16}}>{dt}</Text>          
+                                                <Text key={Math.random()} style={{ textAlign: "right", fontWeight: 'bold'}}>{dt}</Text>          
                                              )
                                           }
                                        </View>
@@ -606,14 +415,38 @@ const confirmWork = async ( id,typee ) =>{
                                        <View style={styles.rowdetail} key={Math.random()}>
                                        <Text  style={{fontSize: 16}} >Nhân viên</Text>
                                           <View key={Math.random() } style={{flex: 1}}>
-                                             {data.staff.map(dt =>
-                                                <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
-                                                   <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
-                                                   <TouchableOpacity>
-                                                      <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
-                                                   </TouchableOpacity>
+                                             <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                                                <View>
+                                                   {data.staff.map(dt =>
+                                                      <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                         <Text key={Math.random()} style={{fontWeight: 'bold', textAlign: 'right'}}>{dt}</Text> 
+                                                      </View>
+                                                   )
+                                                   }
                                                 </View>
-                                             )}
+                                                <View>
+                                                   {
+                                                      data.idStaff.map(dt1=>
+                                                         <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                         <View style={{flexDirection:'row'}}>
+                                                            <TouchableOpacity onPress={()=> setModalVisible(true)}>
+                                                               <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                                            </TouchableOpacity>
+                                                            {
+                                                               (data.status !== "Đã xác nhận")?
+                                                               <TouchableOpacity onPress={()=> setModalVisible({visible: true, idStaff: dt1, idWork: data._id})}>
+                                                                  <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} /> 
+                                                               </TouchableOpacity>
+                                                               :
+                                                               <View></View>
+                                                            }
+                                                         </View>
+                                                      </View>
+                                                      )
+                                                      
+                                                   }   
+                                                </View>
+                                             </View>
                                           </View>
                                        </View> 
                                        <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
@@ -652,7 +485,12 @@ const confirmWork = async ( id,typee ) =>{
                </View>
             }
          </ScrollView>  
-         
+         <View>
+            <ModalReportStaff
+            handChangemodalVisible={()=>handChangemodalVisible()}
+            
+            isModalVisible={modalVisible.visible} idWork={modalVisible.idWork} idStaff={modalVisible.idStaff} setModalVisible={setModalVisible}/>
+         </View>
          </View>
          
       </View>

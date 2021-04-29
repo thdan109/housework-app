@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Dimensions,StyleSheet, TextInput,AsyncStorage, ScrollView, TouchableOpacity, Alert,Modal } from 'react-native'
 import Moment from 'moment'
 import ModalWork from '../../components/staff/ModalWork'
-import { Entypo,FontAwesome } from '@expo/vector-icons';
+import { Entypo,FontAwesome,Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux'
 import {LinearGradient} from 'expo-linear-gradient'
 import axios from 'axios';
@@ -11,7 +11,7 @@ import host from '../../host'
 
 const {width, height} = Dimensions.get('screen')
 
-const  HomeStaff = ({navigation}) =>{
+const  WorkStaffScreen = ({navigation}) =>{
    const [work, setWork] = React.useState([])
    const [workWash, setWorkWash] = React.useState([])
    const staff = useSelector(state => state)
@@ -28,9 +28,9 @@ const  HomeStaff = ({navigation}) =>{
 
       if (department === 'Bộ phận Vệ sinh nhà'){
          const nowdate = '2021-03-31T17:00:00.000Z'
-         const work = await axios.post(`${host}/clear/workStaff`,{
+         const work = await axios.post(`${host}/clear/workStaffAll`,{
             id: id,
-            nowDate: nowdate
+            // nowDate: nowdate
          })
          if (work.data.work === 'Failed'){
             setWork(null)
@@ -39,9 +39,9 @@ const  HomeStaff = ({navigation}) =>{
          }  
       }else if (department === 'Bộ phận Giặt ủi'){
          const nowdate = '2021-03-31T17:00:00.000Z'
-         const work = await axios.post(`${host}/washing/workStaff`,{
+         const work = await axios.post(`${host}/washing/workStaffAll`,{
             id: id,
-            nowDate: nowdate
+            // nowDate: nowdate
          })
          if (work.data.work === 'Failed'){
             setWork(null)
@@ -49,10 +49,10 @@ const  HomeStaff = ({navigation}) =>{
             setWork(work.data)
          }  
       }else if (department === 'Bộ phận Nấu ăn'){
-         const nowdate = '2021-03-31T17:00:00.000Z'
-         const work = await axios.post(`${host}/cooking/workStaff`,{
+         // const nowdate = '2021-03-31T17:00:00.000Z'
+         const work = await axios.post(`${host}/cooking/workStaffAll`,{
             id: id,
-            nowDate: nowdate
+            // nowDate: nowdate
          })
          if (work.data.work === 'Failed'){
             setWork(null)
@@ -67,9 +67,9 @@ const  HomeStaff = ({navigation}) =>{
       <View style={{flex:1, backgroundColor: '#D2691E'}}>
          <LinearGradient style={{flex:1}} colors={["#FFEBCD","#FFEBCD"]}>
             <View style={styles.headerContainer}>
-               <TouchableOpacity onPress={() => navigation.openDrawer()} style={{paddingHorizontal: 5}}>
-                  <Entypo name="menu" size={36} color="black"/>
-               </TouchableOpacity>
+                  {/* <TouchableOpacity onPress={()=>navigation.navigate('NavigatorStaff')}>
+                     <Ionicons name="arrow-back-sharp" size={28} color="black" />
+                  </TouchableOpacity>
                <View style={styles.title} >
                   <Text 
                   style={{
@@ -77,15 +77,29 @@ const  HomeStaff = ({navigation}) =>{
                      fontWeight: 'bold', 
                      color: 'black'
                   }}>HÔM NAY</Text>
-                   <Text onPress={()=>console.log(work)} style={{fontSize: 18, fontWeight: 'bold'}}>aaaaaaaaaaaaaaaaaaa</Text> 
+                  
                </View>
                <View style={{
                         flexDirection: 'row', 
                         marginLeft: 30, 
                         marginTop: 10
                }}>
-                     <Text style={{color: 'black', fontWeight: 'bold'}}>Số công việc:</Text>
                      
+               </View> */}
+               <View style={{ flexDirection: 'row', height: 40, paddingTop: 5, paddingHorizontal: 10, backgroundColor: '#FFDEAD' }}>
+                  <TouchableOpacity onPress={()=>navigation.navigate('NavigatorStaff')}>
+                     <Ionicons name="arrow-back-sharp" size={28} color="black" />
+                  </TouchableOpacity>
+                  <View style={{flex:1}}>
+                     
+                        <Text style={{fontSize: 19, fontWeight: 'bold', color: 'black', textAlign: 'center'}} > Việc  </Text>
+                  </View>
+                  <TouchableOpacity onPress={() => {
+                     setModalVisible(true);
+                  }}>
+                     <Ionicons name="qr-code-sharp" size={28} color="black" style={{paddingRight: 5, opacity: 0}} />
+                  </TouchableOpacity>
+                  
                </View>
                
             </View>
@@ -125,7 +139,7 @@ const  HomeStaff = ({navigation}) =>{
                                           alignItems: 'center'
                                     }}>
                                     {/* <Text style={{fontWeight: 'bold'}}>Thời gian: </Text> */}
-                                    <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27}}>{dt.timeStart}</Text>
+                                    <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeStart}</Text>
                                  </View>
                                  <View style={{flex:1, borderColor: '#008B8B', borderWidth:1,paddingVertical: 10, paddingHorizontal: 5, borderTopRightRadius: 27}}>
                                     <View key={Math.random()} style={{flexDirection: 'row'}}>
@@ -163,7 +177,7 @@ const  HomeStaff = ({navigation}) =>{
       </View>
    )
 }
-export default HomeStaff
+export default WorkStaffScreen
 
 const styles = StyleSheet.create({
    
