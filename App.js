@@ -21,6 +21,8 @@ import ClearScreen from './screens/ServicesScreen/ClearScreen'
 import WashingScreen from './screens/ServicesScreen/WashingScreen'
 import ScanQRScreen from './screens/customer/ScanQRScreen'
 import TestScreen from './screens/customer/TestScreen'
+import MessagesCustomerScreen from './screens/customer/MessagesCustomerScreen'
+import MessagesListCustomerScreen from './screens/customer/MessagesListCustomerScreen'
 
 //staff
 import NavigatorStaff from './screens/staff/NavigatorStaff'
@@ -29,7 +31,8 @@ import LoginStaff from './screens/staff/LoginStaffScreen'
 import ProfileStaff from './screens/staff/ProfileStaff';
 import FormForLeave from './screens/staff/FormForLeave'
 import WorkStaffAll from './screens/staff/WorkStaffScreen'
-
+import MessagesListStaff from './screens/staff/MessagesListStaffScreen'
+import MessagesStaffScreen from './screens/staff/MessagesStaffScreen'
 
 const store = configureStore();
 const AppStack = createStackNavigator();
@@ -59,6 +62,8 @@ const handleRedux = () => {
                   <AppStack.Screen name='WashingScreen' component={WashingScreen} />
                   <AppStack.Screen name='ScanQRScreen' component={ScanQRScreen} /> 
                   <AppStack.Screen name='TestScreen' component={TestScreen} />
+                  <AppStack.Screen name='MessagesCustomer' component={MessagesCustomerScreen} />
+                  <AppStack.Screen name='MessagesListCustomer' component={MessagesListCustomerScreen}/>
 
                   {/* <App.Screen name="Test" component={TestScreen} /> */}
                   <AppStack.Screen name='NavigatorStaff' component={NavigatorStaff} />
@@ -67,6 +72,8 @@ const handleRedux = () => {
                   <AppStack.Screen name='ProfileStaff' component={ProfileStaff} />
                   <AppStack.Screen name='FormForLeave' component={FormForLeave} />
                   <AppStack.Screen name='WorkStaffAll' component={WorkStaffAll} />
+                  <AppStack.Screen name='MessagesListStaff' component={MessagesListStaff} />
+                  <AppStack.Screen name='MessagesStaff' component={MessagesStaffScreen} />
                </AppStack.Navigator>
             </NavigationContainer>
          </Provider>    

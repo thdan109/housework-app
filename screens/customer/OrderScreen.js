@@ -178,7 +178,7 @@ const confirmWork = async ( id,typee ) =>{
                                                    data.idStaff.map(dt1=>
                                                       <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
                                                       <View style={{flexDirection:'row'}}>
-                                                         <TouchableOpacity>
+                                                         <TouchableOpacity onPress={()=>navigation.navigate('MessagesCustomer')}>
                                                             <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
                                                          </TouchableOpacity>
                                                          {
@@ -301,7 +301,7 @@ const confirmWork = async ( id,typee ) =>{
                                                       data.idStaff.map(dt1=>
                                                          <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
                                                          <View style={{flexDirection:'row'}}>
-                                                            <TouchableOpacity>
+                                                            <TouchableOpacity onPress={()=>navigation.navigate('MessagesCustomer')}>
                                                                <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
                                                             </TouchableOpacity>
                                                             {
@@ -429,7 +429,7 @@ const confirmWork = async ( id,typee ) =>{
                                                       data.idStaff.map(dt1=>
                                                          <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
                                                          <View style={{flexDirection:'row'}}>
-                                                            <TouchableOpacity onPress={()=> setModalVisible(true)}>
+                                                            <TouchableOpacity onPress={()=>navigation.navigate('MessagesCustomer')}>
                                                                <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
                                                             </TouchableOpacity>
                                                             {

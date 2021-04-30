@@ -44,7 +44,8 @@ const CustomDrawer = ({ navigation, ...props}) =>{
                <DrawerItemList {...props} />
                <DrawerItem
                   label='Chat'
-                  onPress={()=>Alert.alert('aaaaaaaaaaaaaaa')}
+                  // onPress={()=>Alert.alert('aaaaaaaaaaaaaaa')}
+                  onPress = {()=>navigation.navigate('MessagesListStaff')}
                />
                <DrawerItem
                   label='Hồ sơ cá nhân'
