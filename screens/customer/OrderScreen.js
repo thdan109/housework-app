@@ -10,6 +10,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import host from '../../host'
 import { addWorkCooking, addWorkWashing, addWorkClear } from '../../action/workAction';
 import ModalReportStaff from '../../components/customer/ModalReportStaff';
+import ModalFeedback from '../../components/customer/ModalFeedback';
+
 
 const {width, height} = Dimensions.get('screen')
 
@@ -23,11 +25,13 @@ const OrderScreen = ({ navigation,props }) =>{
    
    const dispatch = useDispatch()
    const work = useSelector(state => state)
+   const user = useSelector(state =>state)
    
    const [expanded, setExpanded] = React.useState(true);
 
    const handlePress = () => setExpanded(!expanded);
    const [modalVisible, setModalVisible]=React.useState({visible: false,idStaff: null, idWork: null})
+   const [modalVisibleFB, setModalVisibleFB]=React.useState({visible: false, idWork: null,nameUser: null, idUser: null})
 
    const [ dataCooking, setDataCooking] = React.useState([])
    const [ dataClear, setDataClear] = React.useState([])
@@ -38,7 +42,24 @@ const OrderScreen = ({ navigation,props }) =>{
          return {...pre, visible: !pre.visible}
       })
    }
+   const handChangemodalVisibleFB = ()=>{
+      setModalVisibleFB(pre=>{
+         return {...pre, visible: !pre.visible}
+      })
+   }
 
+   const checkFeebback = async ( visible, idUser, idWork, nameUser ) => {
+
+      const checkFB = await axios.post(`${host}/feedback/checkFb`,{
+         idUser: idUser
+      })
+      if (checkFB.data.status === 'No'){
+         // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
+         setModalVisibleFB({visible: true,idWork: idWork, nameUser: nameUser, idUser: idUser})
+      }else{
+         setModalVisibleFB({visible: false,idWork: idWork, nameUser: nameUser, idUser: idUser})
+      }
+   }
 
    const getOrder = async() =>{
       // console.log('aaa');
@@ -70,29 +91,29 @@ const confirmWork = async ( id,typee ) =>{
       const idWork = id
       const type = typee
       const status = "Chờ thu tiền"
-      if ( type === "clear" ){
-         await axios.post(`${host}/clear/confirmWork`,{
-            id : idWork,
-            status: status
-         }).then(res =>{
-            setIsLoad(!isLoad)
-         })
+      // if ( type === "clear" ){
+      //    await axios.post(`${host}/clear/confirmWork`,{
+      //       id : idWork,
+      //       status: status
+      //    }).then(res =>{
+      //       setIsLoad(!isLoad)
+      //    })
          
-      }else if ( type==="cooking" ){
-         await axios.post(`{host}/cooking/confirmWork`,{
-            id: idWork,
-            status: status
-         }).then(res=>{
-            setIsLoad(!isLoad)
-         })
-      }else if( type==="washing"){
-         await axios.post(`${host}/washing/confirmWork`,{
-            id: idWork,
-            status: status
-         }).then(res =>{
-            setIsLoad(!isLoad)
-         })
-      }
+      // }else if ( type==="cooking" ){
+      //    await axios.post(`{host}/cooking/confirmWork`,{
+      //       id: idWork,
+      //       status: status
+      //    }).then(res=>{
+      //       setIsLoad(!isLoad)
+      //    })
+      // }else if( type==="washing"){
+      //    await axios.post(`${host}/washing/confirmWork`,{
+      //       id: idWork,
+      //       status: status
+      //    }).then(res =>{
+      //       setIsLoad(!isLoad)
+      //    })
+      // }
    }
    
    return(
@@ -208,13 +229,18 @@ const confirmWork = async ( id,typee ) =>{
                                     :
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text  style={{fontSize: 16}}>Nhân viên</Text>
-                                       <Text style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>Đang xử lý</Text>
+                                       <Text style={{flex:1, fontWeight: 'bold'}}>Đang xử lý</Text>
                                     </View>
                                  }
                                  {/* <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}> */}
                                     {
                                        (data.status === "Đang thực hiện")?
-                                          (<TouchableOpacity onPress = {()=> confirmWork(data._id,"clear")} >
+                                          (<TouchableOpacity 
+                                             onPress = {()=> { confirmWork(data._id,"clear"),
+                                                               // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
+                                                               checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname)
+                                                            } } 
+                                           >
                                              <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
                                                 <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
                                              </View>
@@ -337,7 +363,10 @@ const confirmWork = async ( id,typee ) =>{
                                     }
                                     {
                                        (data.status === "Đang thực hiện")?
-                                          (<TouchableOpacity >
+                                          (<TouchableOpacity onPress = {()=> {confirmWork(data._id,"washing")
+                                             // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
+                                             checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname)
+                                          }} >
                                              <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
                                                 <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
                                              </View>
@@ -464,7 +493,11 @@ const confirmWork = async ( id,typee ) =>{
                                     }
                                     {
                                        (data.status === "Đang thực hiện")?
-                                          (<TouchableOpacity  >
+                                          (<TouchableOpacity onPress = {()=> {confirmWork(data._id,"cooking"),
+                                             // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
+                                                checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname)
+                                          }}  
+                                          >
                                              <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
                                                 <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
                                              </View>
@@ -490,6 +523,10 @@ const confirmWork = async ( id,typee ) =>{
             handChangemodalVisible={()=>handChangemodalVisible()}
             
             isModalVisible={modalVisible.visible} idWork={modalVisible.idWork} idStaff={modalVisible.idStaff} setModalVisible={setModalVisible}/>
+            <ModalFeedback
+            handChangemodalVisibleFB={()=>handChangemodalVisibleFB()}
+            idUser={modalVisibleFB.idUser}
+            isModalVisibleFB={modalVisibleFB.visible} nameUser={modalVisibleFB.nameUser} idWork={modalVisibleFB.idWork} setModalVisibleFB={setModalVisibleFB}/>
          </View>
          </View>
          

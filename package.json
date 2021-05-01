@@ -48,6 +48,7 @@
     "react-native-screens": "^2.15.2",
     "react-native-shadow": "^1.2.2",
     "react-native-smooth-slider": "^1.2.0",
+    "react-native-user-feedback": "^0.1.2",
     "react-native-web": "~0.13.12",
     "react-number-format": "^4.5.1",
     "react-redux": "^7.2.2",
