@@ -87,33 +87,61 @@ const OrderScreen = ({ navigation,props }) =>{
       // console.log(dataWashing);
    }
 
+   const cancelWork = async(id,typee) =>{
+      const idWork = id
+      const type = typee
+      if ( type === "clear" ){
+         await axios.post(`${host}/clear/cancelWork`,{
+            id: idWork
+         }).then(result =>{
+            setIsLoad(!isLoad)
+         }).catch(err =>{
+
+         })
+      }else if (type === "cooking"){
+         await axios.post(`{host}/cooking/cancelWork`,{
+            id: idWork
+         }).then(result =>{
+            setIsLoad(!isLoad)
+         }).catch(err =>{
+
+         })
+      }else if( type==="washing"){
+         await axios.post(`${host}/washing/cancelWork`,{
+            id: idWork,
+         }).then(res =>{
+            setIsLoad(!isLoad)
+         })
+      }
+   }
+
 const confirmWork = async ( id,typee ) =>{
       const idWork = id
       const type = typee
       const status = "Chờ thu tiền"
-      // if ( type === "clear" ){
-      //    await axios.post(`${host}/clear/confirmWork`,{
-      //       id : idWork,
-      //       status: status
-      //    }).then(res =>{
-      //       setIsLoad(!isLoad)
-      //    })
+      if ( type === "clear" ){
+         await axios.post(`${host}/clear/confirmWork`,{
+            id : idWork,
+            status: status
+         }).then(res =>{
+            setIsLoad(!isLoad)
+         })
          
-      // }else if ( type==="cooking" ){
-      //    await axios.post(`{host}/cooking/confirmWork`,{
-      //       id: idWork,
-      //       status: status
-      //    }).then(res=>{
-      //       setIsLoad(!isLoad)
-      //    })
-      // }else if( type==="washing"){
-      //    await axios.post(`${host}/washing/confirmWork`,{
-      //       id: idWork,
-      //       status: status
-      //    }).then(res =>{
-      //       setIsLoad(!isLoad)
-      //    })
-      // }
+      }else if ( type==="cooking" ){
+         await axios.post(`{host}/cooking/confirmWork`,{
+            id: idWork,
+            status: status
+         }).then(res=>{
+            setIsLoad(!isLoad)
+         })
+      }else if( type==="washing"){
+         await axios.post(`${host}/washing/confirmWork`,{
+            id: idWork,
+            status: status
+         }).then(res =>{
+            setIsLoad(!isLoad)
+         })
+      }
    }
    
    return(
@@ -229,7 +257,7 @@ const confirmWork = async ( id,typee ) =>{
                                     :
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text  style={{fontSize: 16}}>Nhân viên</Text>
-                                       <Text style={{flex:1, fontWeight: 'bold'}}>Đang xử lý</Text>
+                                       <Text style={{flex:1, fontWeight: 'bold',textAlign: 'right'}}>Đang xử lý</Text>
                                     </View>
                                  }
                                  {/* <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}> */}
@@ -246,9 +274,18 @@ const confirmWork = async ( id,typee ) =>{
                                              </View>
                                           </TouchableOpacity>)
                                        :
-                                       (
+                                       (data.status === 'Đang chờ xác nhận')?
+                                          (<TouchableOpacity 
+                                             onPress = {()=> { 
+                                                cancelWork(data._id, "clear")
+                                                            } } 
+                                          >
+                                             <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
+                                             </View>
+                                          </TouchableOpacity>)
+                                       :
                                           <View></View>
-                                       )
                                     }
                                     
                                  </View>  
@@ -372,7 +409,18 @@ const confirmWork = async ( id,typee ) =>{
                                              </View>
                                           </TouchableOpacity>)
                                        :
-                                       (
+                                          (data.status === 'Đang chờ xác nhận')?
+                                          (<TouchableOpacity 
+                                             onPress = {()=> { 
+                                                cancelWork(data._id, "washing")
+                                                            } } 
+                                          >
+                                             <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
+                                             </View>
+                                          </TouchableOpacity>)
+                                       :
+                                       ( 
                                           <View></View>
                                        )
                                     }
@@ -500,6 +548,17 @@ const confirmWork = async ( id,typee ) =>{
                                           >
                                              <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
                                                 <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
+                                             </View>
+                                          </TouchableOpacity>)
+                                       :
+                                          (data.status === 'Đang chờ xác nhận')?
+                                          (<TouchableOpacity 
+                                             onPress = {()=> { 
+                                                cancelWork(data._id, "cooking")
+                                                            } } 
+                                          >
+                                             <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
                                              </View>
                                           </TouchableOpacity>)
                                        :
