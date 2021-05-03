@@ -9,11 +9,15 @@ import { ModalDatePicker } from "react-native-material-date-picker";
 import { LinearGradient } from 'expo-linear-gradient';
 import Moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
+import { addWorkCooking, addWorkWashing, addWorkClear } from '../../action/workAction';
 
 const {width, height} = Dimensions.get('screen')
 
 const ClearScreen = ( { navigation}  ) =>{
    const user = useSelector(state => state)
+   const dispatch = useDispatch()
+   const work = useSelector(state => state)
+   const [isLoad,setIsLoad] = React.useState(true)
 // state
    const [modalVisible, setModalVisible] = React.useState(true);
    const [modalVisible1, setModalVisible1] = React.useState(false);
@@ -47,8 +51,9 @@ const ClearScreen = ( { navigation}  ) =>{
    React.useEffect(() =>{
       getAddressAPI()
       getDataService()
+      // getOrder()
       // console.log(hours);
-   },[])
+   },[isLoad])
 
    const hours = [
       {label: '7', value: 'itemHours7'},
@@ -226,6 +231,9 @@ const ClearScreen = ( { navigation}  ) =>{
             setBill(totalBill)
          }
    }
+
+   
+
    const onSubmit = async() =>{
       console.log('aaaaa');
       // console.log(user.users.data._id, user.users.data.fullname);

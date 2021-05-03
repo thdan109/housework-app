@@ -62,9 +62,9 @@ const OrderScreen = ({ navigation,props }) =>{
    }
 
    const getOrder = async() =>{
-      // console.log('aaa');
+      
       const token_val = await AsyncStorage.getItem('Token')
-      // console.log(token_val);
+      
       
       const dataOrder = await axios.get(`${host}/user/getOrder`,{
          headers: {

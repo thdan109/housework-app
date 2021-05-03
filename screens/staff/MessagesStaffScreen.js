@@ -7,6 +7,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const MessagesStaffScreen = () => {
   const [messages, setMessages] = useState([]);
 
+  const [ room, setRoom ] = React.useState()
+
+
+  
+
   useEffect(() => {
     setMessages([
       {
