@@ -36,6 +36,7 @@ const OrderScreen = ({ navigation,props }) =>{
    const [ dataCooking, setDataCooking] = React.useState([])
    const [ dataClear, setDataClear] = React.useState([])
    const [ dataWashing, setDataWashing]= React.useState([])
+   const [dataChat, setDataChat] =React.useState()
 
    const handChangemodalVisible = ()=>{
       setModalVisible(pre=>{
@@ -84,7 +85,7 @@ const OrderScreen = ({ navigation,props }) =>{
          setDataWashing(dataOrder.data.orderWashing)
          dispatch(addWorkWashing(dataOrder.data.orderWashing))
       }
-      // console.log(dataWashing);
+      
    }
 
    const cancelWork = async(id,typee) =>{
@@ -115,7 +116,19 @@ const OrderScreen = ({ navigation,props }) =>{
       }
    }
 
-const confirmWork = async ( id,typee ) =>{
+   const getDataChat = async() =>{
+      const idUser = user.users.data._id
+      const ListChat = await axios.post(`${host}/chat/listChatUser`,{
+         id: idUser
+      })
+      if (ListChat !== null){
+         setDataChat(ListChat.data)
+      }else{
+         console.log('Loi~');
+      }
+   }
+
+   const confirmWork = async ( id,typee ) =>{
       const idWork = id
       const type = typee
       const status = "Chờ thu tiền"

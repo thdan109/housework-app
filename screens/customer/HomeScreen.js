@@ -12,6 +12,7 @@ import SettingScreen from './SettingScreen'
 import AddressSelected from '../../components/AddressSelected';
 import OrderScreen from './OrderScreen'
 import TestScreen from './TestScreen'
+import MessagesListCustomer from './MessagesListCustomerScreen'
 import axios from 'axios'
 import host from '../../host'
 const Tab = createBottomTabNavigator();
@@ -105,6 +106,14 @@ const IndexScreen = () => {
                            tabBarLabel: 'Notification',
                            tabBarIcon: ({ color, size }) => (
                               <MaterialIcons name="circle-notifications" color={'#043927'} size={30} />
+                           ),
+                        }}
+            />
+            <Tab.Screen name="Chat" component={MessagesListCustomer} 
+                        options={{
+                           tabBarLabel: 'Chat',
+                           tabBarIcon: ({ color, size }) => (
+                              <MaterialIcons name="chat" color={'#043927'} size={30} />
                            ),
                         }}
             />

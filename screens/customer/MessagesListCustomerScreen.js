@@ -1,101 +1,105 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, FlatList,Image, StatusBar, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import host from '../../host'
+import axios from 'axios'
+import {useSelector} from 'react-redux'
 
-const Messages = [
-  {
-    id: '1',
-    userName: 'Jenny Doe',
-    userImg: require('../../assets/users/user-1.jpg'),
-    messageTime: '4 mins ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '2',
-    userName: 'John Doe',
-    userImg: require('../../assets/users/user-2.jpg'),
-    messageTime: '2 hours ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  }
+// const Messages = [
+//   {
+//     id: '1',
+//     userName: 'Jenny Doe',
+//     userImg: require('../../assets/users/user-1.jpg'),
+//     messageTime: '4 mins ago',
+//     messageText:
+//       'Hey there, this is my test for a post of my social app in React Native.',
+//   },
+//   {
+//     id: '2',
+//     userName: 'John Doe',
+//     userImg: require('../../assets/users/user-2.jpg'),
+//     messageTime: '2 hours ago',
+//     messageText:
+//       'Hey there, this is my test for a post of my social app in React Native.',
+//   }
   
   
-];
+// ];
 
+   
 const MessagesListCustomerScreen = ({navigation}) => {
-    return (
-      // <Container>
-      //   <FlatList 
-      //     data={Messages}
-      //     keyExtractor={item=>item.id}
 
-      //     renderItem={({item}) => (
-      //       <Card onPress={() => navigation.navigate('Chat', {userName: item.userName})}>
-      //         <UserInfo>
-      //           <UserImgWrapper>
-      //             <UserImg source={item.userImg} />
-      //           </UserImgWrapper>
-      //           <TextSection>
-      //             <UserInfoText>
-      //               <UserName>{item.userName}</UserName>
-      //               <PostTime>{item.messageTime}</PostTime>
-      //             </UserInfoText>
-      //             <MessageText>{item.messageText}</MessageText>
-      //           </TextSection>
-      //         </UserInfo>
-      //       </Card>
-      //     )}
-      //   />
-      // </Container>
-         <View style={styles.container}>
-            <View styles={styles.header}>
-               <StatusBar  />
-               <View style={{flexDirection:'row', backgroundColor: '#808000', alignItems: 'center', paddingHorizontal: 10}}>
-                  <TouchableOpacity onPress={()=>navigation.navigate('NavigatorStaff')}>
-                     <Ionicons name="chevron-back" size={36} color="white" />
-                  </TouchableOpacity>
-                  
-                  <Text style={{flex: 1,color:'white',fontWeight:'bold', fontSize: 21, textAlign:"center"}}>Trò chuyện</Text>
+   const [ dataChat, setDataChat ] = React.useState()
+   const user = useSelector(state => state)
+
+   React.useEffect(()=>{
+      getListChat()
+   },[])
+
+   const getListChat = async() =>{
+      const idUser = user.users.data._id
+      const ListChat = await axios.post(`${host}/chat/listChatUser`,{
+         id: idUser
+      })
+      if (ListChat !== null){
+         setDataChat(ListChat.data)
+      }else{
+         console.log('Loi~');
+      }
+   }
+   return (
+      <View style={styles.container}>
+         <View styles={styles.header}>
+            <StatusBar  />
+            <View style={{flexDirection:'row', backgroundColor: '#043927', paddingHorizontal: 10, height: 110}}>
+               <TouchableOpacity onPress={()=>navigation.navigate('NavigatorStaff')}>
                   <Ionicons name="chevron-back" size={36} color="white" style={{opacity: 0}}/>
-               </View>
-            </View>
-            <View style={styles.showList} >
-               <FlatList 
-                  
-                  data={Messages}
-                  keyExtractor={item=>item.id}
-                  renderItem={({item}) => (
-                     <TouchableOpacity onPress ={()=> navigation.navigate('MessagesStaff') }>
-                        <View style={styles.inforMess}>
-                           <View style={styles.left}>
-                              <Image style={styles.img} source={item.userImg} />
-                           </View>
+               </TouchableOpacity>
+               
+               <Text style={{flex: 1,color:'white',fontWeight:'bold', fontSize: 21, textAlign:"center", marginTop: 30}}>Trò chuyện</Text>
 
-                           <View style={styles.right}>
-                              <View style={{flexDirection: 'row'}}>
-                                 <Text style={{fontWeight: 'bold', fontSize: 15}} >Ngày</Text>
-                                 <Text style={{flex:1, textAlign: "right", fontSize: 15}}>aaaaaaaaaaaaaaa</Text>
+               <Ionicons name="chevron-back" size={36} color="white" style={{opacity: 0}}/>
+            </View>
+         </View>
+         
+         <View style={styles.showList} >
+            <View style={styles.List}>
+               <FlatList 
+                     
+                     data={dataChat}
+                     keyExtractor={(item,index)=>item._id}
+                     renderItem={({item}) => (
+                        <TouchableOpacity onPress ={
+                              ()=> navigation.navigate('MessagesCustomer',{idRoom: item._id, Username: item.idUser.fullname}) 
+                        }>
+                           <View style={styles.inforMess}>
+                              <View style={styles.left}>
+                                 <Image  style={styles.img} source={{uri: `${host}/${item.idStaff[0].avatarStaff}` }} />
                               </View>
-                              <View style={{flexDirection: 'row'}}>
-                                 <Text style={{fontWeight: 'bold', fontSize: 15}} >Giờ</Text>
-                                 <Text style={{flex:1, textAlign: "right", fontSize: 15}}>{item.messageTime}</Text>
-                              </View>
-                              <View style={{flexDirection: 'row'}}>
-                                 <Text style={{fontWeight: 'bold', fontSize: 15}} >Tên KH</Text>
-                                 <Text style={{flex:1, textAlign: "right", fontSize: 15}}>{item.userName}</Text>
+
+                              <View style={styles.right}>
+                                 {/* <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: 'bold', fontSize: 15}} >Ngày</Text>
+                                    <Text style={{flex:1, textAlign: "right", fontSize: 15}}>aaaaaaaaaaaaaaa</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: 'bold', fontSize: 15}} >Giờ</Text>
+                                    <Text style={{flex:1, textAlign: "right", fontSize: 15}}>{item.messageTime}</Text>
+                                 </View>
+                                 <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: 'bold', fontSize: 15}} >Tên KH</Text>
+                                    <Text style={{flex:1, textAlign: "right", fontSize: 15}}>{item.userName}</Text>
+                                 </View> */}
                               </View>
                            </View>
-                           
-                           
-                        </View>
-                     </TouchableOpacity>
-                  )}
-               />
+                        </TouchableOpacity>
+                     )}
+                  />
             </View>
-            
          </View>
-    );
+         
+      </View>
+   );
 };
 
 export default MessagesListCustomerScreen;
@@ -106,8 +110,15 @@ const styles = StyleSheet.create({
       backgroundColor: '#D3D3D3'
    },
    showList:{
-       marginVertical: 20,
-       marginHorizontal: 5
+      marginTop: -20,
+      backgroundColor: '#D3D3D3',
+      borderRadius: 20
+      // marginVertical: 20,
+      // marginHorizontal: 5
+   },
+   List:{
+      marginVertical: 20,
+      marginHorizontal: 10
    },
    inforMess:{
       borderRadius: 10,

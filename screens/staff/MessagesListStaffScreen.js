@@ -73,7 +73,9 @@ const MessagesListStaffScreen = ({navigation}) => {
                   keyExtractor={item=>item._id}
                   renderItem={({item}) => (
                      
-                     <TouchableOpacity onPress ={()=> navigation.navigate('MessagesStaff') }>
+                     <TouchableOpacity onPress ={()=> 
+                        navigation.navigate('MessagesStaff', {idRoom: item._id, Username: item.idUser.fullname, avatar: item.idStaff.avatarStaff}) 
+                     }>
                         <View style={styles.inforMess}>
                            <View style={styles.left}>
                               <Image style={styles.img} source={{uri: `${host}/${item.idUser.avatar}` }} />
