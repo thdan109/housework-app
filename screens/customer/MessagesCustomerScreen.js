@@ -7,6 +7,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import host from '../../host'
 import io from 'socket.io-client';
 import {useSelector} from 'react-redux'
+import Moment from 'moment'
+import axios from 'axios'
 
 let socket;
 
@@ -14,7 +16,7 @@ const MessagesCustomerScreen = ({navigation, route}) => {
 
    const user = useSelector(state => state)
    const idRoom = route.params.idRoom
-   // const nameCus = route.params.Username  
+   const Title = route.params.Title  
    const [messages, setMessages] = useState([]);
    
 //   useEffect(() => {
@@ -52,13 +54,14 @@ const MessagesCustomerScreen = ({navigation, route}) => {
          socket = io.connect(host);
          const name =  user.users.data.fullname;
          const room = idRoom;
-      
-         // axios.post(`${host}/chat/checkroom`, {room} )
+        
+         const getMessages = await axios.post(`${host}/chat/oldMessages`, {
+            idRoom: room
+         })
+         setMessages(getMessages.data.messages)
 
-         // const getMessages = await  axios.post(`${host}/chat/showMessages`, {room} )
-         
-         // setMessages(getMessages.data[0].messages)
-
+        
+        
          setName(name);
          setRoom(room);
 
@@ -87,7 +90,7 @@ const MessagesCustomerScreen = ({navigation, route}) => {
       }
       })
    }, []);
-
+   
    const onSend = React.useCallback((messages = {}) => {
       setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
       socket.emit('sendMessage', messages);
@@ -140,7 +143,7 @@ const MessagesCustomerScreen = ({navigation, route}) => {
                <TouchableOpacity onPress={()=>navigation.goBack()}>
                   <Ionicons name="chevron-back" size={36} color="white" />
                </TouchableOpacity>
-                  <Text style={{flex: 1,color:'white',fontWeight:'bold', fontSize: 19, textAlign:"center", paddingVertical: 5}}>aaaaaaaaaaaa</Text>
+               <Text style={{flex: 1,color:'white',fontWeight:'bold', fontSize: 19, textAlign:"center", paddingVertical: 5}}>{Moment(Title).format('dddd  DD/MM/YYYY')}</Text>
                <TouchableOpacity>
                   <Ionicons name="refresh-circle" size={36} color="white" style={{opacity: 0}} />
                </TouchableOpacity>

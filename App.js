@@ -23,7 +23,7 @@ import ScanQRScreen from './screens/customer/ScanQRScreen'
 import TestScreen from './screens/customer/TestScreen'
 import MessagesCustomerScreen from './screens/customer/MessagesCustomerScreen'
 import MessagesListCustomerScreen from './screens/customer/MessagesListCustomerScreen'
-import NotificationScreen from './screens/customer/NoticationScreen'
+import NotificationScreen from './screens/customer/NotificationScreen'
 
 //staff
 import NavigatorStaff from './screens/staff/NavigatorStaff'

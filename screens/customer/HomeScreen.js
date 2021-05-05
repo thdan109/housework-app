@@ -13,6 +13,7 @@ import AddressSelected from '../../components/AddressSelected';
 import OrderScreen from './OrderScreen'
 import TestScreen from './TestScreen'
 import MessagesListCustomer from './MessagesListCustomerScreen'
+import NotificationScreen from './NotificationScreen'
 import axios from 'axios'
 import host from '../../host'
 const Tab = createBottomTabNavigator();
@@ -101,7 +102,7 @@ const IndexScreen = () => {
                            ),
                         }}
             />
-            <Tab.Screen name="Notification" component={TestScreen} 
+            <Tab.Screen name="NotificationScreen" component={NotificationScreen} 
                         options={{
                            tabBarLabel: 'Notification',
                            tabBarIcon: ({ color, size }) => (

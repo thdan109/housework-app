@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import host from '../../host'
 import axios from 'axios'
 import {useSelector} from 'react-redux'
+import Moment from 'moment'
 
 // const Messages = [
 //   {
@@ -70,23 +71,23 @@ const MessagesListCustomerScreen = ({navigation}) => {
                      keyExtractor={(item,index)=>item._id}
                      renderItem={({item}) => (
                         <TouchableOpacity onPress ={
-                              ()=> navigation.navigate('MessagesCustomer',{idRoom: item._id, Username: item.idUser.fullname}) 
+                              ()=> navigation.navigate('MessagesCustomer',{idRoom: item._id, Username: item.idUser.fullname, Title: item.date}) 
                         }>
                            <View style={styles.inforMess}>
                               <View style={styles.left}>
                                  <Image  style={styles.img} source={{uri: `${host}/${item.idStaff[0].avatarStaff}` }} />
                               </View>
-
+                              
                               <View style={styles.right}>
-                                 {/* <View style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: 'bold', fontSize: 15}} >Ngày</Text>
-                                    <Text style={{flex:1, textAlign: "right", fontSize: 15}}>aaaaaaaaaaaaaaa</Text>
+                                 <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: 'bold', fontSize: 15}} >{item.type}</Text>
+                                    {/* <Text style={{flex:1, textAlign: "right", fontSize: 15}}>aaaaaaaaaaaaaaa</Text> */}
                                  </View>
                                  <View style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: 'bold', fontSize: 15}} >Giờ</Text>
+                                    <Text style={{fontWeight: 'bold', fontSize: 15}} >{Moment(item.date).format('dddd  DD/MM/YYYY')}</Text>
                                     <Text style={{flex:1, textAlign: "right", fontSize: 15}}>{item.messageTime}</Text>
                                  </View>
-                                 <View style={{flexDirection: 'row'}}>
+                                 {/* <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: 'bold', fontSize: 15}} >Tên KH</Text>
                                     <Text style={{flex:1, textAlign: "right", fontSize: 15}}>{item.userName}</Text>
                                  </View> */}

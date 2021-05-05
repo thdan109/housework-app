@@ -53,12 +53,12 @@ const MessagesStaffScreen = ({ navigation, route } ) => {
 
          const name =  staff.users.data.fullnameStaff;
          const room = idRoom;
-      
-         // axios.post(`${host}/chat/checkroom`, {room} )
+                  
+         const getMessages = await axios.post(`${host}/chat/oldMessages`, {
+            idRoom: room
+         })
 
-         // const getMessages = await  axios.post(`${host}/chat/showMessages`, {room} )
-         
-         // setMessages(getMessages.data[0].messages)
+         setMessages(getMessages.data.messages)
 
          setName(name);
          setRoom(room);
@@ -66,29 +66,22 @@ const MessagesStaffScreen = ({ navigation, route } ) => {
          socket.emit('join', { name, room });
 
          return () => {
-         socket.emit('disconnect');
-         socket.off();
+            socket.emit('disconnect');
+            socket.off();
          }
       } catch(error) {
          console.log(error);
       }
    }
 
-
-   // const onSend = useCallback((messages = []) => {
-   //    setMessages((previousMessages) =>
-   //       GiftedChat.append(previousMessages, messages),
-   //    );
-   // }, []);
-
    React.useEffect(() => {
       socket.on('message', (message) => {
-        if(message.data[0].user._id !== staff.users.data._id) {
-          const mess = message.data[0]
-          setMessages(previousMessages => GiftedChat.append(previousMessages, mess))
-        }
+      if(message.data[0].user._id !== user.users.data._id) {
+         const mess = message.data[0]
+         setMessages(previousMessages => GiftedChat.append(previousMessages, mess))
+      }
       })
-    }, []);
+   }, []);
 
     const onSend = React.useCallback((messages = {}) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
@@ -179,8 +172,6 @@ export default MessagesStaffScreen;
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      //  alignItems: 'center',
-      //  justifyContent: 'center',
    },
    header: {
          height: 36,

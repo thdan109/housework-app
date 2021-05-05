@@ -6,27 +6,27 @@ import host from '../../host'
 import {useSelector} from 'react-redux'
 
 
-const Messages = [
+// const Messages = [
 
-   {
-      id: '1',
-      userName: 'Jenny Doe',
-      userImg: require('../../assets/users/user-1.jpg'),
-      messageTime: '4 mins ago',
-      messageText:
-         'Hey there, this is my test for a post of my social app in React Native.',
-   },
-   {
-      id: '2',
-      userName: 'John Doe',
-      userImg: require('../../assets/users/user-2.jpg'),
-      messageTime: '2 hours ago',
-      messageText:
-         'Hey there, this is my test for a post of my social app in React Native.',
-   }
+//    {
+//       id: '1',
+//       userName: 'Jenny Doe',
+//       userImg: require('../../assets/users/user-1.jpg'),
+//       messageTime: '4 mins ago',
+//       messageText:
+//          'Hey there, this is my test for a post of my social app in React Native.',
+//    },
+//    {
+//       id: '2',
+//       userName: 'John Doe',
+//       userImg: require('../../assets/users/user-2.jpg'),
+//       messageTime: '2 hours ago',
+//       messageText:
+//          'Hey there, this is my test for a post of my social app in React Native.',
+//    }
   
   
-];
+// ];
 
 const MessagesListStaffScreen = ({navigation}) => {
 
@@ -56,6 +56,7 @@ const MessagesListStaffScreen = ({navigation}) => {
             <View styles={styles.header}>
                <StatusBar  />
                <View style={{flexDirection:'row', backgroundColor: '#808000', alignItems: 'center', paddingHorizontal: 10}}>
+                 
                   <TouchableOpacity onPress={()=>navigation.navigate('NavigatorStaff')}>
                      <Ionicons name="chevron-back" size={36} color="white" />
                   </TouchableOpacity>
@@ -70,10 +71,11 @@ const MessagesListStaffScreen = ({navigation}) => {
             <View style={styles.showList} >
                <FlatList 
                   data={dataChat}
-                  keyExtractor={item=>item._id}
-                  renderItem={({item}) => (
+                  keyExtractor={(item, index)=>item._id}
+                  renderItem={ ({item}) => (
                      
-                     <TouchableOpacity onPress ={()=> 
+                     <View>
+                        <TouchableOpacity onPress ={()=> 
                         navigation.navigate('MessagesStaff', {idRoom: item._id, Username: item.idUser.fullname, avatar: item.idStaff.avatarStaff}) 
                      }>
                         <View style={styles.inforMess}>
@@ -88,17 +90,17 @@ const MessagesListStaffScreen = ({navigation}) => {
                              
                               <View style={{flexDirection: 'row'}}>
                                  <Text style={{marginTop: 15 ,fontWeight: 'bold', fontSize: 18}} >{item.nameUser}</Text>
-                                 {/* <Text style={{flex:1, textAlign: "right", fontSize: 15}}>{item.nameUser}</Text> */}
                               </View>
                               <View style={{flexDirection: 'row', marginTop: 18}}>
-                                 <Text style={{fontSize: 15, color: 'gray', fontStyle: 'italic'}} >Vài ba tin:</Text>
-                                 <Text style={{flex:1, textAlign: "right", fontSize: 15}}>{item.messages}</Text>
+                                 <Text style={{fontSize: 15, color: 'gray', fontStyle: 'italic'}} >{ item && ( item.messages[0] ? item.messages[0].text : '')}</Text>
                               </View>
                            </View>
                            
                            
                         </View>
                      </TouchableOpacity>
+                     </View>
+                     
                   )}
                />
             </View>
