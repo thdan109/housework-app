@@ -19,6 +19,7 @@ const ModalShowQR = (props) =>{
          >
             <View style={styles.Container} >
                <View style={styles.ContainerContent}>
+                  {/* <Text onPress={()=>console.log(staff.users.data.qrStaff, staff.users.data.avatarStaff)}>aaaaaaaaaaa</Text> */}
                   {/* Noi dung */}
                   <View style={styles.Content}>
                      <Text style={{fontWeight: 'bold', fontSize: 16, textAlign: 'center'}} >QR nhân viên</Text>
