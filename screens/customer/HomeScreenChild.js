@@ -49,7 +49,7 @@ const HomeScreenChild = ({navigation}) =>{
             <View 
                style={{
                   flex: 9/10,
-                  borderWidth: 1,
+                  // borderWidth: 1,
                   width: width,
                   backgroundColor: 'rgb(255, 255, 255, 0.5)',
                }}
@@ -245,7 +245,7 @@ const HomeScreenChild = ({navigation}) =>{
                         </View> 
                      </TouchableOpacity>
          {/* Làm vườn               */}
-                        <View 
+                        {/* <View 
                            style={{
                               flex:1,
                               width: width /1.1,
@@ -264,7 +264,7 @@ const HomeScreenChild = ({navigation}) =>{
                               <Image source={require('../../assets/images/farming.png')} style={{ alignSelf:'center', width: 100 , height: 100}} />
                               <Text style={{ fontSize: 16, marginTop: 10, color: 'gray' }}>Chăm sóc sân vườn</Text>
                            </TouchableOpacity>
-                        </View>
+                        </View> */}
 
                        
 

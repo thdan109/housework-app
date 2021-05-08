@@ -24,6 +24,7 @@ import TestScreen from './screens/customer/TestScreen'
 import MessagesCustomerScreen from './screens/customer/MessagesCustomerScreen'
 import MessagesListCustomerScreen from './screens/customer/MessagesListCustomerScreen'
 import NotificationScreen from './screens/customer/NotificationScreen'
+import HistoryScreen from './screens/customer/HistoryScreen'
 
 //staff
 import NavigatorStaff from './screens/staff/NavigatorStaff'
@@ -34,6 +35,7 @@ import FormForLeave from './screens/staff/FormForLeave'
 import WorkStaffAll from './screens/staff/WorkStaffScreen'
 import MessagesListStaff from './screens/staff/MessagesListStaffScreen'
 import MessagesStaffScreen from './screens/staff/MessagesStaffScreen'
+import NotificationStaffScreen from './screens/staff/NotificationStaffScreen'
 
 const store = configureStore();
 const AppStack = createStackNavigator();
@@ -66,6 +68,7 @@ const handleRedux = () => {
                   <AppStack.Screen name='MessagesCustomer' component={MessagesCustomerScreen} />
                   <AppStack.Screen name='MessagesListCustomer' component={MessagesListCustomerScreen}/>
                   <AppStack.Screen name='NotificationScreen' component={NotificationScreen}/>
+                  <AppStack.Screen name='HistoryScreen' component={HistoryScreen}/>
                   {/* <App.Screen name="Test" component={TestScreen} /> */}
                   <AppStack.Screen name='NavigatorStaff' component={NavigatorStaff} />
                   <AppStack.Screen name='HomeStaff' component={HomeStaff} />
@@ -75,6 +78,7 @@ const handleRedux = () => {
                   <AppStack.Screen name='WorkStaffAll' component={WorkStaffAll} />
                   <AppStack.Screen name='MessagesListStaff' component={MessagesListStaff} />
                   <AppStack.Screen name='MessagesStaff' component={MessagesStaffScreen} />
+                  <AppStack.Screen name='NotificationStaff' component={NotificationStaffScreen} />
                </AppStack.Navigator>
             </NavigationContainer>
          </Provider>    

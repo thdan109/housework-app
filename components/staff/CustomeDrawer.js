@@ -43,6 +43,10 @@ const CustomDrawer = ({ navigation, ...props}) =>{
             <DrawerContentScrollView {...props} >
                <DrawerItemList {...props} />
                <DrawerItem
+                  label='Thông báo'
+                  onPress={()=>navigation.navigate('NotificationStaff')}
+               />
+               <DrawerItem
                   label='Chat'
                   // onPress={()=>Alert.alert('aaaaaaaaaaaaaaa')}
                   onPress = {()=>navigation.navigate('MessagesListStaff')}

@@ -5,6 +5,7 @@ import {FontAwesome, MaterialCommunityIcons, Ionicons} from 'react-native-vector
 import host from '../../host'
 import io from 'socket.io-client';
 import {useSelector} from 'react-redux'
+import axios from 'axios'
 
 let socket;
 

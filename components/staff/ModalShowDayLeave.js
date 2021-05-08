@@ -64,6 +64,10 @@ const ModalShowDayLeave = (props) =>{
                                           <Text style={{fontSize: 16, fontWeight: 'bold'}}>Lý do</Text>
                                           <Text style={{flex: 1, textAlign: 'right', fontSize: 16}} >{dt.reason}</Text>
                                        </View>
+                                       <View key={Math.random()} style={{flexDirection:'row', paddingBottom: 3}}>
+                                          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Trạng thái</Text>
+                                          <Text style={{flex: 1, textAlign: 'right', fontSize: 16}} >{dt.status}</Text>
+                                       </View>
                                     </View>
                                     </List.Accordion>
                                  )

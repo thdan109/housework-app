@@ -20,7 +20,7 @@ const FormForLeave = ({navigation,props}) =>{
 
    const staff = useSelector(state=>state) 
    const [modalVisible, setModalVisible] = React.useState(false);
-   const [ datee, setdate] = React.useState(new Date())
+   const [ datee, setdate] = React.useState(new Date(Date.now()+1*24*60*60*1000))
    const [ reason, setReason] = React.useState()
    const [ leave, setLeave ] = React.useState([])
 
@@ -31,6 +31,7 @@ const FormForLeave = ({navigation,props}) =>{
       if ((dateChoosed.getTime() > nowdate.getTime())){
          setdate(dateChoosed)
       }else{
+         setdate(null)
          return Alert.alert('Chọn ngày sau ngày hiện tại!')
       }
    }
@@ -45,6 +46,7 @@ const FormForLeave = ({navigation,props}) =>{
       })
       setLeave(dataLeave.data)
       // console.log(dataLeave.data);
+
    }
 
    const onSubmitForm  = async() =>{
@@ -52,7 +54,7 @@ const FormForLeave = ({navigation,props}) =>{
       const name = staff.users.data.fullnameStaff
       const department = staff.users.data.department
       console.log('aaaaa',reason);
-      if ( reason  ){
+      if ( reason && (datee!==null)  ){
          const form =  await  axios.post(`${host}/leave/create`,{
             id : id,
             name:  name,
@@ -172,7 +174,7 @@ const FormForLeave = ({navigation,props}) =>{
                            locale="en" 
                            onSelect={ (date) => changeDate(date) }
                            isHideOnSelect={true}
-                           initialDate={new Date(Date.now()+1*24*60*60*1000)}
+                           // initialDate={new Date(Date.now()+1*24*60*60*1000)}
                            button={<Text style={{backgroundColor:'white', fontSize: 17, borderWidth: 0, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 0, textAlign: 'center', color: 'black',height: 45}}>{Moment(datee).format('dddd  DD/MM/YYYY')}</Text>}
                         />
                      </View> 

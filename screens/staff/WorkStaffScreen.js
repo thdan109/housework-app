@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Dimensions,StyleSheet, TextInput,AsyncStorage, ScrollView, TouchableOpacity, Alert,Modal } from 'react-native'
+import { View, Text, Dimensions,StyleSheet, TextInput,AsyncStorage, ScrollView, TouchableOpacity, Alert,Modal, Button } from 'react-native'
 import Moment from 'moment'
 import ModalWork from '../../components/staff/ModalWork'
 import { Entypo,FontAwesome,Ionicons } from '@expo/vector-icons';
@@ -163,11 +163,20 @@ const  WorkStaffScreen = ({navigation}) =>{
                
             </View>
             <View style={{marginTop: 15, }}>
-               <TouchableOpacity onPress={()=>getDataWork()}>
+               {/* <TouchableOpacity onPress={()=>getDataWork()}>
                   <View style={{ height: 50,justifyContent: 'center', alignItems: 'center', backgroundColor: '#008B8B', borderRadius: 15, marginHorizontal: 10  }}>
                      <Text style={{fontWeight: 'bold', fontSize: 20, color: 'white'}}>Làm mới</Text>
                   </View>
-               </TouchableOpacity>
+               </TouchableOpacity> */}
+                <View style={styles.containerButton}>
+                  <Button
+                     height={20}
+                     onPress={()=>getDataWork()}
+                     title="Làm mới"
+                     color="#006400"
+                     // accessibilityLabel="Learn more about this purple button"
+                  />
+               </View>
             </View>
             <View style={styles.containerModal}>
                 <ModalWork isModalVisible={modalVisible.visible} idWork={modalVisible.id} setModalVisible={setModalVisible} idStaff={staff.users.data._id} department={modalVisible.department} />

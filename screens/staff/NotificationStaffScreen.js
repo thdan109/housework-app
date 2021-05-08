@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text, Dimensions, StyleSheet, StatusBar, FlatList} from 'react-native'
+import { View, Text, Dimensions, StyleSheet, StatusBar, FlatList, TouchableOpacity, Button} from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient'
 import { TextInput } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 import host from '../../host'
 import {useSelector} from 'react-redux'
 import axios from 'axios'
@@ -61,9 +62,9 @@ const DATA = [
 
 
 
-const Notification = () =>{
+const NotificationStaff = ({navigation}) =>{
 
-   const use = useSelector(state => state)
+   const staff = useSelector(state => state)
 
    // const renderItem = ({ item }) => (
    //    <>
@@ -78,9 +79,9 @@ const Notification = () =>{
    },[])
 
    const  getNotification = async( ) =>{
-      const idUser = use.users.data._id 
-      const data = await axios.post(`${host}/notifi/getData`,{
-         idUser: idUser
+      const idStaff = staff.users.data._id 
+      const data = await axios.post(`${host}/notifi/getDataStaff`,{
+         idStaff: idStaff
       })
       setData(data.data)
    }
@@ -89,8 +90,11 @@ const Notification = () =>{
      <View style={styles.container}>
          <StatusBar />
          <View style={styles.header} >
-            <LinearGradient style={{flex:1}} colors={["#043927","#043927"]}>
-               <Text style={{marginTop: 20,fontSize: 26,textAlign: 'center', fontWeight: 'bold', color: 'white'}}>Thông báo</Text>
+            <LinearGradient style={{flex:1}} colors={["#FFEBCD","#FFEBCD"]}>
+                  <TouchableOpacity style={{marginHorizontal: 15,marginTop: 5}}  onPress={()=>navigation.navigate('NavigatorStaff')}>
+                     <Ionicons name="arrow-back-sharp" size={28} color="black" />
+                  </TouchableOpacity>
+               <Text style={{marginTop: 0,fontSize: 26,textAlign: 'center', fontWeight: 'bold', color: 'black'}}>Thông báo</Text>
             </LinearGradient>
          </View>
          <View style={styles.showNotifi}>
@@ -105,17 +109,26 @@ const Notification = () =>{
                   renderItem={({item,index}) =>(
                      <View style={styles.renderFlatlist} >
                         <Text style={{fontWeight: 'bold', fontSize: 16}}>{Moment(item.date).format('dddd  DD/MM/YYYY')}</Text>
-                        <Text style={{fontSize: 14, marginTop: 10}}>{item.content}</Text>
+                        <Text style={{fontSize: 14, marginTop: 10}}>Việc mới ngày {item.content}</Text>
                      </View>
                   )}
                />
             </View>
-
+            
+            
 
 
          </View>
 
-
+         <View style={styles.containerButton}>
+            <Button
+               height={20}
+               onPress={()=>getNotification()}
+               title="Làm mới"
+               color="#006400"
+               // accessibilityLabel="Learn more about this purple button"
+            />
+         </View>
 
          {/* <View>
             <TextInput style={{ borderWidth: 1}}></TextInput>
@@ -134,7 +147,7 @@ const Notification = () =>{
 
 }
 
-export default Notification
+export default NotificationStaff
 
 
 const styles = StyleSheet.create({
@@ -147,7 +160,7 @@ const styles = StyleSheet.create({
    },
    showNotifi:{
       flex:1,
-      marginBottom: 10,
+      marginBottom: 0,
       marginTop: -30,
       borderTopEndRadius: 30,
       borderTopStartRadius: 30,
@@ -174,6 +187,13 @@ const styles = StyleSheet.create({
       borderRadius: 20,
       backgroundColor: 'white'
 
+   },
+   containerButton:{
+      marginVertical: 20,
+      marginHorizontal: 10
+   },
+   button:{
+      // height: 20
    }
 
 

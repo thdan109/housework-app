@@ -4,6 +4,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import { NavigationContainer } from '@react-navigation/native';
 
 import CustomDrawer from '../../components/staff/CustomeDrawer';
+import NotificationStaff from './NotificationStaffScreen'
 import HomeStaff from './HomeStaff'
 import ProfileStaff from './ProfileStaff';
 
@@ -55,8 +56,8 @@ const NavigatorStaff  = ({navigation, props}) =>{
          >
             <Drawer.Screen name='Trang chủ' component={HomeStaff} />
             {/* <Drawer.Screen name='Profile' component={ProfileStaff} /> */}
-            <Drawer.Screen name='Thông báo' component={Notification} />
-            <Drawer.Screen name='Lịch sử' component={History} />   
+            {/* <Drawer.Screen name='Thông báo' component={NotificationStaff} />
+            <Drawer.Screen name='Lịch sử' component={History} />    */}
          </Drawer.Navigator>
       </View>
       

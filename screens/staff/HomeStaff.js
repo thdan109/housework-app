@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Dimensions,StyleSheet, TextInput,AsyncStorage, ScrollView, TouchableOpacity, Alert,Modal } from 'react-native'
+import { View, Text, Dimensions,StyleSheet, TextInput,AsyncStorage, ScrollView, TouchableOpacity, Alert,Modal, Button } from 'react-native'
 import Moment from 'moment'
 import ModalWork from '../../components/staff/ModalWork'
 import { Entypo,FontAwesome } from '@expo/vector-icons';
@@ -26,18 +26,20 @@ const  HomeStaff = ({navigation}) =>{
       const department = staff.users.data.department
 
       if (department === 'Bộ phận Vệ sinh nhà'){
-         const nowdate = '2021-03-31T17:00:00.000Z'
+         // const nowdate = '2021-03-31T17:00:00.000Z'
+         const nowdate = new Date()
          const work = await axios.post(`${host}/clear/workStaff`,{
             id: id,
             nowDate: nowdate
          })
          if (work.data.work === 'Failed'){
             setWork(null)
-         }else{
+         }else{ 
             setWork(work.data)
          }  
       }else if (department === 'Bộ phận Giặt ủi'){
-         const nowdate = '2021-03-31T17:00:00.000Z'
+         // const nowdate = '2021-03-31T17:00:00.000Z'
+         const nowdate = new Date()
          const work = await axios.post(`${host}/washing/workStaff`,{
             id: id,
             nowDate: nowdate
@@ -48,7 +50,8 @@ const  HomeStaff = ({navigation}) =>{
             setWork(work.data)
          }  
       }else if (department === 'Bộ phận Nấu ăn'){
-         const nowdate = '2021-03-31T17:00:00.000Z'
+         // const nowdate = '2021-03-31T17:00:00.000Z'
+         const nowdate = new Date()
          const work = await axios.post(`${host}/cooking/workStaff`,{
             id: id,
             nowDate: nowdate
@@ -83,7 +86,7 @@ const  HomeStaff = ({navigation}) =>{
                         marginLeft: 30, 
                         marginTop: 10
                }}>
-                     <Text style={{color: 'black', fontWeight: 'bold'}}>Số công việc:</Text>
+                     {/* <Text style={{color: 'black', fontWeight: 'bold'}}>Số công việc:</Text> */}
                </View>
             </View>
 
@@ -150,11 +153,20 @@ const  HomeStaff = ({navigation}) =>{
                
             </View>
             <View style={{marginTop: 15, }}>
-               <TouchableOpacity onPress={()=>getDataWork()}>
+               {/* <TouchableOpacity onPress={()=>getDataWork()}>
                   <View style={{ height: 50,justifyContent: 'center', alignItems: 'center', backgroundColor: '#008B8B', borderRadius: 15, marginHorizontal: 10  }}>
                      <Text style={{fontWeight: 'bold', fontSize: 20, color: 'white'}}>Làm mới</Text>
                   </View>
-               </TouchableOpacity>
+               </TouchableOpacity> */}
+               <View style={styles.containerButton}>
+                  <Button
+                     height={20}
+                     onPress={()=>getDataWork()}
+                     title="Làm mới"
+                     color="#006400"
+                     // accessibilityLabel="Learn more about this purple button"
+                  />
+               </View>
             </View>
             <View style={styles.containerModal}>
                 <ModalWork isModalVisible={modalVisible.visible} idWork={modalVisible.id} setModalVisible={setModalVisible} idStaff={staff.users.data._id} department={modalVisible.department} />
@@ -196,6 +208,13 @@ const styles = StyleSheet.create({
    }, 
    containerModal:{
      
+   },
+   containerButton:{
+      marginVertical: 20,
+      marginHorizontal: 10
+   },
+   button:{
+      // height: 20
    }
 
 })
