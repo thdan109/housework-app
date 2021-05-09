@@ -6,6 +6,7 @@ import RadioButton from '../../components/RadioButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import AddressSelected from '../../components/AddressSelected';
 import axios from 'axios';
+import {useSelector} from 'react-redux'
 
 import SelectedAD from 'react-native-dropdown-picker';
 import { ModalDatePicker } from "react-native-material-date-picker";
@@ -16,6 +17,7 @@ const {width, height } = Dimensions.get('screen')
 
 const CookingScreen = ({ navigation } )=>{
    
+   const user = useSelector(state=>state)
    const [selectedOption, setSelectedOption] = React.useState({
       key: 'performance',
       text: '2',
@@ -34,6 +36,11 @@ const CookingScreen = ({ navigation } )=>{
    const [ switchh , setSwitch] = React.useState(false)
    const [ money , setMoney ] = React.useState(Number(selectedOption.text) * 50000 + Number(selectedFruit.key) * 50000 + Number(selectedGo.key) * 75000)
    
+   const [dataVoucher, setDataVoucher] = React.useState()
+   const [codeVoucher, setCodeVoucher] = React.useState()
+   const [dataVoucherSend, setDataVoucherSend] = React.useState()
+
+
    // setState data
    
    const [ numaddress, setNumaddress ] =  React.useState({})
@@ -124,6 +131,7 @@ const CookingScreen = ({ navigation } )=>{
       getAddressAPI()
       // console.log(hours);
       getDataService()
+      getVoucherById()
    },[])
 
    const [dataForApp , setDataForApp ] = React.useState()
@@ -253,6 +261,65 @@ const CookingScreen = ({ navigation } )=>{
    }
  
    // End Address
+
+   const getVoucherById = async ()=>{
+      const idUser = user.users.data._id
+      const data = await axios.post(`${host}/voucher/getVoucherByIdCooking`,{
+         idUser: idUser
+      })
+      setDataVoucher(data.data)
+   }
+
+   const checkVoucher = async( ) =>{
+    
+      // console.log(dataVoucher);
+
+      const dataVoucherProcessed = await dataVoucher.filter(dt => dt.codeVoucher === codeVoucher)
+
+      // console.log(dataVoucherProcessed);
+
+      if (dataVoucherProcessed.length !==0 ){
+         return  Alert.alert(
+            "Thông báo",
+            "Bạn muốn dùng mã giảm giá này?",
+            [
+               {   
+                  text: "OK", 
+                  onPress: () => {
+                     setKM(dataVoucherProcessed.map(dt => {return dt.prince}))
+                     setDataVoucherSend(dataVoucherProcessed)
+                  }
+               },
+               {
+                  text: "Cancel",
+                  onPress: () =>{
+                        setKM(0)
+                        setDataVoucherSend(null)
+                     },
+                  style: "cancel"
+               }
+               
+            ]
+          );
+         
+      }else if (dataVoucherProcessed.length === 0){
+         return  Alert.alert(
+            "Thông báo",
+            "Mã khuyến mãi không có!",
+            [
+               {   
+                  text: "OK", 
+                  onPress: () => {
+                     setKM(0)
+                     setDataVoucherSend(null)
+                  }
+               }
+            ]
+          );
+      }
+   }
+
+
    
    const total = async(item) =>{
       if ((address.address != 'Bạn chưa chọn địa chỉ') && (numaddress != null) && (dish != null) && (datatime.hour.label) && (datatime.min.label) && (numCustomer != 'null')){
@@ -1006,7 +1073,7 @@ const CookingScreen = ({ navigation } )=>{
                            alignItems: 'center'
                         }}>
                            <TextInput
-                              onChangeText={(val)=>setKM(val)}
+                              onChangeText={(val)=>setCodeVoucher(val)}
                               style={{
                                  flex: 1,
                                  height: 45,
@@ -1017,7 +1084,7 @@ const CookingScreen = ({ navigation } )=>{
                               }} 
                               placeholder={'Nhập mã giảm giá (nếu có)'}
                            ></TextInput>
-                           <TouchableOpacity>
+                           <TouchableOpacity  onPress={() => checkVoucher()}>
                               <Text style={{ marginLeft: 20, color: 'red', fontSize: 18, fontWeight: 'bold'}} >Áp dụng</Text>
                            </TouchableOpacity>
                            

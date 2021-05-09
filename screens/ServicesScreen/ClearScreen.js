@@ -22,6 +22,9 @@ const ClearScreen = ( { navigation}  ) =>{
    const [modalVisible, setModalVisible] = React.useState(true);
    const [modalVisible1, setModalVisible1] = React.useState(false);
    const [dataForApp, setDataForApp] = React.useState()
+   const [dataVoucher, setDataVoucher] = React.useState()
+   const [codeVoucher, setCodeVoucher] = React.useState()
+   const [dataVoucherSend, setDataVoucherSend] = React.useState()
 
    const [ datee, setdate] = React.useState(new Date())
    const [ province, setProvince] = React.useState([])
@@ -47,10 +50,12 @@ const ClearScreen = ( { navigation}  ) =>{
       numberroom: null
    })
    const [ totalBill, setBill] = React.useState({})
+   const [km, setKM] = React.useState(0)
 // end state
    React.useEffect(() =>{
       getAddressAPI()
       getDataService()
+      getVoucherById( )
       // getOrder()
       // console.log(hours);
    },[isLoad])
@@ -201,6 +206,65 @@ const ClearScreen = ( { navigation}  ) =>{
       
    }
 //endAdress
+
+   const getVoucherById = async ()=>{
+      const idUser = user.users.data._id
+      const data = await axios.post(`${host}/voucher/getVoucherByIdClear`,{
+         idUser: idUser
+      })
+      setDataVoucher(data.data)
+   }
+
+
+   const checkVoucher = async( ) =>{
+    
+      // console.log(dataVoucher);
+
+      const dataVoucherProcessed = await dataVoucher.filter(dt => dt.codeVoucher === codeVoucher)
+
+      // console.log(dataVoucherProcessed);
+
+      if (dataVoucherProcessed.length !==0 ){
+         return  Alert.alert(
+            "Thông báo",
+            "Bạn muốn dùng mã giảm giá này?",
+            [
+               {   
+                  text: "OK", 
+                  onPress: () => {
+                     setKM(dataVoucherProcessed.map(dt => {return dt.prince}))
+                     setDataVoucherSend(dataVoucherProcessed)
+                  }
+               },
+               {
+                  text: "Cancel",
+                  onPress: () =>{
+                        setKM(0)
+                        setDataVoucherSend(null)
+                     },
+                  style: "cancel"
+               }
+               
+            ]
+          );
+         
+      }else if (dataVoucherProcessed.length === 0){
+         return  Alert.alert(
+            "Thông báo",
+            "Mã khuyến mãi không có!",
+            [
+               {   
+                  text: "OK", 
+                  onPress: () => {
+                     setKM(0)
+                     setDataVoucherSend(null)
+                  }
+               }
+            ]
+          );
+      }
+   }
+
    const changeDate = async(date) =>{
       const dateChoosed = date
       // const nowdate = new Date(Date.now()+1*24*60*60*1000)
@@ -213,6 +277,7 @@ const ClearScreen = ( { navigation}  ) =>{
    } 
 
    const onNext = async( ) =>{
+      // console.log(km);
       if ((datatime.hour === null) || (datatime.min === null) 
          || (address.address ==="Bạn chưa chọn địa chỉ" ) || (dataClear.workhour === null) 
          || (dataClear.area === null) || (dataClear.numberroom === null) || (numaddress === null) ){
@@ -226,19 +291,19 @@ const ClearScreen = ( { navigation}  ) =>{
             // console.log(datee);
             // console.log(datatime.hour, datatime.min);
             // console.log(dataClear);
-            const totalBill = dataClear.workhour.value * dataForApp[1] + dataClear.area.value * dataForApp[2] + dataClear.numberroom.value * dataForApp[0]
+            const totalBill =( dataClear.workhour.value * dataForApp[1] + dataClear.area.value * dataForApp[2] + dataClear.numberroom.value * dataForApp[0] )- Number(km)
             // console.log(totalBill);  
             setBill(totalBill)
+            // console.log(totalBill);
          }
    }
 
    
 
    const onSubmit = async() =>{
-      console.log('aaaaa');
       // console.log(user.users.data._id, user.users.data.fullname);
       const sendtime = datatime.hour.label + ':' + datatime.min.label
-      // console.log(sendtime);
+      
       const cleardata = await axios.post(`${host}/clear/create`,{
          userID: user.users.data._id,
          userName: user.users.data.fullname,
@@ -248,7 +313,9 @@ const ClearScreen = ( { navigation}  ) =>{
          timework: dataClear.workhour.value,
          area: dataClear.area.value,
          numberroom: dataClear.numberroom.value,
-         money: totalBill
+         money: totalBill,
+         km: km,
+         voucher: dataVoucherSend
       })
    }
 
@@ -262,6 +329,7 @@ const ClearScreen = ( { navigation}  ) =>{
                      <Ionicons name="arrow-back-sharp" size={24} color="white" />
                   </TouchableOpacity>
                   <Text style={{fontSize:20, marginLeft:10, color: 'white',fontWeight:'900'}}>Dọn dẹp nhà</Text>
+                  {/* <Text onPress={()=>console.log(dataVoucher)}>aaaaaaaaaaaaaaaa</Text> */}
                </View>
             </View>
             
@@ -387,7 +455,7 @@ const ClearScreen = ( { navigation}  ) =>{
                               alignItems: 'center'
                            }}>
                               <TextInput
-                                 onChangeText={(val)=>setKM(val)}
+                                 onChangeText={(val)=>setCodeVoucher(val)}
                                  style={{
                                     flex: 1,
                                     height: 45,
@@ -398,7 +466,7 @@ const ClearScreen = ( { navigation}  ) =>{
                                  }} 
                                  placeholder={'Nhập mã giảm giá (nếu có)'}
                               ></TextInput>
-                              <TouchableOpacity>
+                              <TouchableOpacity onPress={() => checkVoucher()}>
                                  <Text style={{ marginLeft: 20, color: 'red', fontSize: 18, fontWeight: 'bold'}} >Áp dụng</Text>
                               </TouchableOpacity>
                               
@@ -590,7 +658,10 @@ const ClearScreen = ( { navigation}  ) =>{
                               
                   {/* End dia chia */}
                               <TouchableOpacity 
-                                 onPress={() => { onSubmit(),setModalVisible1(!modalVisible1), navigation.navigate('Home') }} 
+                                 onPress={() => { onSubmit(),
+                                    setModalVisible1(!modalVisible1)
+                                    navigation.navigate('Home')
+                                  }} 
                                  style={{marginTop: 20}} 
                               >
                                  <LinearGradient

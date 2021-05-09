@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text, Dimensions, StyleSheet, StatusBar, FlatList} from 'react-native'
+import { View, Text, Dimensions, StyleSheet, StatusBar, FlatList, TouchableOpacity} from 'react-native'
+import NumberFormat from 'react-number-format';
+import {Ionicons} from '@expo/vector-icons'
 import {LinearGradient} from 'expo-linear-gradient'
-import { TextInput } from 'react-native-paper';
 import host from '../../host'
 import {useSelector} from 'react-redux'
 import axios from 'axios'
@@ -61,25 +62,19 @@ const DATA = [
 
 
 
-const Notification = () =>{
+const VoucherScreen = ({navigation}) =>{
 
    const use = useSelector(state => state)
 
-   // const renderItem = ({ item }) => (
-   //    <>
-   //      <Item title={item.title} />
-   //       <Item title={item.name} />
-   //    </>
-   //  );
    const [data, setData] = React.useState()
 
    React.useEffect(()=>{
-      getNotification()
+      getVoucher()
    },[])
 
-   const  getNotification = async( ) =>{
+   const  getVoucher = async( ) =>{
       const idUser = use.users.data._id 
-      const data = await axios.post(`${host}/notifi/getData`,{
+      const data = await axios.post(`${host}/voucher/getVoucherById`,{
          idUser: idUser
       })
       setData(data.data)
@@ -90,11 +85,14 @@ const Notification = () =>{
          <StatusBar />
          <View style={styles.header} >
             <LinearGradient style={{flex:1}} colors={["#043927","#043927"]}>
-               <Text style={{marginTop: 20,fontSize: 26,textAlign: 'center', fontWeight: 'bold', color: 'white'}}>Thông báo</Text>
+               <TouchableOpacity onPress={()=>navigation.goBack()}>
+                  <Ionicons name="chevron-back" size={27} color="white" style={{marginHorizontal: 10, marginTop:10}} />
+               </TouchableOpacity>
+               <Text style={{marginBottom: 10,fontSize: 26,textAlign: 'center', fontWeight: 'bold', color: 'white'}}>Khuyến mãi của bạn</Text>
             </LinearGradient>
          </View>
          <View style={styles.showNotifi}>
-            {/* <Text onPress={()=>console.log(data)}>aaaaaaaaaaaaaaa</Text> */}
+          
             <View style={styles.containerFlatlist}>
                <FlatList 
                   showsVerticalScrollIndicator={false}
@@ -104,8 +102,10 @@ const Notification = () =>{
                   keyExtractor={item => item._id}
                   renderItem={({item,index}) =>(
                      <View style={styles.renderFlatlist} >
-                        <Text style={{fontWeight: 'bold', fontSize: 16}}>{Moment(item.date).format('dddd  DD/MM/YYYY')}</Text>
-                        <Text style={{fontSize: 14, marginTop: 10}}>{item.content}</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 16}}>{item.nameVoucher}</Text>
+                        <Text style={{fontSize: 14, marginTop: 10}}>Mã khuyến mãi: {item.codeVoucher}</Text>
+                        <Text style={{fontSize: 14, marginTop: 10}}>Ưu đãi:  <NumberFormat key={Math.random()} value={item.prince} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                        </Text>
                      </View>
                   )}
                />
@@ -114,20 +114,16 @@ const Notification = () =>{
 
 
          </View>
+
      </View>
 
 
 
 
    )
-
-
-
-
-
 }
 
-export default Notification
+export default VoucherScreen
 
 
 const styles = StyleSheet.create({
@@ -136,7 +132,7 @@ const styles = StyleSheet.create({
       flex:1
    }, 
    header:{
-      height: 120,
+      height: 130,
    },
    showNotifi:{
       flex:1,
@@ -148,13 +144,12 @@ const styles = StyleSheet.create({
    },
    containerFlatlist:{
       flex: 1,
-      marginHorizontal: 5,
+      marginHorizontal: 10,
       marginVertical: 10,
       // backgroundColor: 'gray'
    },
    
    Flatlist:{
-      marginTop: 20
       // height: 91,
       // borderWidth: 1,
       
@@ -162,11 +157,12 @@ const styles = StyleSheet.create({
    renderFlatlist:{
       // height: 91,
       // borderWidth: 1,
-      marginBottom: 15,
+      marginBottom: 10,
       paddingVertical: 20,
       paddingHorizontal: 15,
       borderRadius: 20,
-      backgroundColor: '#EEE8AA'
+      backgroundColor: '#BDB76B'
+
    }
 
 

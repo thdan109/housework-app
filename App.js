@@ -25,6 +25,7 @@ import MessagesCustomerScreen from './screens/customer/MessagesCustomerScreen'
 import MessagesListCustomerScreen from './screens/customer/MessagesListCustomerScreen'
 import NotificationScreen from './screens/customer/NotificationScreen'
 import HistoryScreen from './screens/customer/HistoryScreen'
+import VoucherScreen from './screens/customer/VoucherScreen'
 
 //staff
 import NavigatorStaff from './screens/staff/NavigatorStaff'
@@ -69,6 +70,7 @@ const handleRedux = () => {
                   <AppStack.Screen name='MessagesListCustomer' component={MessagesListCustomerScreen}/>
                   <AppStack.Screen name='NotificationScreen' component={NotificationScreen}/>
                   <AppStack.Screen name='HistoryScreen' component={HistoryScreen}/>
+                  <AppStack.Screen name='VoucherScreen' component={VoucherScreen}/>
                   {/* <App.Screen name="Test" component={TestScreen} /> */}
                   <AppStack.Screen name='NavigatorStaff' component={NavigatorStaff} />
                   <AppStack.Screen name='HomeStaff' component={HomeStaff} />

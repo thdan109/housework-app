@@ -122,7 +122,7 @@ const  ProfileUser= ({ navigation }) => {
                         marginHorizontal: 3, paddingHorizontal: 7, 
                         borderBottomWidth: 1 }}
                         >
-                  <TouchableOpacity style={{flexDirection: 'row'}}>
+                  <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>navigation.navigate('VoucherScreen')}>
                      <Ionicons name="gift" size={22} color="#043927" style={{marginRight: 3, marginLeft: 1}} />
                      <Text style={{flex:1, marginLeft: 0,fontSize: 18, fontWeight: "bold", paddingBottom: 3}} >Khuyến mãi</Text>
                   </TouchableOpacity>

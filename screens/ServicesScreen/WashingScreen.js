@@ -25,6 +25,14 @@ const WashingScreen = ( { navigation}  ) =>{
    const [ province, setProvince] = React.useState([])
    const [ district, setDistrict] = React.useState([])
    const [ ward, setWard ] = React.useState([])
+   const [dataForApp, setDataForApp] = React.useState()
+   const [dataVoucher, setDataVoucher] = React.useState()
+   const [codeVoucher, setCodeVoucher] = React.useState()
+   const [dataVoucherSend, setDataVoucherSend] = React.useState()
+   const [km, setKM] = React.useState(0)
+
+
+
    const [ dataSel, setDataSel ] = React.useState({
       provincestate: null,
       districtstate: null,
@@ -52,6 +60,8 @@ const WashingScreen = ( { navigation}  ) =>{
 // end state
    React.useEffect(() =>{
       getAddressAPI()
+      getVoucherById()
+      getDataService()
       // console.log(hours);
    },[])
 
@@ -100,7 +110,17 @@ const WashingScreen = ( { navigation}  ) =>{
    // ]
    
 
-   
+   const getDataService = async() =>{
+      const dataService =  await axios.get(`${host}/washing/getDataForApp`)
+      if (dataService.data.data){
+         setDataForApp(dataService.data.data)
+      }else{
+         console.log('err');
+      }
+      
+
+   }
+
 
 //addressAPI
    const getAddressAPI = async() =>{
@@ -197,6 +217,66 @@ const WashingScreen = ( { navigation}  ) =>{
       }
    } 
 
+   const getVoucherById = async ()=>{
+      const idUser = user.users.data._id
+      const data = await axios.post(`${host}/voucher/getVoucherByIdWashing`,{
+         idUser: idUser
+      })
+      setDataVoucher(data.data)
+   }
+
+
+
+   const checkVoucher = async( ) =>{
+    
+      // console.log(dataVoucher);
+
+      const dataVoucherProcessed = await dataVoucher.filter(dt => dt.codeVoucher === codeVoucher)
+
+      // console.log(dataVoucherProcessed);
+
+      if (dataVoucherProcessed.length !==0 ){
+         return  Alert.alert(
+            "Thông báo",
+            "Bạn muốn dùng mã giảm giá này?",
+            [
+               {   
+                  text: "OK", 
+                  onPress: () => {
+                     setKM(dataVoucherProcessed.map(dt => {return dt.prince}))
+                     setDataVoucherSend(dataVoucherProcessed)
+                  }
+               },
+               {
+                  text: "Cancel",
+                  onPress: () =>{
+                        setKM(0)
+                        setDataVoucherSend(null)
+                     },
+                  style: "cancel"
+               }
+               
+            ]
+          );
+         
+      }else if (dataVoucherProcessed.length === 0){
+         return  Alert.alert(
+            "Thông báo",
+            "Mã khuyến mãi không có!",
+            [
+               {   
+                  text: "OK", 
+                  onPress: () => {
+                     setKM(0)
+                     setDataVoucherSend(null)
+                  }
+               }
+            ]
+          );
+      }
+   }
+
+
    const onNext = async( ) =>{
       if ((dataTimeTake.hourTake === null) || (dataTimeSend.minSend === null) 
          || (dataTimeSend.hourSend === null) || (dataTimeTake.minTake === null)  
@@ -212,8 +292,9 @@ const WashingScreen = ( { navigation}  ) =>{
             // console.log(dateSend,dateTake);
             // console.log(dataKG.value);
             // console.log(datatime.hour, datatime.min);
-            // console.log(dataClear);
-            const totalBill = dataKG.value + 60000
+            // console.log(dataClear); 
+            // const totalBill = (dataKG.value + 60000) - Number(km)
+            const totalBill = (dataKG.value + dataForApp[0]) - Number(km)
             // console.log(totalBill);  
             setBill(totalBill)
          }
@@ -233,7 +314,9 @@ const WashingScreen = ( { navigation}  ) =>{
          sendTime: sendtime,
          takeTime: taketime,
          note: dataNote,
-         money: totalBill
+         money: totalBill, 
+         km: km,
+         voucher: dataVoucherSend
       })
    }
 
@@ -247,6 +330,7 @@ const WashingScreen = ( { navigation}  ) =>{
                      <Ionicons name="arrow-back-sharp" size={24} color="white" />
                   </TouchableOpacity>
                   <Text style={{fontSize:20, marginLeft:10, color: 'white',fontWeight:'900'}}>Giặt ủi</Text>
+                  <Text onPress={()=>console.log(dataForApp[0]) }>aaaaaaaaaaaaaa</Text>
                </View>
             </View>
             
@@ -383,7 +467,7 @@ const WashingScreen = ( { navigation}  ) =>{
                               alignItems: 'center'
                            }}>
                               <TextInput
-                                 onChangeText={(val)=>setKM(val)}
+                                 onChangeText={(val)=>setCodeVoucher(val)}
                                  style={{
                                     flex: 1,
                                     height: 45,
@@ -394,7 +478,7 @@ const WashingScreen = ( { navigation}  ) =>{
                                  }} 
                                  placeholder={'Nhập mã giảm giá (nếu có)'}
                               ></TextInput>
-                              <TouchableOpacity>
+                              <TouchableOpacity  onPress={() => checkVoucher()}>
                                  <Text style={{ marginLeft: 20, color: 'red', fontSize: 18, fontWeight: 'bold'}} >Áp dụng</Text>
                               </TouchableOpacity>
                               
@@ -590,7 +674,9 @@ const WashingScreen = ( { navigation}  ) =>{
                               
                   {/* End dia chia */}
                               <TouchableOpacity 
-                                 onPress={() => { onSubmit(),setModalVisible1(!modalVisible1), navigation.navigate('Home') }}
+                                 onPress={() => { onSubmit(),setModalVisible1(!modalVisible1)
+                                    , navigation.navigate('Home') 
+                                 }}
                                  // onPress={() => { onSubmit()}} 
                                  style={{marginTop: 20}} 
                               >
