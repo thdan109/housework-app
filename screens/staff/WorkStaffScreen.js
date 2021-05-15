@@ -218,6 +218,10 @@ const styles = StyleSheet.create({
    }, 
    containerModal:{
      
+   },
+   containerButton:{
+      marginVertical: 20,
+      marginHorizontal: 10
    }
 
 })

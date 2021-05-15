@@ -38,6 +38,7 @@ import WorkStaffAll from './screens/staff/WorkStaffScreen'
 import MessagesListStaff from './screens/staff/MessagesListStaffScreen'
 import MessagesStaffScreen from './screens/staff/MessagesStaffScreen'
 import NotificationStaffScreen from './screens/staff/NotificationStaffScreen'
+import SalaryStaffScreen from './screens/staff/SalaryStaffScreen'
 
 
 const store = configureStore();
@@ -84,6 +85,7 @@ const handleRedux = () => {
                   <AppStack.Screen name='MessagesListStaff' component={MessagesListStaff} />
                   <AppStack.Screen name='MessagesStaff' component={MessagesStaffScreen} />
                   <AppStack.Screen name='NotificationStaff' component={NotificationStaffScreen} />
+                  <AppStack.Screen name='SalaryStaffScreen' component={SalaryStaffScreen} />
                </AppStack.Navigator>
             </NavigationContainer>
          </Provider>    

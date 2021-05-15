@@ -59,7 +59,7 @@ const ShowFeedBackScreen = ({navigation}) =>{
                         <View style={styles.renderFlatlist} >
                            <View style={{flexDirection: 'row'}}>
                               <Text style={{fontWeight: 'bold', fontSize: 16, flex:1}}>{item.nameUser}</Text>
-                              <Rating fractions={1} startingValue={item.rate}  type='custom' tintColor="#B0C4DE" imageSize={20} />
+                              <Rating fractions={1} startingValue={Number(item.rate)}  type='custom' tintColor="#B0C4DE" imageSize={20} />
                            </View>
                            
                            <Text style={{fontSize: 14, marginTop: 10}}>{item.contentfeedback}</Text>

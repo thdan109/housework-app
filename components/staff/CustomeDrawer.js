@@ -52,6 +52,10 @@ const CustomDrawer = ({ navigation, ...props}) =>{
                   onPress = {()=>navigation.navigate('MessagesListStaff')}
                />
                <DrawerItem
+                  label='Lương'
+                  onPress={()=>navigation.navigate('SalaryStaffScreen')}
+               />
+               <DrawerItem
                   label='Hồ sơ cá nhân'
                   onPress={()=>navigation.navigate('ProfileStaff')}
                />

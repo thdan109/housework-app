@@ -26,8 +26,8 @@ const  HomeStaff = ({navigation}) =>{
       const department = staff.users.data.department
 
       if (department === 'Bộ phận Vệ sinh nhà'){
-         // const nowdate = '2021-03-31T17:00:00.000Z'
-         const nowdate = new Date()
+         // const nowdate = '2021-05-09T17:00:00.000Z'
+         const nowdate = new Date(Date.now()-1*24*60*60*1000)
          const work = await axios.post(`${host}/clear/workStaff`,{
             id: id,
             nowDate: nowdate
@@ -39,7 +39,7 @@ const  HomeStaff = ({navigation}) =>{
          }  
       }else if (department === 'Bộ phận Giặt ủi'){
          // const nowdate = '2021-03-31T17:00:00.000Z'
-         const nowdate = new Date()
+         const nowdate = new Date(Date.now()-1*24*60*60*1000)
          const work = await axios.post(`${host}/washing/workStaff`,{
             id: id,
             nowDate: nowdate
@@ -51,7 +51,7 @@ const  HomeStaff = ({navigation}) =>{
          }  
       }else if (department === 'Bộ phận Nấu ăn'){
          // const nowdate = '2021-03-31T17:00:00.000Z'
-         const nowdate = new Date()
+         const nowdate = new Date(Date.now()-1*24*60*60*1000)
          const work = await axios.post(`${host}/cooking/workStaff`,{
             id: id,
             nowDate: nowdate
