@@ -38,7 +38,7 @@ const MessagesListStaffScreen = ({navigation}) => {
    },[])
 
    const getListChat = async() =>{
-      const idStaff = staff.users.data._id
+      const idStaff = staff?.users.data._id
       const ListChat = await axios.post(`${host}/chat/listChat`,{
          id: idStaff
       })

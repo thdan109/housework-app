@@ -39,8 +39,10 @@ const SalaryStaffScreen = ({ navigation}) =>{
                <TouchableOpacity onPress={()=>navigation.goBack()}>
                   <Ionicons name="chevron-back" size={36} color="black" style={{marginLeft: 10}} />
                </TouchableOpacity>
+               <Text style={{flex:1, fontSize: 20, marginTop: 5 , fontWeight: 'bold', justifyContent: 'center',textAlign: 'center'}} >LƯƠNG</Text>
+               <Ionicons name="chevron-back" size={36} color="black" style={{marginLeft: 10, opacity:0}} />
             </View>
-            <Text style={{alignItems: 'center', textAlign: 'center', justifyContent: 'center', fontSize: 20 , fontWeight: 'bold', marginTop: 20}} >LƯƠNG</Text>
+            
          </View>
          <View style={styles.containerbody}>
             {
@@ -156,13 +158,15 @@ const styles = StyleSheet.create({
       flex:1
    },
    header:{
-      height: 120,
+      height: 36,
       // borderWidth: 1,
       backgroundColor: '#FFDEAD',
    },
    headerTitle:{
       height: 36,
-      backgroundColor: '#DEB887'
+      backgroundColor: '#DEB887',
+      flexDirection: 'row',
+      
    },
    containerbody:{
       flex:1,

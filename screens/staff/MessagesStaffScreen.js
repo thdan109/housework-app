@@ -45,6 +45,7 @@ const MessagesStaffScreen = ({ navigation, route } ) => {
    React.useEffect(()=>{
       getDataChat()
    },[])
+
    const [ room, setRoom ] = React.useState()
    const [ name, setName ] = React.useState()
 
@@ -76,8 +77,9 @@ const MessagesStaffScreen = ({ navigation, route } ) => {
    }
 
    React.useEffect(() => {
+      console.log('sdfjkbdsfb ');
       socket.on('message', (message) => {
-      if(message.data[0].user._id !== user.users.data._id) {
+      if(message.data[0].user._id !== staff.users.data._id) {
          const mess = message.data[0]
          setMessages(previousMessages => GiftedChat.append(previousMessages, mess))
       }
@@ -87,6 +89,11 @@ const MessagesStaffScreen = ({ navigation, route } ) => {
     const onSend = React.useCallback((messages = {}) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
         socket.emit('sendMessage', messages);
+
+      // const mess = GiftedChat.append(messages, messagesNew);
+      // setMessages(mess)
+      // socket.emit('sendMessage', mess); 
+
     }, [])
 
    const renderSend = (props) => {

@@ -63,10 +63,14 @@ const CustomDrawer = ({ navigation, ...props}) =>{
                   label='Việc'
                   onPress={()=>navigation.navigate('WorkStaffAll')}
                />
-               <DrawerItem
+                <DrawerItem
                   label='Xin phép'
                   onPress={()=>navigation.navigate('FormForLeave')}
                />
+               {/* <DrawerItem
+                  label='Lịch sử'
+                  onPress={()=>navigation.navigate('FormForLeave')}
+               /> */}
             </DrawerContentScrollView>
          </View>
          <View style={{

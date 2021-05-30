@@ -90,11 +90,18 @@ const NotificationStaff = ({navigation}) =>{
      <View style={styles.container}>
          <StatusBar />
          <View style={styles.header} >
-            <LinearGradient style={{flex:1}} colors={["#FFEBCD","#FFEBCD"]}>
+         
+            <LinearGradient style={{flex:1}} colors={["#FFFACD","#FFFACD"]}>
+               <View style={styles.tiltleHeader}>
                   <TouchableOpacity style={{marginHorizontal: 15,marginTop: 5}}  onPress={()=>navigation.navigate('NavigatorStaff')}>
-                     <Ionicons name="arrow-back-sharp" size={28} color="black" />
+                     <Ionicons name="chevron-back" size={28} color="black" />
                   </TouchableOpacity>
-               <Text style={{marginTop: 0,fontSize: 26,textAlign: 'center', fontWeight: 'bold', color: 'black'}}>Thông báo</Text>
+                  <Text style={{marginTop: 0,flex:1,fontSize: 22.5,textAlign: 'center', fontWeight: 'bold', color: 'black'}}>Thông báo</Text>
+                  <TouchableOpacity style={{marginHorizontal: 15,marginTop: 5, opacity: 1 }}  onPress={()=>getNotification()}>
+                        <Ionicons name="refresh" size={28} color="black" style={{opacity: 0}}  />
+                     </TouchableOpacity>
+               </View>
+                 
             </LinearGradient>
          </View>
          <View style={styles.showNotifi}>
@@ -114,10 +121,6 @@ const NotificationStaff = ({navigation}) =>{
                   )}
                />
             </View>
-            
-            
-
-
          </View>
 
          <View style={styles.containerButton}>
@@ -153,7 +156,8 @@ export default NotificationStaff
 const styles = StyleSheet.create({
 
    container: {
-      flex:1
+      flex:1,
+      backgroundColor: '#FFFACD'
    }, 
    header:{
       height: 120,
@@ -164,7 +168,8 @@ const styles = StyleSheet.create({
       marginTop: -30,
       borderTopEndRadius: 30,
       borderTopStartRadius: 30,
-      backgroundColor: 'rgba(230,230,230,1)'
+      backgroundColor: 'rgba(230,230,230,1)',
+      borderRadius: 30
    },
    containerFlatlist:{
       flex: 1,
@@ -194,6 +199,11 @@ const styles = StyleSheet.create({
    },
    button:{
       // height: 20
+   },
+   tiltleHeader:{
+      backgroundColor: '#F0E68C',
+      flexDirection: 'row',
+
    }
 
 

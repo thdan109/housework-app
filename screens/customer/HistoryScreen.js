@@ -134,10 +134,10 @@ const HistoryScreen = ({ navigation,props }) =>{
                                     <Text style={{fontSize: 16}}>Số phòng</Text>
                                     <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.numRoom} </Text>
                                  </View>
-                                 <View style={styles.rowdetail} key={Math.random()}>
+                                 {/* <View style={styles.rowdetail} key={Math.random()}>
                                     <Text style={{fontSize: 16}}>Trạng thái</Text>
                                     <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.status} </Text>
-                                 </View>
+                                 </View> */}
                                  <View style={styles.rowdetail} key={Math.random()}>
                                     <Text  style={{fontSize: 16}}>Tổng tiền</Text>
                                     <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>
@@ -186,10 +186,10 @@ const HistoryScreen = ({ navigation,props }) =>{
                                        <Text style={{fontSize: 16}}>Thời gian trả</Text>
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.timeTake} </Text>
                                     </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
+                                    {/* <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Thời gian trả</Text>
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.status} </Text>
-                                    </View>
+                                    </View> */}
 
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text  style={{fontSize: 16}}>Tổng tiền</Text>
@@ -249,10 +249,10 @@ const HistoryScreen = ({ navigation,props }) =>{
                                        <Text style={{fontSize: 16}}>Trái cây</Text>
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.fruit} </Text>
                                     </View>
-                                    <View style={styles.rowdetail} key={Math.random()}>
+                                    {/* <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Trạng thái</Text>
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.status} </Text>
-                                    </View>
+                                    </View> */}
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text  style={{fontSize: 16}}>Tổng tiền</Text>
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>

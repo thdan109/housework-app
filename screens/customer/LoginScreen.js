@@ -172,7 +172,7 @@ const LoginScreen = ({navigation}) => {
                      <MaterialCommunityIcons name="account" size={35} style={{ marginVertical: 10, marginLeft: 10, marginRight: 10, opacity: 0 }} />
                   </View>
                </View>
-               <View style={{ flexDirection: 'row'}}>
+               {/* <View style={{ flexDirection: 'row'}}>
                   <View style={{ flex: 0.5, alignItems: 'center', flexDirection: 'row' }}>
                      <CheckBox  style={{ width: 20, height: 20, marginRight: 10, borderColor: 'rgba(200,200,200,0.5)' }} />
                      <Text style={{ fontStyle: 'italic' }}>Ghi nhớ mật khẩu</Text>
@@ -182,7 +182,7 @@ const LoginScreen = ({navigation}) => {
                         <Text style={{ color: "red"}}>Quên mật khẩu</Text>
                      </TouchableOpacity>
                   </View>
-               </View>
+               </View> */}
                {/* <View style={{ marginTop: 10, alignItems: 'center' }}>
                   <TouchableOpacity  >
                      <LinearGradient style={{ width: width / 1.35, padding: 10, borderRadius: 20}}  colors={[ "#FFB75E","#ED8F03" ]}>

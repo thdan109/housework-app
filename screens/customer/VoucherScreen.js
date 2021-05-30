@@ -85,10 +85,15 @@ const VoucherScreen = ({navigation}) =>{
          <StatusBar />
          <View style={styles.header} >
             <LinearGradient style={{flex:1}} colors={["#043927","#043927"]}>
-               <TouchableOpacity onPress={()=>navigation.goBack()}>
-                  <Ionicons name="chevron-back" size={27} color="white" style={{marginHorizontal: 10, marginTop:10}} />
-               </TouchableOpacity>
-               <Text style={{marginBottom: 10,fontSize: 26,textAlign: 'center', fontWeight: 'bold', color: 'white'}}>Khuyến mãi của bạn</Text>
+               <View style={{flexDirection: 'row', paddingVertical: 5}} >
+                  <TouchableOpacity onPress={()=>navigation.goBack()}>
+                     <Ionicons name="chevron-back" size={27} color="white" style={{marginHorizontal: 10}} />
+                  </TouchableOpacity>
+                  <Text style={{flex: 1, marginBottom: 10,fontSize: 19,textAlign: 'center', fontWeight: 'bold', color: 'white'}}>Khuyến mãi của bạn</Text>
+                  <TouchableOpacity onPress={()=>navigation.goBack()}>
+                     <Ionicons name="chevron-back" size={27} color="white" style={{marginHorizontal: 10, opacity: 0 }} />
+                  </TouchableOpacity>
+               </View>               
             </LinearGradient>
          </View>
          <View style={styles.showNotifi}>
@@ -102,9 +107,9 @@ const VoucherScreen = ({navigation}) =>{
                   keyExtractor={item => item._id}
                   renderItem={({item,index}) =>(
                      <View style={styles.renderFlatlist} >
-                        <Text style={{fontWeight: 'bold', fontSize: 16}}>{item.nameVoucher}</Text>
-                        <Text style={{fontSize: 14, marginTop: 10}}>Mã khuyến mãi: {item.codeVoucher}</Text>
-                        <Text style={{fontSize: 14, marginTop: 10}}>Ưu đãi:  <NumberFormat key={Math.random()} value={item.prince} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                        <Text style={{fontWeight: 'bold', fontSize: 16, color: 'white'}}>{item.nameVoucher}</Text>
+                        <Text style={{fontSize: 14, marginTop: 10,color: 'white'}}>Mã khuyến mãi: {item.codeVoucher}</Text>
+                        <Text style={{fontSize: 14, marginTop: 10, color: 'white'}}>Ưu đãi:  <NumberFormat key={Math.random()} value={item.prince} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
                         </Text>
                      </View>
                   )}
@@ -132,7 +137,12 @@ const styles = StyleSheet.create({
       flex:1
    }, 
    header:{
-      height: 130,
+      height: 80,
+   },
+   headerr:{
+      height: 30,
+      backgroundColor: '#006400',
+      flexDirection: 'row'
    },
    showNotifi:{
       flex:1,
@@ -161,7 +171,7 @@ const styles = StyleSheet.create({
       paddingVertical: 20,
       paddingHorizontal: 15,
       borderRadius: 20,
-      backgroundColor: '#BDB76B'
+      backgroundColor: '#A52A2A'
 
    }
 

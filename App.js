@@ -27,6 +27,7 @@ import NotificationScreen from './screens/customer/NotificationScreen'
 import HistoryScreen from './screens/customer/HistoryScreen'
 import VoucherScreen from './screens/customer/VoucherScreen'
 import ShowFeedBackScreen from './screens/customer/ShowFeedBackScreen';
+// import TestScreen from './screens/customer/TestScreen'
 
 //staff
 import NavigatorStaff from './screens/staff/NavigatorStaff'
@@ -58,11 +59,12 @@ const handleRedux = () => {
          <Provider store={store}>
             <NavigationContainer >            
                   <AppStack.Navigator initialRouteName='Loading' headerMode='none'>
+                  {/* <AppStack.Screen name="Test" component={TestScreen} /> */}
                   <AppStack.Screen name="Onboarding"  component={OnboardingScreen} />
                   <AppStack.Screen name="Loading" component={LoadingScreen}/>
                   <AppStack.Screen name="Login" component={LoginScreen} />
                   <AppStack.Screen name="Signup" component={RegisterScreen} />
-                  <AppStack.Screen name="Home" component={IndexScreen} />   
+                  <AppStack.Screen name="Home" component={IndexScreen} />     
                   <AppStack.Screen name="UpdateProfileUser" component={UpdateProfileUser}  /> 
                   <AppStack.Screen name="CookingScreen" component={CookingScreen} />
                   <AppStack.Screen name="ClearScreen" component={ClearScreen} />

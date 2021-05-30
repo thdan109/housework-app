@@ -123,51 +123,110 @@ const WashingScreen = ( { navigation}  ) =>{
 
 
 //addressAPI
+   // const getAddressAPI = async() =>{
+   //    const getData =  await axios.get('https://thongtindoanhnghiep.co/api/city')
+   //    let datamap = getData.data.LtsItem
+   //    datamap = datamap.map(dt =>{
+   //       return {
+   //          'id': dt.ID,
+   //          'label': dt.Title,
+   //          'value': dt.Title
+   //       }
+   //    })
+   //    datamap.pop()
+   //    setProvince(datamap)
+   // }
+
+   // const changeCity = async(item) =>{
+   //    const provinceNow = province.filter(data => { return data.value == item.value   })
+   //    // console.log(provinceNow.length);
+   //    if (provinceNow.length){
+   //       const changeCT = await axios.get('https://thongtindoanhnghiep.co/api/city/'+provinceNow[0].id+'/district')
+   //       let dataCity = changeCT.data.map(dt =>{
+   //          return {
+   //             'id': dt.ID,
+   //             'label': dt.Title,
+   //             'value': dt.Title
+   //          }
+   //       }) 
+   //       setDistrict(dataCity)
+   //       // console.log(dataCity);
+   //       setDataSel({
+   //          ...dataSel,
+   //          provincestate: item.value
+   //       })
+   //    }
+      
+   // }
+
+   // const changeDistrict = async (item) =>{
+   //    const districtNow = district.filter(data => {return data.value == item.value })
+   //    if (districtNow.length){
+   //       const changeDT = await axios.get('https://thongtindoanhnghiep.co/api/district/' + districtNow[0].id + '/ward')
+   //       let dataDT  =  changeDT.data.map(dt =>{
+   //          return{
+   //             'id': dt.ID,
+   //             'label': dt.Title,
+   //             'value': dt.Title
+   //          }
+   //       })
+   //       setWard(dataDT)
+   //       setDataSel({
+   //          ...dataSel,
+   //          districtstate: item.value
+   //       })
+   //    }  
+   // }
+
    const getAddressAPI = async() =>{
-      const getData =  await axios.get('https://thongtindoanhnghiep.co/api/city')
-      let datamap = getData.data.LtsItem
+      const getData =  await axios.get('https://www.thegioididong.com/cart/api/location/GetAllProvinces')
+      let datamap = getData.data.data
       datamap = datamap.map(dt =>{
          return {
-            'id': dt.ID,
-            'label': dt.Title,
-            'value': dt.Title
+            'id': dt.provinceID,
+            'value': dt.provinceName,
+            'label': dt.provinceName
          }
       })
       datamap.pop()
       setProvince(datamap)
    }
-
+   
    const changeCity = async(item) =>{
       const provinceNow = province.filter(data => { return data.value == item.value   })
       // console.log(provinceNow.length);
+      // console.log(provinceNow[0].id);
       if (provinceNow.length){
-         const changeCT = await axios.get('https://thongtindoanhnghiep.co/api/city/'+provinceNow[0].id+'/district')
-         let dataCity = changeCT.data.map(dt =>{
+         const changeCT = await axios.get('https://www.thegioididong.com/cart/api/location/GetDistrictsByProvinceId/'+provinceNow[0].id)
+         let dataCity = changeCT.data.data.map(dt =>{
             return {
-               'id': dt.ID,
-               'label': dt.Title,
-               'value': dt.Title
+               'id': dt.districtID,
+               'label': dt.districtName,
+               'value': dt.districtName
             }
          }) 
          setDistrict(dataCity)
-         // console.log(dataCity);
          setDataSel({
             ...dataSel,
             provincestate: item.value
          })
+         // setDistrict(changeCT.data.data)
       }
+      // console.log(dataCity);
       
    }
-
+   
    const changeDistrict = async (item) =>{
       const districtNow = district.filter(data => {return data.value == item.value })
+      // console.log(district[0].id);
+      // console.log(district);
       if (districtNow.length){
-         const changeDT = await axios.get('https://thongtindoanhnghiep.co/api/district/' + districtNow[0].id + '/ward')
-         let dataDT  =  changeDT.data.map(dt =>{
+         const changeDT = await axios.get('https://www.thegioididong.com/cart/api/location/GetWardsByDistrictId/'+districtNow[0].id)
+         let dataDT  =  changeDT.data.data.map(dt =>{
             return{
-               'id': dt.ID,
-               'label': dt.Title,
-               'value': dt.Title
+               'id': dt.wardID,
+               'label': dt.wardName,
+               'value': dt.wardName
             }
          })
          setWard(dataDT)
@@ -176,8 +235,9 @@ const WashingScreen = ( { navigation}  ) =>{
             districtstate: item.value
          })
       }  
-   }
 
+     
+   }
 
    const changeAddress = async() =>{
       if ( (dataSel.ward === null) || (dataSel.districtstate === null) || (dataSel.provincestate === null) ){
@@ -330,7 +390,7 @@ const WashingScreen = ( { navigation}  ) =>{
                      <Ionicons name="arrow-back-sharp" size={24} color="white" />
                   </TouchableOpacity>
                   <Text style={{fontSize:20, marginLeft:10, color: 'white',fontWeight:'900'}}>Giặt ủi</Text>
-                  <Text onPress={()=>console.log(dataForApp[0]) }>aaaaaaaaaaaaaa</Text>
+                  {/* <Text onPress={()=>console.log(dataForApp[0]) }>aaaaaaaaaaaaaa</Text> */}
                </View>
             </View>
             

@@ -109,7 +109,7 @@ const  ProfileUser= ({ navigation }) => {
                >
                   <TouchableOpacity style={{flexDirection: 'row'}} onPress = {() => navigation.navigate('HistoryScreen')} >
                      <FontAwesome name="history" color="#043927" size={22} style={{marginRight: 5, marginLeft: 1}} />
-                     <Text style={{ flex:1, marginLeft: 0,fontSize: 18, fontWeight: "bold"}} >Lịch sử</Text>
+                     <Text style={{ flex:1, marginLeft: 0,fontSize: 16, fontWeight: "bold"}} >Lịch sử</Text>
                   </TouchableOpacity>
                </View>
  
@@ -124,7 +124,7 @@ const  ProfileUser= ({ navigation }) => {
                         >
                   <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>navigation.navigate('VoucherScreen')}>
                      <Ionicons name="gift" size={22} color="#043927" style={{marginRight: 3, marginLeft: 1}} />
-                     <Text style={{flex:1, marginLeft: 0,fontSize: 18, fontWeight: "bold", paddingBottom: 3}} >Khuyến mãi</Text>
+                     <Text style={{flex:1, marginLeft: 0,fontSize: 16, fontWeight: "bold", paddingBottom: 3}} >Khuyến mãi</Text>
                   </TouchableOpacity>
                </View>
                <View style={{
@@ -138,7 +138,7 @@ const  ProfileUser= ({ navigation }) => {
                         >
                   <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>navigation.navigate('ShowFeedBackScreen')} >
                      <Ionicons name="star" size={22} color="#043927" style={{marginRight: 3, marginLeft: 1}} />
-                     <Text style={{flex:1, marginLeft: 0,fontSize: 18, fontWeight: "bold", paddingBottom: 3}} >Đánh giá</Text>
+                     <Text style={{flex:1, marginLeft: 0,fontSize: 16, fontWeight: "bold", paddingBottom: 3}} >Đánh giá</Text>
                   </TouchableOpacity>
                </View>
                

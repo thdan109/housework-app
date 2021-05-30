@@ -17,6 +17,7 @@ const  WorkStaffScreen = ({navigation}) =>{
    const staff = useSelector(state => state)
    const [modalVisible, setModalVisible] = React.useState({visible: false,id: null,department: null});
    const [id,setID] = React.useState(null);
+   const [numWork, setNumWork]  = React.useState();
    React.useEffect(()=>{
       // console.log(staff);
       getDataWork()
@@ -32,33 +33,45 @@ const  WorkStaffScreen = ({navigation}) =>{
             id: id,
             // nowDate: nowdate
          })
+         const work_val = await axios.post(`${host}/clearsave/getNumWork`, {
+            id: id
+         })
          if (work.data.work === 'Failed'){
             setWork(null)
          }else{
             setWork(work.data)
          }  
+         setNumWork(work_val.data.length)
       }else if (department === 'Bộ phận Giặt ủi'){
          const nowdate = '2021-03-31T17:00:00.000Z'
          const work = await axios.post(`${host}/washing/workStaffAll`,{
             id: id,
             // nowDate: nowdate
          })
-         if (work.data.work === 'Failed'){
-            setWork(null)
-         }else{
-            setWork(work.data)
-         }  
-      }else if (department === 'Bộ phận Nấu ăn'){
-         // const nowdate = '2021-03-31T17:00:00.000Z'
-         const work = await axios.post(`${host}/cooking/workStaffAll`,{
-            id: id,
-            // nowDate: nowdate
+         const work_val = await axios.post(`${host}/washingsave/getNumWork`, {
+            id: id
          })
          if (work.data.work === 'Failed'){
             setWork(null)
          }else{
             setWork(work.data)
          }  
+         setNumWork(work_val.data.length)
+      }else if (department === 'Bộ phận Nấu ăn'){
+         // const nowdate = '2021-03-31T17:00:00.000Z'
+         const work = await axios.post(`${host}/cooking/workStaffAll`,{
+            id: id,
+            // nowDate: nowdate
+         })
+         const work_val = await axios.post(`${host}/cookingsave/getNumWork`, {
+            id: id
+         })
+         if (work.data.work === 'Failed'){
+            setWork(null)
+         }else{
+            setWork(work.data)
+         }  
+         setNumWork(work_val.data.length)
       }
    }
 
@@ -102,6 +115,11 @@ const  WorkStaffScreen = ({navigation}) =>{
                   
                </View>
                
+               <View style={{marginTop:30, marginLeft: 25}} >
+                  <Text style={{fontWeight: 'bold'}}> Số việc đã làm tháng này:  {numWork} </Text>
+               </View>
+
+
             </View>
 
             <View style={{ alignItems: 'center'}} >

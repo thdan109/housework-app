@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Dimensions, StyleSheet, StatusBar, FlatList} from 'react-native'
+import { View, Text, Dimensions, StyleSheet, StatusBar, FlatList,RefreshControl} from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient'
 import { TextInput } from 'react-native-paper';
 import host from '../../host'
@@ -57,7 +57,9 @@ const DATA = [
 //  );
 
 
-
+const wait = (timeout) => {
+   return new Promise(resolve => setTimeout(resolve, timeout));
+ }
 
 
 
@@ -73,6 +75,13 @@ const Notification = () =>{
    //  );
    const [data, setData] = React.useState()
 
+   const [refreshing, setRefreshing] = React.useState(false);
+   const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      wait(1000).then(() =>{ setRefreshing(false)
+                             getNotification()
+      });
+    }, []);
    React.useEffect(()=>{
       getNotification()
    },[])
@@ -95,8 +104,17 @@ const Notification = () =>{
          </View>
          <View style={styles.showNotifi}>
             {/* <Text onPress={()=>console.log(data)}>aaaaaaaaaaaaaaa</Text> */}
-            <View style={styles.containerFlatlist}>
+            
+            <View style={styles.containerFlatlist}
+               
+            >
                <FlatList 
+                refreshControl={
+                  <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  />
+               }
                   showsVerticalScrollIndicator={false}
                   showsHorizontalScrollIndicator={false}
                   style={styles.Flatlist}

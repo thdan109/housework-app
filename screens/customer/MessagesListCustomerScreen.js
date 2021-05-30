@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, FlatList,Image, StatusBar, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, Button, StyleSheet, FlatList,Image, StatusBar, TouchableOpacity, RefreshControl } from 'react-native';
+import { Ionicons,Foundation,MaterialIcons } from '@expo/vector-icons';
 import host from '../../host'
 import axios from 'axios'
 import {useSelector} from 'react-redux'
@@ -27,16 +27,27 @@ import Moment from 'moment'
   
 // ];
 
+const wait = (timeout) => {
+   return new Promise(resolve => setTimeout(resolve, timeout));
+ }
    
 const MessagesListCustomerScreen = ({navigation}) => {
 
    const [ dataChat, setDataChat ] = React.useState()
+   const [refresh, setRefresh] = React.useState({refreshStatus: false})
    const user = useSelector(state => state)
 
    React.useEffect(()=>{
       getListChat()
    },[])
 
+   const [refreshing, setRefreshing] = React.useState(false);
+   const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      wait(1000).then(() =>{ setRefreshing(false)
+                              getListChat()
+      });
+    }, []);
    const getListChat = async() =>{
       const idUser = user.users.data._id
       const ListChat = await axios.post(`${host}/chat/listChatUser`,{
@@ -48,6 +59,7 @@ const MessagesListCustomerScreen = ({navigation}) => {
          console.log('Loi~');
       }
    }
+
    return (
       <View style={styles.container}>
          <View styles={styles.header}>
@@ -59,14 +71,29 @@ const MessagesListCustomerScreen = ({navigation}) => {
                
                <Text style={{flex: 1,color:'white',fontWeight:'bold', fontSize: 21, textAlign:"center", marginTop: 30}}>Trò chuyện</Text>
 
-               <Ionicons name="chevron-back" size={36} color="white" style={{opacity: 0}}/>
+               {/* <Ionicons name="chevron-back" size={36} color="white" style={{opacity: 1}}/> */}
+               <MaterialIcons name="refresh" size={36} color="white"  style={{opacity: 0}}/>
             </View>
          </View>
          
          <View style={styles.showList} >
             <View style={styles.List}>
-               <FlatList 
-                     
+           { !dataChat?<View style={styles.statusChat}>
+                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>Loading!</Text>
+               </View>:
+               (dataChat.length === 0 )?
+               <View style={styles.statusChat}>
+                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>Chưa có cuộc trò chuyện nào!</Text>
+               </View>
+               :
+                  <FlatList                      
+                     refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                        />
+                      }
+
                      data={dataChat}
                      keyExtractor={(item,index)=>item._id}
                      renderItem={({item}) => (
@@ -96,6 +123,8 @@ const MessagesListCustomerScreen = ({navigation}) => {
                         </TouchableOpacity>
                      )}
                   />
+               }
+               
             </View>
          </View>
          
@@ -143,5 +172,11 @@ const styles = StyleSheet.create({
       borderRadius: 40,
       height: 80,
       width: 80
+   }, 
+   statusChat: {
+   
+      justifyContent: 'center',
+      alignItems:'center',
+      
    }
 });

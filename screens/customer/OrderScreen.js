@@ -1,5 +1,5 @@
 import React from 'react';
-import {View,Text, Dimensions, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import {View,Text, Dimensions, StyleSheet, TouchableOpacity, ScrollView,RefreshControl} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import {List } from 'react-native-paper'
@@ -15,9 +15,22 @@ import ModalFeedback from '../../components/customer/ModalFeedback';
 
 const {width, height} = Dimensions.get('screen')
 
+
+
+const wait = (timeout) => {
+   return new Promise(resolve => setTimeout(resolve, timeout));
+ }
+
 const OrderScreen = ({ navigation,props }) =>{
    const [isLoad,setIsLoad] = React.useState(true)
 
+   const [refreshing, setRefreshing] = React.useState(false);
+   const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      wait(1000).then(() =>{ setRefreshing(false)
+                             getOrder()
+      });
+    }, []);
 
    React.useEffect( ()=>{
       getOrder()
@@ -141,7 +154,7 @@ const OrderScreen = ({ navigation,props }) =>{
          })
          
       }else if ( type==="cooking" ){
-         await axios.post(`{host}/cooking/confirmWork`,{
+         await axios.post(`${host}/cooking/confirmWork`,{
             id: idWork,
             status: status
          }).then(res=>{
@@ -164,7 +177,14 @@ const OrderScreen = ({ navigation,props }) =>{
          </View>
          
          <View style={{ marginTop: -30 ,height: 600 }} >
-         <ScrollView>
+         <ScrollView
+            refreshControl={
+               <RefreshControl
+               refreshing={refreshing}
+               onRefresh={onRefresh}
+               />
+            }
+         >
             <View style={{marginVertical: 10}}>
                
             </View>
@@ -184,6 +204,7 @@ const OrderScreen = ({ navigation,props }) =>{
                         work.works.clearList.map(dt =>(
                            dt.map(data =>(
                            <List.Accordion
+
                               style={{backgroundColor: '#8FBC8B', marginBottom: 10}}
                               key={Math.random()}
                               title={Moment(data.date).format('dddd  DD/MM/YYYY')}
@@ -399,7 +420,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                           </View> 
                                           <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
                                              <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                             <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "washing"}) }>
+                                             <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "washing", staff: data.idStaff}) }>
                                                 <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
                                              </TouchableOpacity>
                                              
@@ -426,7 +447,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                           (<TouchableOpacity 
                                              onPress = {()=> { 
                                                 cancelWork(data._id, "washing")
-                                                            } } 
+                                                      }} 
                                           >
                                              <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
                                                 <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
@@ -541,7 +562,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                        </View> 
                                        <View style={[{ flexDirection: 'row'},styles.rowdetail]} key={Math.random()}>
                                           <Text style={{flex:1, color: '#1E90FF', fontWeight: 'bold'}}>Kiểm tra thông tin</Text>
-                                          <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "cooking"}) }>
+                                          <TouchableOpacity onPress={()=> navigation.navigate('ScanQRScreen',{idWork: data._id, type: "cooking", staff: data.idStaff}) }>
                                              <Ionicons name="md-qr-code-sharp" size={24} color="#1E90FF" />
                                           </TouchableOpacity>
                                        </View> 

@@ -54,39 +54,41 @@ const ModalShowInforStaff = (props) => {
             await axios.post(`${host}/cooking/updateStatusWorking`,{
                id : idUpdate
             })
-            // await getOrder()
-            return Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
+            await getOrder()
+            Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
          }else if (typeWork === "washing"){
             console.log("giat ui");
             await axios.post(`${host}/washing/updateStatusWorking`,{
                id : idUpdate
-            }).then(data =>{
-               console.log('aaaaaaaa');
-            }).then(data =>{
-               // console.log(data.data);
-               getOrder()
-            }).catch(err =>{
-               console.log(err);
             })
-            // await getOrder()
-            return Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
+            // .then(data =>{
+            //    console.log('aaaaaaaa');
+            // }).then(data =>{
+            //    // console.log(data.data);
+            //    getOrder()
+            // }).catch(err =>{
+            //    console.log(err);
+            // })
+            await getOrder()
+            Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
          }else if ( typeWork === "clear"){
             // console.log("Don nha")
             await axios.post(`${host}/clear/updateStatusWorking`,{
                id : idUpdate
-            }).then(data =>{
-               // console.log(data.data);
-               getOrder()
-            }).catch(err =>{
-               console.log(err);
-            }).then(data =>{
-               // console.log(data.data);
-               getOrder()
-            }).catch(err =>{
-               console.log(err);
             })
+            // .then(data =>{
+            //    // console.log(data.data);
+            //    getOrder()
+            // }).catch(err =>{
+            //    console.log(err);
+            // }).then(data =>{
+            //    // console.log(data.data);
+            //    getOrder()
+            // }).catch(err =>{
+            //    console.log(err);
+            // })
             // console.log("Don nha")
-            // await getOrder()
+            await getOrder()
             Alert.alert("Bạn đã xác nhận nhân viên của chúng tôi!")
          }
          setData(null)
