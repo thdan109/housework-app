@@ -62,16 +62,16 @@ const OrderScreen = ({ navigation,props }) =>{
       })
    }
 
-   const checkFeebback = async ( visible, idUser, idWork, nameUser ) => {
-
+   const checkFeebback = async ( visible, idUser, idWork, nameUser, typework ) => {
+      console.log(typework);
       const checkFB = await axios.post(`${host}/feedback/checkFb`,{
          idUser: idUser
       })
       if (checkFB.data.status === 'No'){
          // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
-         setModalVisibleFB({visible: true,idWork: idWork, nameUser: nameUser, idUser: idUser})
+         setModalVisibleFB({visible: true,idWork: idWork, nameUser: nameUser, idUser: idUser,type: typework})
       }else{
-         setModalVisibleFB({visible: false,idWork: idWork, nameUser: nameUser, idUser: idUser})
+         setModalVisibleFB({visible: false,idWork: idWork, nameUser: nameUser, idUser: idUser,type: typework})
       }
    }
 
@@ -204,14 +204,14 @@ const OrderScreen = ({ navigation,props }) =>{
                         work.works.clearList.map(dt =>(
                            dt.map(data =>(
                            <List.Accordion
-
+                           
                               style={{backgroundColor: '#8FBC8B', marginBottom: 10}}
                               key={Math.random()}
                               title={Moment(data.date).format('dddd  DD/MM/YYYY')}
                               left={props => <List.Icon {...props} icon="calendar-month-outline" />}
                            >
-                              <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
-                                 
+                              {/* <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} > */}
+                              <View key={Math.random()} style={{backgroundColor: '#F0FFF0', paddingVertical: 10}} > 
                                  <View style={styles.rowdetail} key={Math.random()}>
                                     <Text style={{fontSize: 16}}>Diện tích</Text>
                                     <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold'}}>{Number(data.area)*100} M2</Text>
@@ -267,7 +267,8 @@ const OrderScreen = ({ navigation,props }) =>{
                                                          {
                                                             (data.status !== "Đã xác nhận")?
                                                             <TouchableOpacity onPress={()=> setModalVisible({visible: true, idStaff: dt1, idWork: data._id})}>
-                                                               <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} /> 
+                                                               {/* <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} />  */}
+                                                               <MaterialIcons name="star-rate" size={24} color="#FF8C00" style={{marginLeft: 10}} /> 
                                                             </TouchableOpacity>
                                                             :
                                                             <View></View>
@@ -298,9 +299,10 @@ const OrderScreen = ({ navigation,props }) =>{
                                     {
                                        (data.status === "Đang thực hiện")?
                                           (<TouchableOpacity 
-                                             onPress = {()=> { confirmWork(data._id,"clear"),
+                                             onPress = {()=> { 
+                                                confirmWork(data._id,"clear"),
                                                                // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
-                                                               checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname)
+                                                               checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname,  "clear")
                                                             } } 
                                            >
                                              <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
@@ -347,7 +349,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                  title={Moment(data.dateSend).format('dddd  DD/MM/YYYY')}
                                  left={props => <List.Icon {...props} icon="calendar-month-outline" />}
                               >
-                                 <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
+                                 <View key={Math.random()} style={{backgroundColor: '#F0F8FF', paddingVertical: 10}} >
                                     
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Ngày nhận</Text>
@@ -436,7 +438,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                        (data.status === "Đang thực hiện")?
                                           (<TouchableOpacity onPress = {()=> {confirmWork(data._id,"washing")
                                              // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
-                                             checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname)
+                                             checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname, "washing")
                                           }} >
                                              <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
                                                 <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
@@ -483,7 +485,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                  title={Moment(data.date).format('dddd  DD/MM/YYYY')}
                                  left={props => <List.Icon {...props} icon="calendar-month-outline" />}
                               >
-                                 <View key={Math.random()} style={{backgroundColor: 'rgba(0, 139, 139,0.3)', paddingVertical: 10}} >
+                                 <View key={Math.random()} style={{backgroundColor: '#F0F8FF', paddingVertical: 10}} >
                                     
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Món ăn</Text>
@@ -546,7 +548,8 @@ const OrderScreen = ({ navigation,props }) =>{
                                                             {
                                                                (data.status !== "Đã xác nhận")?
                                                                <TouchableOpacity onPress={()=> setModalVisible({visible: true, idStaff: dt1, idWork: data._id})}>
-                                                                  <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} /> 
+                                                                  {/* <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} />  */}
+                                                                  <MaterialIcons name="star-rate" size={24} color="black" />
                                                                </TouchableOpacity>
                                                                :
                                                                <View></View>
@@ -577,7 +580,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                        (data.status === "Đang thực hiện")?
                                           (<TouchableOpacity onPress = {()=> {confirmWork(data._id,"cooking"),
                                              // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
-                                                checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname)
+                                                checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname, "cooking")
                                           }}  
                                           >
                                              <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>

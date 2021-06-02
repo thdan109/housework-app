@@ -11,7 +11,7 @@ import { Star } from "react-native-user-feedback"
 
 
 
-const ModalFeedback = (props) => {
+const ModalChangePassword = (props) => {
    const [modalVisibleFB, setModalVisibleFB] = useState({visible: false, idWork: null});
    const dispatch = useDispatch()
    // const [data, setData] = useState()
@@ -22,17 +22,6 @@ const ModalFeedback = (props) => {
    const [ feedback, setFeedback ] = React.useState()
    const [ numberRating, setNumberRating] = React.useState()
 
-      // const getDataStaff = async()=>{
-      //    const id = props.idStaff
-      //    const staff = await axios.post(`${host}/staff/getStaffById`,{
-      //       id: id
-      //    })
-      //    if (staff.data.error){
-      //       setData(null)
-      //    }else{
-      //       setData(staff.data)
-      //    }
-      // }
       const submitFeedback = async() =>{
          
          await axios.post(`${host}/feedback/addFeedBack`,{
@@ -40,11 +29,10 @@ const ModalFeedback = (props) => {
             idUser: props.idUser,
             nameUser: props.nameUser,
             feedback: feedback ,
-            number: numberRating,
-            type: props.type
+            number: numberRating
          }).then(result =>{
             if (result.data.status === 'Oke'){
-               return Alert.alert("Thông báo","Cảm ơn bạn. Chúng tôi sẽ dựa trên đánh giá của bạn để phát triển tốt hơn!")
+               return Alert.alert("Cảm ơn bạn. Chúng tôi sẽ dựa trên đánh giá của bạn để phát triển tốt hơn!")
             }
          }).catch(err =>{
             console.log(err);
@@ -73,7 +61,7 @@ const ModalFeedback = (props) => {
                         <Text style={{flex:1, textAlign:'right', fontSize: 16, fontWeight: 'bold'}}>aaaaaaaaaaaaaaa</Text>
                      </View> */}
                      <View style={{marginBottom: 20, paddingBottom: 3,textAlign: 'center'}}>
-                        <Text style={{fontSize: 16, fontWeight: 'bold', marginBottom: 10}}>Bao sẽ cho bao nhiêu sao</Text>
+                        <Text style={{fontSize: 16, fontWeight: 'bold', marginBottom: 10}}>Bao nhiêu sao nhỉ</Text>
                         <UserFeedback
                            maxNumber={5}
                            rating={numberRating}
@@ -134,7 +122,7 @@ const ModalFeedback = (props) => {
     </View>
   );
 };
-export default ModalFeedback;
+export default ModalChangePassword;
 const styles = StyleSheet.create({
    Container: {
       // backgroundColor: 'black'

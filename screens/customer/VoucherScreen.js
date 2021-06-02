@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Dimensions, StyleSheet, StatusBar, FlatList, TouchableOpacity} from 'react-native'
+import { View, Text, Dimensions, StyleSheet, StatusBar, FlatList, TouchableOpacity, RefreshControl, Image} from 'react-native'
 import NumberFormat from 'react-number-format';
 import {Ionicons} from '@expo/vector-icons'
 import {LinearGradient} from 'expo-linear-gradient'
@@ -10,7 +10,9 @@ import Moment from 'moment'
 
 const { height, width} = Dimensions.get('screen')
 
-
+const wait = (timeout) => {
+   return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const DATA = [
    {
@@ -68,6 +70,14 @@ const VoucherScreen = ({navigation}) =>{
 
    const [data, setData] = React.useState()
 
+   const [refreshing, setRefreshing] = React.useState(false);
+   const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      wait(1000).then(() =>{ setRefreshing(false)
+         getVoucher()
+      });
+    }, []);
+
    React.useEffect(()=>{
       getVoucher()
    },[])
@@ -90,8 +100,8 @@ const VoucherScreen = ({navigation}) =>{
                      <Ionicons name="chevron-back" size={27} color="white" style={{marginHorizontal: 10}} />
                   </TouchableOpacity>
                   <Text style={{flex: 1, marginBottom: 10,fontSize: 19,textAlign: 'center', fontWeight: 'bold', color: 'white'}}>Khuyến mãi của bạn</Text>
-                  <TouchableOpacity onPress={()=>navigation.goBack()}>
-                     <Ionicons name="chevron-back" size={27} color="white" style={{marginHorizontal: 10, opacity: 0 }} />
+                  <TouchableOpacity >
+                     <Ionicons name="refresh-circle-outline" size={27} color="white" style={{marginHorizontal: 10, opacity: 0 }} />
                   </TouchableOpacity>
                </View>               
             </LinearGradient>
@@ -100,6 +110,12 @@ const VoucherScreen = ({navigation}) =>{
           
             <View style={styles.containerFlatlist}>
                <FlatList 
+                  refreshControl={
+                     <RefreshControl
+                     refreshing={refreshing}
+                     onRefresh={onRefresh}
+                     />
+                  }
                   showsVerticalScrollIndicator={false}
                   showsHorizontalScrollIndicator={false}
                   style={styles.Flatlist}
@@ -107,10 +123,25 @@ const VoucherScreen = ({navigation}) =>{
                   keyExtractor={item => item._id}
                   renderItem={({item,index}) =>(
                      <View style={styles.renderFlatlist} >
-                        <Text style={{fontWeight: 'bold', fontSize: 16, color: 'white'}}>{item.nameVoucher}</Text>
-                        <Text style={{fontSize: 14, marginTop: 10,color: 'white'}}>Mã khuyến mãi: {item.codeVoucher}</Text>
-                        <Text style={{fontSize: 14, marginTop: 10, color: 'white'}}>Ưu đãi:  <NumberFormat key={Math.random()} value={item.prince} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
-                        </Text>
+                        <View style={{flexDirection: 'row'}}>
+                           <View>
+                              <Text style={{fontWeight: 'bold', fontSize: 16, color: 'white'}}>{item.nameVoucher}</Text>
+                              <Text style={{fontSize: 14, marginTop: 10,color: 'white'}}>Mã khuyến mãi: {item.codeVoucher}</Text>
+                              <Text style={{fontSize: 14, marginTop: 10, color: 'white'}}>Ưu đãi:  <NumberFormat key={Math.random()} value={item.prince} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                              </Text>
+                           </View>
+                           <View 
+                           style={{
+                              marginHorizontal: 30,
+                              // borderWidth: 1, 
+                              // width: 117,
+                              // height: 91
+                           }}
+                           >
+                              <Image source={require('../../assets/Capture.png')} style={{width: 126,height: 72, borderRadius: 15}}  />
+                           </View>
+                        </View>
+                        
                      </View>
                   )}
                />
@@ -166,12 +197,14 @@ const styles = StyleSheet.create({
    },
    renderFlatlist:{
       // height: 91,
-      // borderWidth: 1,
+      borderWidth: 2,
+      borderColor: '#FF4500',
       marginBottom: 10,
       paddingVertical: 20,
       paddingHorizontal: 15,
       borderRadius: 20,
-      backgroundColor: '#A52A2A'
+      // backgroundColor: '#FF4500'
+      backgroundColor: '#37474f'
 
    }
 

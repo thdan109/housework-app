@@ -10,6 +10,7 @@ import host from '../../host';
 import Constants from 'expo-constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../../action/user';
+import * as Notifications from 'expo-notifications';
 
 const { width, height } = Dimensions.get("screen");
 
@@ -64,6 +65,7 @@ const dispatch = useDispatch();
    const [ id , setId] = React.useState(user.users.data._id)
    const [modalVisible, setModalVisible] = React.useState(false);
    const [modalVisible1, setModalVisible1] = React.useState(false);
+   const [modalVisible2, setModalVisible2] = React.useState(false);
    const Animatedcontainer = {
       height: screenAnimation,
    }
@@ -161,6 +163,20 @@ const dispatch = useDispatch();
          }
    }
 
+   const [passold , setPassOld] = React.useState()
+   const [passnew , setPassNew] = React.useState()
+   const [repasss , setRePass] = React.useState()
+   const handleChangePassOld = (val) =>{
+      setPassOld(val)
+   }
+   const handlePassNew = (val) =>{
+      setPassNew(val)
+   }
+   const handleRePass =  (val) =>{
+      setRePass(val)
+   }
+
+
    const Load = () =>{
       setData({
          ...data,
@@ -241,6 +257,54 @@ const dispatch = useDispatch();
    
    }
 
+   React.useEffect(() => {
+      // AnimateContainer();
+      registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+   },[])
+   const [expoPushToken, setExpoPushToken] = React.useState();
+   const registerForPushNotificationsAsync = async() =>{
+      let token
+      if (Constants.isDevice) {
+         const { status: existingStatus } = await Notifications.getPermissionsAsync();
+         let finalStatus = existingStatus;
+         if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+         }
+         if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+         }
+         token = (await Notifications.getExpoPushTokenAsync()).data;
+         // console.log(token);
+      } else {
+         alert('Must use physical device for Push Notifications');
+      }
+       return token;
+   }
+
+   const ChangePassword = async() =>{
+
+      if ( passnew === repasss){
+         const ChangePW = await axios.post(`${host}/user/changepw`,{
+            username: user.users.data.username,
+            passold: passold,
+            passnew: passnew,
+            tokendv:  expoPushToken
+         }).then(res =>{
+            Alert.alert( "Thông báo","Đã đổi thành công mật khẩu!")
+         }).catch(err =>{
+            // Alert.alert("Mật khẩu cũ chưa đúng!")
+            Alert.alert("Thông báo",
+            "Mật khẩu cũ chưa đúng!")
+         })
+      }else {
+         Alert.alert("Thông báo","Mật khẩu mới chưa khớp!")
+      }
+     
+      
+
+   }
 
    return(
       <Animated.View style={[ {width: "100%", height: "100%"},  Animatedcontainer ]}>
@@ -534,7 +598,53 @@ const dispatch = useDispatch();
                                  </TouchableOpacity>
                               </View>
                   
-                     
+                             <View >
+
+
+                              <Modal
+                                    animationType="slide"
+                                    transparent={true}
+                                    visible={modalVisible2}
+                                    onRequestClose={() => {
+                                       Alert.alert("Modal has been closed.");
+                                       setModalVisible2(!modalVisible2);
+                                    }}
+                                    >
+                                    <View style={styles.centeredView}>
+                                       <View style={styles.modalView}>
+                                         
+                                          <View style={{marginBottom: 20}} >
+                                             <Text style={{fontWeight: 'bold'}}>Nhập mật khẩu cũ</Text>
+                                             <TextInput onChangeText={(val) =>handleChangePassOld(val)} style={{borderWidth: 1, height: 54, borderRadius: 10, paddingHorizontal: 10}}></TextInput>
+                                          </View>
+                                          <View style={{marginBottom: 20}} >
+                                             <Text style={{fontWeight: 'bold'}} >Nhập mật khẩu mới </Text>
+                                             <TextInput onChangeText={(val) => handlePassNew(val)} style={{borderWidth: 1, height: 54, borderRadius: 10, paddingHorizontal: 10}}></TextInput>
+                                          </View>
+                                          <View style={{marginBottom: 20}} >
+                                             <Text style={{fontWeight: 'bold'}}>Nhập mật lại mật khẩu mới</Text>
+                                             <TextInput onChangeText={(val) => handleRePass(val)} style={{borderWidth: 1, height: 54, borderRadius: 10, paddingHorizontal: 10}}></TextInput>
+                                          </View>
+                                          
+                                          <TouchableOpacity
+                                             style={[styles.button, styles.buttonClose,{marginBottom: 10}]}
+                                             onPress={() =>{ setModalVisible2(!modalVisible2), ChangePassword()}}
+                                          >
+                                          <Text style={styles.textStyle}>Cập nhật</Text>
+                                          </TouchableOpacity>
+                                          <TouchableOpacity
+                                             style={[styles.button, styles.buttonClose, {backgroundColor:'gray'}]}
+                                             onPress={() =>{ setModalVisible2(!modalVisible2, Load())}}
+                                          >
+                                          <Text style={styles.textStyle}>Trở lại</Text>
+                                          </TouchableOpacity>
+                                       </View>
+                                    </View>
+                                    </Modal>
+                             </View>
+                                 
+                              
+                               
                   </View>
                </View>
 
@@ -570,6 +680,9 @@ const dispatch = useDispatch();
                      </View>
 
          {/* Kết thúc sửa ảnh */}
+
+                          
+         
          {/* Sửa đổi thông tin */}
                      <View style={{
                         flex: 1/8,
@@ -795,7 +908,7 @@ const dispatch = useDispatch();
                               marginHorizontal: 5,
                               fontSize: 16 
                            }}>Đổi mật khẩu</Text>
-                           <TouchableOpacity style={{ marginRight: 5}}>
+                           <TouchableOpacity style={{ marginRight: 5}} onPress={()=>{setModalVisible2(true), console.log('aaaa');}} >
                               <Ionicons name="chevron-forward-outline" size={22} color="#043927" style={{opacity: 1}} />
                            </TouchableOpacity>
                         </View>
@@ -853,5 +966,11 @@ const styles = StyleSheet.create({
    modalText: {
      marginBottom: 15,
    //   textAlign: "center"
+   },
+   modalChangePassword:{
+      
+      // alignItems:'center',
+      justifyContent: 'center'
+
    }
  });
