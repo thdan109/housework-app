@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Dimensions, TouchableOpacity, TextInput,ScrollView, StyleSheet, Switch, Modal, Pressable, Alert} from 'react-native'
+import {View, Text, Dimensions, TouchableOpacity, Image, TextInput,ScrollView,FlatList, StyleSheet, Switch, Modal, Pressable, Alert} from 'react-native'
 import {Ionicons , FontAwesome, Icon} from 'react-native-vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RadioButton from '../../components/RadioButton';
@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import AddressSelected from '../../components/AddressSelected';
 import axios from 'axios';
 import {useSelector} from 'react-redux'
+import {Rating} from 'react-native-elements'
 
 import SelectedAD from 'react-native-dropdown-picker';
 import { ModalDatePicker } from "react-native-material-date-picker";
@@ -33,13 +34,18 @@ const CookingScreen = ({ navigation } )=>{
    const [isEnabled, setIsEnabled] = React.useState(false);
    const [modalVisible, setModalVisible] = React.useState(true);
    const [modalVisible1, setModalVisible1] = React.useState(false);
+   const [modalVisible2, setModalVisible2] = React.useState(false);
    const [ switchh , setSwitch] = React.useState(false)
    const [ money , setMoney ] = React.useState(Number(selectedOption.text) * 50000 + Number(selectedFruit.key) * 50000 + Number(selectedGo.key) * 75000)
    
+   const [ listStaff, setListStaff ] = React.useState()
    const [dataVoucher, setDataVoucher] = React.useState()
    const [codeVoucher, setCodeVoucher] = React.useState()
    const [dataVoucherSend, setDataVoucherSend] = React.useState()
-
+   const [dataStaffCooking, setDataStaffCooking] = React.useState([{
+      id: null,
+      name: null
+   }])
 
    // setState data
    
@@ -51,7 +57,7 @@ const CookingScreen = ({ navigation } )=>{
    })
    const [numCustomer, setNumCustomer] = React.useState('1')
    const [ dish, setDish] = React.useState()
-   const [km, setKM] = React.useState()
+   const [km, setKM] = React.useState(0)
    const [ dish1, setDish1] = React.useState()
    const [ dish2, setDish2] = React.useState()
    const [ dish3, setDish3] = React.useState()
@@ -132,6 +138,7 @@ const CookingScreen = ({ navigation } )=>{
       // console.log(hours);
       getDataService()
       getVoucherById()
+      getDataStaff()
    },[])
 
    const [dataForApp , setDataForApp ] = React.useState()
@@ -192,63 +199,6 @@ const CookingScreen = ({ navigation } )=>{
       totaladdress: null  
     })
 
-
-  
-
-   // const getAddressAPI = async() =>{
-   //    const getData =  await axios.get('https://thongtindoanhnghiep.co/api/city')
-   //    let datamap = getData.data.LtsItem
-   //    datamap = datamap.map(dt =>{
-   //       return {
-   //          'id': dt.ID,
-   //          'label': dt.Title,
-   //          'value': dt.Title
-   //       }
-   //    })
-   //    datamap.pop()
-   //    setProvince(datamap)
-   // }
-
-   // const changeCity = async(item) =>{
-   //    const provinceNow = province.filter(data => { return data.value == item.value   })
-   //    // console.log(provinceNow.length);
-   //    if (provinceNow.length){
-   //       const changeCT = await axios.get('https://thongtindoanhnghiep.co/api/city/'+provinceNow[0].id+'/district')
-   //       let dataCity = changeCT.data.map(dt =>{
-   //          return {
-   //             'id': dt.ID,
-   //             'label': dt.Title,
-   //             'value': dt.Title
-   //          }
-   //       }) 
-   //       setDistrict(dataCity)
-   //       // console.log(dataCity);
-   //       setDataSel({
-   //          ...dataSel,
-   //          provincestate: item.value
-   //       })
-   //    }
-      
-   // }
-
-   // const changeDistrict = async (item) =>{
-   //    const districtNow = district.filter(data => {return data.value == item.value })
-   //    if (districtNow.length){
-   //       const changeDT = await axios.get('https://thongtindoanhnghiep.co/api/district/' + districtNow[0].id + '/ward')
-   //       let dataDT  =  changeDT.data.map(dt =>{
-   //          return{
-   //             'id': dt.ID,
-   //             'label': dt.Title,
-   //             'value': dt.Title
-   //          }
-   //       })
-   //       setWard(dataDT)
-   //       setDataSel({
-   //          ...dataSel,
-   //          districtstate: item.value
-   //       })
-   //    }  
-   // }
 
    const getAddressAPI = async() =>{
       const getData =  await axios.get('https://www.thegioididong.com/cart/api/location/GetAllProvinces')
@@ -329,6 +279,20 @@ const CookingScreen = ({ navigation } )=>{
  
    // End Address
 
+   const getDataStaff = async() =>{
+
+      const dataStaffCooking=  await axios.post(`${host}/staff/dataStaffCooking`)
+      setDataStaffCooking(dataStaffCooking.data)
+
+   }
+
+   const reqStaff = async(val_Id, nameStaff) =>{
+      setListStaff({
+         id: val_Id,
+         name: nameStaff
+      })   
+   }
+
    const getVoucherById = async ()=>{
       const idUser = user.users.data._id
       const data = await axios.post(`${host}/voucher/getVoucherByIdCooking`,{
@@ -388,9 +352,10 @@ const CookingScreen = ({ navigation } )=>{
 
 
    
-   const total = async(item) =>{
+   const total = async() =>{
+      console.log("aaaaa"+km);
       if ((address.address != 'Bạn chưa chọn địa chỉ') && (numaddress != null) && (dish != null) && (datatime.hour.label) && (datatime.min.label) && (numCustomer != 'null')){
-         let money = Number(selectedFruit.key)*dataForApp[3] + Number(selectedGo.key)*dataForApp[0] + Number(selectedOption.text)*dataForApp[1] + Number(numCustomer)*dataForApp[2]
+         let money = (Number(selectedFruit.key)*dataForApp[3] + Number(selectedGo.key)*dataForApp[0] + Number(selectedOption.text)*dataForApp[1] + Number(numCustomer)*dataForApp[2]) - Number(km)
          setMoney(money)
          setModalVisible1(true)
       }else{
@@ -405,8 +370,8 @@ const CookingScreen = ({ navigation } )=>{
 
       const sendAddress = numaddress+', '+ address.address;
       const sendTime = datatime.hour.label+' : '+datatime.min.label;
-      console.log(dish);
-      
+      // console.log(dish);
+      console.log(listStaff);      
          const createCooking = await axios.get(`${host}/cooking/create`, {
             headers: {
                Authorization: `Bearer ${token_val}`,
@@ -419,7 +384,10 @@ const CookingScreen = ({ navigation } )=>{
                dtTime: sendTime,
                dtdate: datee,
                dtnumCus: numCustomer,
-               dtMoney: money
+               dtMoney: money, 
+               km: km,
+               voucher: dataVoucherSend,
+               staff: listStaff.id
             }
 
          })
@@ -489,6 +457,117 @@ const CookingScreen = ({ navigation } )=>{
                      marginHorizontal: 20
                   }}>           
 {/* Modal */}
+
+                  <Modal
+                     animationType="slide"
+                     transparent={true}
+                     visible={modalVisible2}
+                     onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                        setModalVisible2(!modalVisible2);
+                     }}
+                  >
+                     <View style={{
+                        height: '100%',
+                        width: '100%',
+                        justifyContent:'center',
+                        backgroundColor: 'rgba(10,10,10,0.85)',
+                        paddingHorizontal: 10,
+                     }} >
+                        <View style={{
+                           backgroundColor:'white',
+                           flex: 4.5/5,
+                           borderRadius: 10
+                        }}> 
+                           
+                           <TouchableOpacity style={{alignItems: 'flex-end', marginRight: 5}} onPress={()=>{setModalVisible2(!modalVisible2)}}>
+                              <Ionicons  name='close-circle' size={26} color={'red'} style={{ marginTop: 10}} />
+                           </TouchableOpacity>
+                           <View>
+                              <Text
+                                 style={{
+                                    fontWeight: 'bold',
+                                    fontSize: 16,
+                                    textAlign: 'center'
+                                 }}
+                              >DANH SÁCH NHÂN VIÊN</Text>
+                           </View>
+                           <View 
+                              style={{
+                                 // borderWidth: 1, 
+                                 marginVertical: 10, 
+                                 marginHorizontal: 10,
+                           }}>
+                              {/* <ScrollView
+                                 showsVerticalScrollIndicator={false}cd 
+                                 showsHorizontalScrollIndicator={false}
+                              > */}
+                                    {/* <Text onPress ={() =>console.log(dataStaffClear)}>aaaaaaaaaaaa</Text>                            */}
+                                    <FlatList
+                                       showsVerticalScrollIndicator={false}
+                                       showsHorizontalScrollIndicator={false}
+                                       style={styles.Flatlist}
+                                       data={dataStaffCooking}
+                                       keyExtractor={item => item._id}
+                                       renderItem={({item,index}) =>(
+                                          <Pressable  onPress={()=> {reqStaff(item._id, item.fullnameStaff)} }   >
+                                                <View 
+                                                   style={styles.renderFlatlist} 
+                                                >
+                                                   <View style={{flexDirection: 'row'}}>
+                                                      <View style={{backgroundColor: "#043927",  width: 80, height: 80, borderWidth: 0, borderRadius: 40,marginLeft: 5}}>
+                                                         <Image source={{uri:`${host}/${item.avatarStaff}` }} style={{ flex: 1,  borderRadius: 80}} />
+                                                      </View>
+                                                      <View style={{marginLeft: 20}}>
+                                                         <Text style={{color: 'white', fontWeight: 'bold', fontSize: 16}}  >{item.fullnameStaff}</Text>
+                                                         <View style={{flexDirection :'row'}}>
+                                                            <Rating readonly={true}  fractions={1} startingValue={(item.rating)}   tintColor="#37474f" imageSize={20} />
+                                                            <Text style={{fontWeight: 'bold', color:'white'}}>  {Number(item.rating).toFixed(1)}/5</Text>
+                                                         </View>
+                                                      </View>
+                                                      
+                                                   </View>
+
+                                                </View>
+                                          </Pressable> 
+                                       )}
+                                    />
+                                    {/* <Text onPress={()=>console.log(listStaff)}>aaaaaaaaaaaaa</Text> */}
+                                    <View style={{flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 10, borderWidth: 1, borderColor: 'green' }}>
+                                       <Text style={{color: 'gray'}}>BẠN ĐÃ CHỌN</Text>
+                                       <Text style={{flex:1, textAlign: 'right', fontWeight: 'bold'}}>{listStaff?.name} </Text>
+                                    </View>
+                                    <TouchableOpacity 
+                                       onPress={() => { 
+                                          setModalVisible2(!modalVisible2)
+                                       }} 
+                                       style={{marginTop: 20}} 
+                                    >
+                                       <LinearGradient
+                                          colors={['#0ba360', '#3cba92']}
+                                          style={{ 
+                                             height: 50, justifyContent: 'center', 
+                                             alignContent:  'center',
+                                             alignItems: 'center',
+                                             height: 50, 
+                                             justifyContent: "center", 
+                                             alignItems: 'center', 
+                                             marginBottom: 20    
+                                          }}
+                                       >
+                                             <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>Xác nhận</Text>
+                                       </LinearGradient>
+                                    </TouchableOpacity>
+                              {/* </ScrollView> */}
+                           </View>
+
+
+
+                        </View>
+
+                     </View>
+                  </Modal>
+
                   <Modal
                      animationType="slide"
                      transparent={true}
@@ -1158,30 +1237,59 @@ const CookingScreen = ({ navigation } )=>{
                         </View>
 
                         <View style={{
-                           marginTop: 25
-                        }}>   
-                           <View style={{
-                              flexDirection: 'row'
+                           marginTop: 30,
+                           flexDirection: 'row',
+                           padding: 10,
+                           height: 60,
+                           justifyContent:'center',
+                        }}>
+                           <TouchableOpacity  
+                              style={{justifyContent: 'center'}}
+                              onPress={async()=> {
+                                  Alert.alert(
+                                    "Thông báo!",
+                                    "Bạn có thể chọn nhân viên muốn yêu cầu. Chúng tôi sẽ xem xét yêu cầu của bạn!",
+                                    // "Có thể phát sinh thêm phí"
+                                    [
+                                       {   
+                                          text: "OK", 
+                                          onPress: () => {
+                                             setModalVisible2(true)
+                                          }
+                                       },
+                                       {   
+                                          text: "Cancel", 
+                                       },
+                                    ]
+                                    
+                                 )
+                                 //  setModalVisible2(true)
+                                 // console.log(modalVisible2);
+                           }} >
+                              <Text
+                                 style={{ 
+                                    fontWeight: 'bold',
+                                    color: 'green',
+                                    marginBottom: 3,
+                                    fontSize: 14,
+                                 }}>YÊU CẦU NHÂN VIÊN</Text>
+                           </TouchableOpacity>
+                           <Text style={{
+                              flex:1,
+                              marginLeft: 20,
+                              borderWidth: 0.8,
+                              borderColor: '#228B22', 
+                              padding: 10,
+                              textAlign: 'right',
+                              borderRadius: 5
+                              
                            }}>
-                              {/* <Text style={{ fontSize: 16,  flex: 1}} >Chọn người làm</Text>
-                              <Switch
-                                 trackColor={{ false: "#767577", true: "#043927" }}
-                                 thumbColor={isEnabled ? "#228B22" : "#f4f3f4"}
-                                 ios_backgroundColor="#3e3e3e"
-                                 onValueChange={toggleSwitch}
-                                 value={isEnabled}
-                              /> */}
-                           </View>
-                           {/* <View style={{borderWidth: 1, height: 40, marginTop: 20, borderColor: '#228B22', borderRadius: 5, flexDirection: 'row', alignItems:'center'}}>
-                              <Text style={{ paddingHorizontal: 10, fontSize: 16, flex:1 }}>
-                                 Thành tiền
-                              </Text>
-                              <Text style={{fontSize: 16, marginRight: 10}}>{money}</Text>
-                           </View>  */}
-                           <View>
+                              {listStaff?.name}
+                           </Text>
 
-                           </View>
+
                         </View>
+
                      </View>
                   </View>
                </ScrollView>
@@ -1251,5 +1359,16 @@ const styles = StyleSheet.create({
    modalText: {
      marginBottom: 15,
      textAlign: "center"
+   },
+   Flatlist:{
+      marginBottom: 10,
+      height: '69%'
+   },
+   renderFlatlist:{
+      marginBottom: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      backgroundColor: '#37474f'
    }
  });

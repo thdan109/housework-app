@@ -107,7 +107,7 @@ const LoginStaffScreen = ({navigation}) => {
          passwordStaff: data.passwordStaff,
          tokenDevice: expoPushToken 
       })
-      console.log(user.data.staff);
+      // console.log(user.data.staff);
       await AsyncStorage.setItem('TokenStaff', user.data.token)
       dispatch(addUser(user.data.staff))
       navigation.replace('NavigatorStaff')

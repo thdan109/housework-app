@@ -43,11 +43,15 @@ const CustomDrawer = ({ navigation, ...props}) =>{
             <DrawerContentScrollView {...props} >
                <DrawerItemList {...props} />
                <DrawerItem
+                  label='Việc'
+                  onPress={()=>navigation.navigate('WorkStaffAll')}
+               />
+               <DrawerItem
                   label='Thông báo'
                   onPress={()=>navigation.navigate('NotificationStaff')}
                />
                <DrawerItem
-                  label='Chat'
+                  label='Trò chuyện'
                   // onPress={()=>Alert.alert('aaaaaaaaaaaaaaa')}
                   onPress = {()=>navigation.navigate('MessagesListStaff')}
                />
@@ -59,10 +63,7 @@ const CustomDrawer = ({ navigation, ...props}) =>{
                   label='Hồ sơ cá nhân'
                   onPress={()=>navigation.navigate('ProfileStaff')}
                />
-                <DrawerItem
-                  label='Việc'
-                  onPress={()=>navigation.navigate('WorkStaffAll')}
-               />
+                
                 <DrawerItem
                   label='Xin phép'
                   onPress={()=>navigation.navigate('FormForLeave')}

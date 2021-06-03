@@ -6,6 +6,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import ModalShowQR from '../../components/staff/ModalShowQR'
 import host from '../../host'
+import {Rating} from 'react-native-elements'
+import UserFeedback from 'react-native-user-feedback';
+import { Star } from "react-native-user-feedback"
 
 const {width, height} = Dimensions.get('screen')
 
@@ -75,6 +78,10 @@ const ProfileStaff = ({navigation}) =>{
                         {/* <View style={styles.containerQR}>
 
                         </View> */}
+                        <View style={{ marginVertical: 5, width: '100%',alignItems:'center',}}>
+                           <Text style={{fontWeight: 'bold'}}>{Number(staff.users.data.rating).toFixed(1)}/5</Text>
+                           <Rating readonly={true}  fractions={1} startingValue={(staff.users.data.rating)}   tintColor="white" imageSize={20} />
+                        </View>
                      </View> 
                         
 

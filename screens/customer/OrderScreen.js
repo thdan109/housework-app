@@ -141,6 +141,36 @@ const OrderScreen = ({ navigation,props }) =>{
       }
    }
 
+   const continueWork =async(id, typee) =>{
+      const idWork= id
+      const type = typee
+      const status = "Tiếp tục đặt"
+      if ( type === "clear" ){
+         await axios.post(`${host}/clear/continueWork`,{
+            id : idWork,
+            status: status
+         }).then(res =>{
+            setIsLoad(!isLoad)
+         })
+         
+      }else if ( type==="cooking" ){
+         await axios.post(`${host}/cooking/continueWork`,{
+            id: idWork,
+            status: status
+         }).then(res=>{
+            setIsLoad(!isLoad)
+         })
+      }
+      // else if( type==="washing"){
+      //    await axios.post(`${host}/washing/continueWork`,{
+      //       id: idWork,
+      //       status: status
+      //    }).then(res =>{
+      //       setIsLoad(!isLoad)
+      //    })
+      // }
+   }
+
    const confirmWork = async ( id,typee ) =>{
       const idWork = id
       const type = typee
@@ -229,10 +259,20 @@ const OrderScreen = ({ navigation,props }) =>{
                                     <Text style={{fontSize: 16}}>Số phòng</Text>
                                     <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.numRoom} </Text>
                                  </View>
+                                 {
+                                    data.reqStaff?
+                                       <View style={styles.rowdetail} key={Math.random()}>
+                                          <Text style={{fontSize: 16}}>Yêu cầu nhân viên</Text>
+                                          <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.reqStaff.fullnameStaff} </Text>
+                                       </View>
+                                    :
+                                    <View></View>
+                                 }
                                  <View style={styles.rowdetail} key={Math.random()}>
                                     <Text style={{fontSize: 16}}>Trạng thái</Text>
                                     <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.status} </Text>
                                  </View>
+                                 
                                  <View style={styles.rowdetail} key={Math.random()}>
                                     <Text  style={{fontSize: 16}}>Tổng tiền</Text>
                                     <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}>
@@ -310,7 +350,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                              </View>
                                           </TouchableOpacity>)
                                        :
-                                       (data.status === 'Đang chờ xác nhận')?
+                                       (data.status === 'Đang chờ xác nhận' || data.status === "Tiếp tục đặt")?
                                           (<TouchableOpacity 
                                              onPress = {()=> { 
                                                 cancelWork(data._id, "clear")
@@ -320,6 +360,31 @@ const OrderScreen = ({ navigation,props }) =>{
                                                 <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
                                              </View>
                                           </TouchableOpacity>)
+                                       :(data.status === 'Đang chờ phản hồi')?
+                                          (<View>
+                                             <TouchableOpacity 
+                                                style={{marginTop: 10}}
+                                                onPress = {()=> { 
+                                                   continueWork(data._id, "clear")
+                                                               } } 
+                                             >
+                                                <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: '#006400', marginHorizontal: 10}}>
+                                                   <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Vẫn đặt</Text>
+                                                </View>
+                                             </TouchableOpacity>
+
+                                             <TouchableOpacity
+                                                style={{marginTop: 10}}
+                                                onPress = {()=> { 
+                                                   cancelWork(data._id, "clear")
+                                                               } } 
+                                             >
+                                                <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                   <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
+                                                </View>
+                                             </TouchableOpacity>
+                                          </View>
+                                          )
                                        :
                                           <View></View>
                                     }
@@ -344,7 +409,7 @@ const OrderScreen = ({ navigation,props }) =>{
                         work.works.washingList.map(dt =>(
                            dt.map(data =>(
                               <List.Accordion
-                              style={{backgroundColor: '#BDB76B', marginBottom: 10}}
+                              style={{backgroundColor: '#8FBC8B', marginBottom: 10}}
                                  key={Math.random()}
                                  title={Moment(data.dateSend).format('dddd  DD/MM/YYYY')}
                                  left={props => <List.Icon {...props} icon="calendar-month-outline" />}
@@ -480,7 +545,7 @@ const OrderScreen = ({ navigation,props }) =>{
                         work.works.cookingList.map(dt=>(
                            dt.map(data =>(
                               <List.Accordion
-                              style={{backgroundColor: '#D2B48C', marginBottom: 10}}
+                              style={{backgroundColor: '#8FBC8B', marginBottom: 10}}
                                  key={Math.random()}
                                  title={Moment(data.date).format('dddd  DD/MM/YYYY')}
                                  left={props => <List.Icon {...props} icon="calendar-month-outline" />}
@@ -512,6 +577,15 @@ const OrderScreen = ({ navigation,props }) =>{
                                        <Text style={{fontSize: 16}}>Trái cây</Text>
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.fruit} </Text>
                                     </View>
+                                    {
+                                       data.reqStaff?
+                                          <View style={styles.rowdetail} key={Math.random()}>
+                                             <Text style={{fontSize: 16}}>Yêu cầu nhân viên</Text>
+                                             <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.reqStaff.fullnameStaff} </Text>
+                                          </View>
+                                       :
+                                       <View></View>
+                                    }
                                     <View style={styles.rowdetail} key={Math.random()}>
                                        <Text style={{fontSize: 16}}>Trạng thái</Text>
                                        <Text key={Math.random()} style={{flex:1,textAlign: "right", fontWeight: 'bold'}}> {data.status} </Text>
@@ -577,18 +651,32 @@ const OrderScreen = ({ navigation,props }) =>{
                                        </View>
                                     }
                                     {
-                                       (data.status === "Đang thực hiện")?
-                                          (<TouchableOpacity onPress = {()=> {confirmWork(data._id,"cooking"),
-                                             // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
-                                                checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname, "cooking")
-                                          }}  
-                                          >
-                                             <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
-                                                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
-                                             </View>
-                                          </TouchableOpacity>)
-                                       :
-                                          (data.status === 'Đang chờ xác nhận')?
+                                       // (data.status === "Đang thực hiện")?
+                                       //    (<TouchableOpacity onPress = {()=> {confirmWork(data._id,"cooking"),
+                                       //       // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
+                                       //          checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname, "cooking")
+                                       //    }}  
+                                       //    >
+                                       //       <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                       //          <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
+                                       //       </View>
+                                       //    </TouchableOpacity>)
+                                       // :
+                                       //    (data.status === 'Đang chờ xác nhận')?
+                                       //    (<TouchableOpacity 
+                                       //       onPress = {()=> { 
+                                       //          cancelWork(data._id, "cooking")
+                                       //                      } } 
+                                       //    >
+                                       //       <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                       //          <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
+                                       //       </View>
+                                       //    </TouchableOpacity>)
+                                       // :
+                                       // (
+                                       //    <View></View>
+                                       // )
+                                       (data.status === 'Đang chờ xác nhận' || data.status === "Tiếp tục đặt")?
                                           (<TouchableOpacity 
                                              onPress = {()=> { 
                                                 cancelWork(data._id, "cooking")
@@ -598,10 +686,33 @@ const OrderScreen = ({ navigation,props }) =>{
                                                 <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
                                              </View>
                                           </TouchableOpacity>)
+                                       :(data.status === 'Đang chờ phản hồi')?
+                                          (<View>
+                                             <TouchableOpacity 
+                                                style={{marginTop: 10}}
+                                                onPress = {()=> { 
+                                                   continueWork(data._id, "cooking")
+                                                               } } 
+                                             >
+                                                <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: '#006400', marginHorizontal: 10}}>
+                                                   <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Vẫn đặt</Text>
+                                                </View>
+                                             </TouchableOpacity>
+
+                                             <TouchableOpacity
+                                                style={{marginTop: 10}}
+                                                onPress = {()=> { 
+                                                   cancelWork(data._id, "cooking")
+                                                               } } 
+                                             >
+                                                <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                   <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hủy dịch vụ</Text>
+                                                </View>
+                                             </TouchableOpacity>
+                                          </View>
+                                          )
                                        :
-                                       (
                                           <View></View>
-                                       )
                                     }
                                  </View>
 

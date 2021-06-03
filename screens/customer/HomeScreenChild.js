@@ -240,7 +240,7 @@ const HomeScreenChild = ({navigation}) =>{
                         >
                            <TouchableOpacity onPress={()=>navigation.navigate('WashingScreen')}>
                               <Image source={require('../../assets/images/washing-machine.png')} style={{ width: 100 , height: 100}} />
-                              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Giặc ủi</Text>
+                              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10, color: 'gray' }}>Giặt ủi</Text>
                            </TouchableOpacity>
                         </View> 
                      </TouchableOpacity>

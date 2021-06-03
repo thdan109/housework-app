@@ -124,9 +124,19 @@ const LoginScreen = ({navigation}) => {
          tokenDevice: expoPushToken 
       })
       // console.log(user.data.user);
-      await AsyncStorage.setItem('Token', user.data.token)
-      dispatch(addUser(user.data.user))
-      navigation.replace('Home')
+      // console.log(user.data);
+      if (user.data.user){
+         await AsyncStorage.setItem('Token', user.data.token)
+         dispatch(addUser(user.data.user))
+         navigation.replace('Home')
+      }else if (!user.data.user){
+         return Alert.alert(
+            'Thông báo!',
+            "Mật khẩu hoặc tên đăng nhập sai!"
+         )
+      }
+     
+      
       
    }
 

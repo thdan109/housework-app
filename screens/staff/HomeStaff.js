@@ -108,7 +108,7 @@ const  HomeStaff = ({navigation}) =>{
                         // console.log({visible: true,id: dt._id});
 
                      }}>
-                        <View key={Math.random()} style={{marginVertical: 20, marginHorizontal: 10}}>
+                        <View key={Math.random()} style={{marginBottom: 10, marginHorizontal: 10}}>
                         
                               <View key={Math.random()} style={styles.showSchedule}>
                                  <View key={Math.random()} 
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
       // backgroundColor: 'white'
    },
    scrollview: {
+      paddingVertical: 20,
       borderRadius: 20,
       height: 600,
       backgroundColor: 'rgba(255,255,255,0.9)',
