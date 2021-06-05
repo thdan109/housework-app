@@ -72,6 +72,7 @@ const VoucherScreen = ({navigation}) =>{
 
    const [refreshing, setRefreshing] = React.useState(false);
    const [ modalVisible, setModalVisible] = React.useState(false)
+   const [dataOne, setDataOne ] = React.useState()
    const onRefresh = React.useCallback(() => {
       setRefreshing(true);
       wait(1000).then(() =>{ setRefreshing(false)
@@ -89,6 +90,14 @@ const VoucherScreen = ({navigation}) =>{
          idUser: idUser
       })
       setData(data.data)
+   }
+
+   const filterVoucher = async(val) =>{
+      const dataOne = await axios.post(`${host}/voucher/showVoucherById`, {
+         id:val
+      })
+      setDataOne(dataOne.data)
+      
    }
 
    return (
@@ -124,7 +133,9 @@ const VoucherScreen = ({navigation}) =>{
                   data={data}
                   keyExtractor={item => item._id}
                   renderItem={({item,index}) =>(
-                     <TouchableOpacity onPress = {() =>setModalVisible(!modalVisible)}>
+                     <TouchableOpacity onPress = {() =>{setModalVisible(!modalVisible)
+                        filterVoucher(item._id)
+                     }}>
                         <View style={styles.renderFlatlist} >
                            <View style={{flexDirection: 'row'}}>
                               <View>
@@ -169,30 +180,57 @@ const VoucherScreen = ({navigation}) =>{
                <View style={styles.contentModal}>
                   <View style={{ flex: 4/5, backgroundColor :'white', marginHorizontal: 20 }}>
                      <View style={styles.content}>
-                        <View 
-                           style={{
-                              marginHorizontal: 10,
-                              marginVertical: 20,
-                              justifyContent: 'center',
-                              // borderWidth: 1, 
-                              alignItems: 'center'
-                              // width: 117,
-                              // height: 91
-                           }}
-                           >
-                              <Image source={require('../../assets/Capture.png')} style={{width: 300,height: 200, borderRadius: 15}}  />
-                        </View>
-                        <View style={{borderWidth: 1, marginHorizontal: 10}}>
-                           <View style={{flexDirection: 'row'}}>
-                              <Text> Tên </Text>
-                              <Text>{}</Text>
+                        <View style={{backgroundColor: '#37474f'}}>
+                           <View 
+                              style={{
+                                 marginHorizontal: 10,
+                                 marginVertical: 20,
+                                 justifyContent: 'center',
+                                 // borderWidth: 1, 
+                                 alignItems: 'center',
+                                 // width: 117,
+                                 // height: 91
+                                 
+                              }}
+                              >
+                                 <Image source={require('../../assets/Capture.png')} style={{width: 300,height: 200, borderRadius: 15}}  />
                            </View>
                         </View>
+                       
+                              {
+                                 dataOne&&
+                                    <View style={{borderWidth: 0, marginHorizontal: 10, marginTop: 10}}>
+                                       <View style={{ marginTop: 0,marginBottom: 10}}>
+                                          <Text style={{fontWeight: 'bold', fontSize: 14, marginBottom: 5}}>Tên </Text>
+                                          <Text >{dataOne.nameVoucher}</Text>
+                                       </View>
+                                       <View style={{ marginTop: 0, marginBottom: 10}}>
+                                          <Text style={{fontWeight: 'bold', fontSize: 14, marginBottom: 5}}>Ưu đãi </Text>
+                                          {/* <Text >{dataOne.prince}
+                                          
+                                          </Text> */}
+                                          <NumberFormat key={Math.random()} value={dataOne.prince} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                                       </View>
+                                       <View style={{ marginTop: 0,marginBottom: 10}}>
+                                          <Text style={{fontWeight: 'bold', fontSize: 14, marginBottom: 5}}>CODE </Text>
+                                          <Text>{dataOne.codeVoucher}</Text>
+                                       </View>
+                                       <View style={{ marginTop: 0,marginBottom: 10}}>
+                                          <Text style={{fontWeight: 'bold', fontSize: 14, marginBottom: 5}}>Mô tả</Text>
+                                          <Text>{dataOne.description}</Text>
+                                       </View>
+                                       <View style={{ marginTop: 0,marginBottom: 10}}>
+                                          <Text style={{fontWeight: 'bold', fontSize: 14, marginBottom: 5}}>Điều kiện</Text>
+                                          <Text>Mỗi khách hàng được sử dụng một lần. Cho đơn từ 0đ.</Text>
+                                       </View>
+                                    </View>
+                              }
+                        
                      </View>
                      <View style={styles.button} >
                            <TouchableOpacity onPress={()=>setModalVisible(!modalVisible)}>
                               <View style={{marginHorizontal: 5, marginVertical: 10, height: 55, backgroundColor: '#37474f', borderRadius: 5, justifyContent: 'center'}}>
-                                 <Text style={{fontSize: 20, color: 'white', fontWeight: 'bold', textAlign: 'center'}}>ĐÓNG</Text>
+                                 <Text style={{fontSize: 16, color: 'white', fontWeight: 'bold', textAlign: 'center'}}>ĐỒNG Ý</Text>
                               </View>
                            </TouchableOpacity>
 
@@ -249,7 +287,7 @@ const styles = StyleSheet.create({
    renderFlatlist:{
       // height: 91,
       borderWidth: 2,
-      borderColor: '#FF4500',
+      borderColor: 'yellow',
       marginBottom: 10,
       paddingVertical: 20,
       paddingHorizontal: 15,

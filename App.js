@@ -40,6 +40,7 @@ import MessagesListStaff from './screens/staff/MessagesListStaffScreen'
 import MessagesStaffScreen from './screens/staff/MessagesStaffScreen'
 import NotificationStaffScreen from './screens/staff/NotificationStaffScreen'
 import SalaryStaffScreen from './screens/staff/SalaryStaffScreen'
+import RateStaff from './screens/staff/RateStaffScreen'
 
 
 const store = configureStore();
@@ -78,6 +79,7 @@ const handleRedux = () => {
                   <AppStack.Screen name='VoucherScreen' component={VoucherScreen}/>
                   <AppStack.Screen name='ShowFeedBackScreen' component={ShowFeedBackScreen}/>
                   {/* <App.Screen name="Test" component={TestScreen} /> */}
+                  <AppStack.Screen name='RateStaffScreen' component={RateStaff} />
                   <AppStack.Screen name='NavigatorStaff' component={NavigatorStaff} />
                   <AppStack.Screen name='HomeStaff' component={HomeStaff} />
                   <AppStack.Screen name='LoginStaff' component={LoginStaff} />

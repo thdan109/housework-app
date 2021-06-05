@@ -79,7 +79,7 @@ const ShowFeedBackScreen = ({navigation}) =>{
                      {
                         val?.clear?
                         <View style={{flexDirection: 'row', marginHorizontal: 10, marginTop: 10, backgroundColor:'#f2f2f2'}}>
-                           <Text style={styles.ratevalue}>Điểm đánh giá </Text>
+                           <Text style={styles.ratevalue}>Điểm dịch vụ ({data.length} đánh giá) </Text>
                            <View style={{flexDirection:'row' }}>
                               {/* <Text style={{fontWeight: 'bold'}}>{val?.clear}</Text> */}
                               <Rating readonly={true}  fractions={1} startingValue={(val?.clear)}   tintColor="#f2f2f2" imageSize={20} />
@@ -118,7 +118,7 @@ const ShowFeedBackScreen = ({navigation}) =>{
                     {
                        val?.cooking?
                        <View style={{flexDirection: 'row', marginHorizontal: 10, marginTop: 10, backgroundColor:'#f2f2f2'}}>
-                           <Text style={styles.ratevalue}>Điểm đánh giá </Text>
+                           <Text style={styles.ratevalue}>Điểm dịch vụ ({cooking?.length} đánh giá) </Text>
                            <View style={{flexDirection:'row' }}>
                               {/* <Text style={{fontWeight: 'bold'}}>{val?.clear}</Text> */}
                               <Rating readonly={true}  fractions={1} startingValue={(val?.clear)}   tintColor="#f2f2f2" imageSize={20} />
@@ -154,7 +154,7 @@ const ShowFeedBackScreen = ({navigation}) =>{
                      {
                         val?.washing?
                         <View style={{flexDirection: 'row', marginHorizontal: 10, marginTop: 10, backgroundColor:'#f2f2f2'}}>
-                           <Text style={styles.ratevalue}>Điểm đánh giá </Text>
+                           <Text style={styles.ratevalue}>Điểm dịch vụ ({washing?.length} đánh giá) </Text>
                            <View style={{flexDirection:'row' }}>
                               {/* <Text style={{fontWeight: 'bold'}}>{val?.clear}</Text> */}
                               <Rating readonly={true}  fractions={1} startingValue={(val?.washing)}   tintColor="#f2f2f2" imageSize={20} />

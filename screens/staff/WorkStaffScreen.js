@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Dimensions,StyleSheet, TextInput,AsyncStorage, ScrollView, TouchableOpacity, Alert,Modal, Button } from 'react-native'
 import Moment from 'moment'
 import ModalWork from '../../components/staff/ModalWork'
-import { Entypo,FontAwesome,Ionicons } from '@expo/vector-icons';
+import { Entypo,FontAwesome,Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux'
 import {LinearGradient} from 'expo-linear-gradient'
 import axios from 'axios';
@@ -105,7 +105,7 @@ const  WorkStaffScreen = ({navigation}) =>{
                   </TouchableOpacity>
                   <View style={{flex:1}}>
                      
-                        <Text style={{fontSize: 19, fontWeight: 'bold', color: 'black', textAlign: 'center'}} > Việc  </Text>
+                        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black', textAlign: 'center'}} > VIỆC  </Text>
                   </View>
                   <TouchableOpacity onPress={() => {
                      setModalVisible(true);
@@ -157,16 +157,25 @@ const  WorkStaffScreen = ({navigation}) =>{
                                           alignItems: 'center'
                                     }}>
                                     {/* <Text style={{fontWeight: 'bold'}}>Thời gian: </Text> */}
-                                    <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeStart}</Text>
+                                    <MaterialCommunityIcons name="briefcase-clock" size={53.1} color="white" />
+                                    {
+                                          dt.timeStart ? 
+                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeStart}</Text>
+                                          : (!dt.timeStart)?
+                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeSend}</Text>
+                                          :
+                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeTake}</Text>
+                                    }
+                                    
                                  </View>
                                  <View style={{flex:1, borderColor: '#008B8B', borderWidth:1,paddingVertical: 10, paddingHorizontal: 5, borderTopRightRadius: 27}}>
-                                    <View key={Math.random()} style={{flexDirection: 'row'}}>
-                                       <Text style={{fontWeight: 'bold'}}>Ngày làm: </Text>
-                                       <Text style={{flex:1, textAlign: 'right'}}>{Moment(dt.date).format('dddd  DD/MM/YYYY')}</Text>
+                                    <View key={Math.random()} style={{marginBottom: 5}}>
+                                       <Text style={{fontWeight: 'bold'}}>Ngày làm</Text>
+                                       <Text style={{}}>{Moment(dt.date).format('dddd  DD/MM/YYYY')}</Text>
                                     </View>
-                                    <View key={Math.random()} style={{flexDirection: 'row'}}>
+                                    <View key={Math.random()} style={{}}>
                                        <Text style={{fontWeight: 'bold'}}>Địa chỉ </Text>
-                                       <Text style={{flex:1, textAlign: 'right'}}>{dt.address}</Text>
+                                       <Text style={{paddingHorizontal: 0}}>{dt.address}</Text>
                                     </View>
                                  </View>
                               
@@ -180,7 +189,7 @@ const  WorkStaffScreen = ({navigation}) =>{
                </ScrollView>
                
             </View>
-            <View style={{marginTop: 15, }}>
+            <View style={{flex:1, marginTop: 15, marginBottom: 5}}>
                {/* <TouchableOpacity onPress={()=>getDataWork()}>
                   <View style={{ height: 50,justifyContent: 'center', alignItems: 'center', backgroundColor: '#008B8B', borderRadius: 15, marginHorizontal: 10  }}>
                      <Text style={{fontWeight: 'bold', fontSize: 20, color: 'white'}}>Làm mới</Text>

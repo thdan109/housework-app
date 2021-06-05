@@ -100,7 +100,7 @@ const LoginStaffScreen = ({navigation}) => {
       }
        return token;
    }
-   
+   const [showHide, setShowHide] = React.useState(false)
    const loginStaff = async () =>{
       const user = await axios.post(`${host}/staff/login`,{
          usernameStaff: data.usernameStaff,
@@ -140,7 +140,7 @@ const LoginStaffScreen = ({navigation}) => {
                         <View style={{ flex: 1, alignItems: 'center' }}>
                            <TextInput  
                               value={data.password}
-                              secureTextEntry={true}
+                              secureTextEntry={showHide}
                               placeholder='Password' 
                               style={{ flex: 1 , fontSize: 18 }} 
                               onChangeText={(val) => handleChangePassword(val)}
@@ -151,8 +151,8 @@ const LoginStaffScreen = ({navigation}) => {
                   </View>
                   <View style={{ flexDirection: 'row'}}>
                      {/* <View style={{ flex: 0.5, alignItems: 'center', flexDirection: 'row' }}>
-                        <CheckBox  style={{ width: 20, height: 20, marginRight: 10, borderColor: 'rgba(200,200,200,0.5)' }} />
-                        <Text style={{ fontStyle: 'italic' }}>Ghi nhớ mật khẩu</Text>
+                        <CheckBox checked onPress={() => setShowHide(!showHide) }  style={{ width: 20, height: 20, marginRight: 10, borderColor: 'rgba(200,200,200,0.5)' }} />
+                        <Text style={{ fontStyle: 'italic' }}>Hiện mật khẩu</Text>
                      </View> */}
                      {/* <View style={{ flex: 0.5, alignItems: 'flex-end'}}>
                         <TouchableOpacity>

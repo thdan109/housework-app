@@ -88,7 +88,7 @@ const IndexScreen = () => {
           >
             <Tab.Screen name="Home" component={HomeChild} 
                         options={{
-                           tabBarLabel: 'Home',
+                           tabBarLabel: 'Trang chủ',
                            tabBarIcon: ({ color, size }) => (
                                  <MaterialCommunityIcons name="home" color={'#043927'} size={size} />
                            ),
@@ -104,7 +104,7 @@ const IndexScreen = () => {
             />
             <Tab.Screen name="NotificationScreen" component={NotificationScreen} 
                         options={{
-                           tabBarLabel: 'Notification',
+                           tabBarLabel: 'Thông báo',
                            tabBarIcon: ({ color, size }) => (
                               <MaterialIcons name="circle-notifications" color={'#043927'} size={30} />
                            ),
@@ -112,7 +112,7 @@ const IndexScreen = () => {
             />
             <Tab.Screen name="Chat" component={MessagesListCustomer} 
                         options={{
-                           tabBarLabel: 'Chat',
+                           tabBarLabel: 'Trò chuyện',
                            tabBarIcon: ({ color, size }) => (
                               <MaterialIcons name="chat" color={'#043927'} size={30} />
                            ),
@@ -120,7 +120,7 @@ const IndexScreen = () => {
             />
             <Tab.Screen name="Account" component={ProfileUser} 
                         options={{
-                           tabBarLabel: 'Account',
+                           tabBarLabel: 'Tài khoản',
                            tabBarIcon: ({ color, size }) => (
                                  <MaterialCommunityIcons name="account-alert" color={'#043927'} size={size} />
                            ),

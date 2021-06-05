@@ -2,9 +2,11 @@ import React from 'react'
 import {StatusBar, View, Text, Dimentions, StyleSheet, TouchableOpacity,FlatList } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import host from '../../host'
+import NumberFormat from 'react-number-format';
 import axios from 'axios'
 import Moment from 'moment'
 import {useSelector} from 'react-redux'
+import {List } from 'react-native-paper'
 const SalaryStaffScreen = ({ navigation}) =>{
 
    const staff = useSelector(state => state)
@@ -47,7 +49,7 @@ const SalaryStaffScreen = ({ navigation}) =>{
             
          </View>
          <View style={styles.containerbody}>
-            {
+            {/* {
                data?.map(dt =>(
 
                   <View style={styles.note} key={Math.random()} >
@@ -80,7 +82,7 @@ const SalaryStaffScreen = ({ navigation}) =>{
                               flex:1,
                               fontSize: 16,
                               // fontWeight: 'bold'
-                           }}>Thưởng vượt chỉ tiêu</Text>
+                           }}>Thưởng vượt chỉ tiêu</Text> 
                         <Text style={{fontWeight: 'bold'}}>{dt.bonus *100} %</Text>
                      </View>
                      
@@ -119,7 +121,63 @@ const SalaryStaffScreen = ({ navigation}) =>{
                   
                   </View>
                ))
+            } */}
+            {/* <List.Section title="Dọn nhà"  > */}
+            {
+               data?.map(dt =>(
+                  <List.Accordion            
+                     style={{backgroundColor: '#FFE4B5', marginBottom: 10}}
+                     key={Math.random()}
+                     title={"Tiêu chí"}
+                     left={props => <List.Icon {...props} icon="note" />}
+                  >
+                     <View key={Math.random()} style={{backgroundColor: 'white', paddingVertical: 10}} >
+                        <View style={styles.rowdetail} key={Math.random()}>
+                           <Text style={{fontSize: 16}}>Chỉ tiêu/tháng </Text>
+                           <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold'}}>{dt.target}</Text>
+                        </View>
+                        <View style={styles.rowdetail} key={Math.random()}>
+                           <Text style={{fontSize: 16}}>Lương/việc</Text>
+                           {/* <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold'}}>{dt.work}</Text> */}
+                           <NumberFormat style={{flex:1, textAlign: "right", fontWeight: 'bold'}} key={Math.random()} value={dt.work} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                        </View>
+                        <View style={styles.rowdetail} key={Math.random()}>
+                           <Text style={{fontSize: 16}}>Thưởng vượt chỉ tiêu</Text>
+                           <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold'}}>{Number(dt.bonus)*100}% x {dt.work}</Text>
+                        </View>
+                        <View style={styles.rowdetail} key={Math.random()}>
+                           <Text style={{fontSize: 16}}>Vắng</Text>
+                           <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold'}}>{Number(dt.absent)*100}% x {dt.work}</Text>
+                        </View>
+                        <View style={styles.rowdetail} key={Math.random()}>
+                           <Text style={{fontSize: 16}}>Lương cơ bản</Text>
+                           {/* <Text key={Math.random()} style={{flex:1, textAlign: "right", fontWeight: 'bold'}}>{dt.salary}</Text> */}
+                           <NumberFormat style={{flex:1, textAlign: "right", fontWeight: 'bold'}} key={Math.random()} value={dt.salary} className="foo" displayType={'text'} thousandSeparator={true} prefix={''} renderText={(value, props) => <Text {...props}>{value} VNĐ</Text>} />
+                        </View>
+                        <View style={styles.rowdetail} key={Math.random()}>
+                           <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                              Lương thực lãnh = 
+                                 
+                           </Text>
+                           <View style={{flex: 1,marginRight: 0}} >
+                              <Text style={{fontSize: 16, fontWeight: 'bold', textAlign: 'right'}}> Lương cơ bản</Text>
+                              <Text style={{fontSize: 16, fontWeight: 'bold', textAlign: 'right'}}>+ Thưởng vượt chỉ tiêu</Text>
+                              <Text style={{fontSize: 16, fontWeight: 'bold' , textAlign: 'right'}}>- Vắng</Text>
+                              
+                           </View>
+                           
+                          
+                        </View>
+                     </View>
+
+                  </List.Accordion>
+               ))
+              
             }
+               
+
+            {/* </List.Section> */}
+
 
             <View style={styles.containerFlatlist}>  
          {/* <Text>aaaaaaaaa{dataSalary1.salary}</Text> */}
@@ -212,6 +270,15 @@ const styles = StyleSheet.create({
    },
    renderFlatlist:{
       padding: 10
+   },
+   rowdetail: {
+      flexDirection: 'row',
+      marginBottom: 10,
+      // marginLeft: 10,
+      marginRight: 20
+      // borderBottomColor: 'gray',
+      // borderBottomWidth: 0.7
+      
    }
 
 

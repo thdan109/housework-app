@@ -144,7 +144,7 @@ const ClearScreen = ( { navigation}  ) =>{
             'id': dt.provinceID,
             'value': dt.provinceName,
             'label': dt.provinceName
-         }
+         } 
       })
       datamap.pop()
       setProvince(datamap)

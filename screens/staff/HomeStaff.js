@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Dimensions,StyleSheet, TextInput,AsyncStorage, ScrollView, TouchableOpacity, Alert,Modal, Button } from 'react-native'
 import Moment from 'moment'
 import ModalWork from '../../components/staff/ModalWork'
-import { Entypo,FontAwesome } from '@expo/vector-icons';
+import { Entypo,FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux'
 import {LinearGradient} from 'expo-linear-gradient'
 import axios from 'axios';
@@ -24,9 +24,10 @@ const  HomeStaff = ({navigation}) =>{
    const getDataWork = async() =>{
       const id = staff.users.data._id
       const department = staff.users.data.department
-
+      // console.log(department);
       if (department === 'Bộ phận Vệ sinh nhà'){
          // const nowdate = '2021-05-09T17:00:00.000Z'
+         console.log('aaaaa');
          const nowdate = new Date(Date.now()-1*24*60*60*1000)
          const work = await axios.post(`${host}/clear/workStaff`,{
             id: id,
@@ -51,6 +52,7 @@ const  HomeStaff = ({navigation}) =>{
          }  
       }else if (department === 'Bộ phận Nấu ăn'){
          // const nowdate = '2021-03-31T17:00:00.000Z'
+         // console.log('aaa');
          const nowdate = new Date(Date.now()-1*24*60*60*1000)
          const work = await axios.post(`${host}/cooking/workStaff`,{
             id: id,
@@ -122,23 +124,24 @@ const  HomeStaff = ({navigation}) =>{
                                           justifyContent:'center', 
                                           alignItems: 'center'
                                     }}>
+                                       <MaterialCommunityIcons name="briefcase-clock" size={53.1} color="white" />
                                     {/* <Text style={{fontWeight: 'bold'}}>Thời gian: </Text> */}
                                     {
                                        (dt.timeStart)?
-                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27}}>{dt.timeStart}</Text>
+                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeStart}</Text>
                                        :
-                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27}}>{dt.timeSend}</Text>
+                                          <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeSend}</Text>
                                     }
                                     
                                  </View>
                                  <View style={{flex:1, borderColor: '#008B8B', borderWidth:1,paddingVertical: 10, paddingHorizontal: 5, borderTopRightRadius: 27}}>
-                                    <View key={Math.random()} style={{flexDirection: 'row'}}>
-                                       <Text style={{fontWeight: 'bold'}}>Ngày làm: </Text>
-                                       <Text style={{flex:1, textAlign: 'right'}}>{Moment(dt.date).format('dddd  DD/MM/YYYY')}</Text>
+                                    <View key={Math.random()} style={{marginBottom: 5}}>
+                                       <Text style={{fontWeight: 'bold'}}>Ngày làm</Text>
+                                       <Text style={{}}>{Moment(dt.date).format('dddd  DD/MM/YYYY')}</Text>
                                     </View>
-                                    <View key={Math.random()} style={{flexDirection: 'row'}}>
+                                    <View key={Math.random()} style={{}}>
                                        <Text style={{fontWeight: 'bold'}}>Địa chỉ </Text>
-                                       <Text style={{flex:1, textAlign: 'right'}}>{dt.address}</Text>
+                                       <Text style={{paddingHorizontal: 0}}>{dt.address}</Text>
                                     </View>
                                  </View>
                               
