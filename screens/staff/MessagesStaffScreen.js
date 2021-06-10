@@ -77,7 +77,8 @@ const MessagesStaffScreen = ({ navigation, route } ) => {
    }
 
    React.useEffect(() => {
-      console.log('sdfjkbdsfb ');
+      // console.log('sdfjkbdsfb ');
+      // getDataChat()
       socket.on('message', (message) => {
       if(message.data[0].user._id !== staff.users.data._id) {
          const mess = message.data[0]
@@ -144,6 +145,7 @@ const MessagesStaffScreen = ({ navigation, route } ) => {
                   <Ionicons name="chevron-back" size={36} color="white" />
                </TouchableOpacity>
                   <Text style={{flex: 1,color:'white',fontWeight:'bold', fontSize: 19, textAlign:"center", paddingVertical: 5}}>{nameCus}</Text>
+                  
                <TouchableOpacity>
                   <Ionicons name="refresh-circle" size={36} color="white" style={{opacity: 0}} />
                </TouchableOpacity>

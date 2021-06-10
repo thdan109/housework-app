@@ -122,7 +122,7 @@ const  WorkStaffScreen = ({navigation}) =>{
 
             </View>
 
-            <View style={{ alignItems: 'center'}} >
+            <View style={{flex:1, alignItems: 'center'}} >
                <ScrollView style={styles.scrollview}>
                   {/* Show work */}
                   
@@ -189,7 +189,7 @@ const  WorkStaffScreen = ({navigation}) =>{
                </ScrollView>
                
             </View>
-            <View style={{flex:1, marginTop: 15, marginBottom: 5}}>
+            <View style={{marginTop: 15, marginBottom: 5, justifyContent: 'flex-end'}}>
                {/* <TouchableOpacity onPress={()=>getDataWork()}>
                   <View style={{ height: 50,justifyContent: 'center', alignItems: 'center', backgroundColor: '#008B8B', borderRadius: 15, marginHorizontal: 10  }}>
                      <Text style={{fontWeight: 'bold', fontSize: 20, color: 'white'}}>Làm mới</Text>
@@ -223,8 +223,9 @@ const styles = StyleSheet.create({
       // backgroundColor: 'white'
    },
    scrollview: {
+      flex:1,
       borderRadius: 20,
-      height: 600,
+      // height: 600,
       backgroundColor: 'rgba(255,255,255,0.9)',
       width: '100%',
       paddingVertical: 20

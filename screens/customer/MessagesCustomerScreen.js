@@ -83,6 +83,7 @@ const MessagesCustomerScreen = ({navigation, route}) => {
 //   }, []);
 
    React.useEffect(() => {
+      // getDataChat()
       socket.on('message', (message) => {
       if(message.data[0].user._id !== user.users.data._id) {
          const mess = message.data[0]

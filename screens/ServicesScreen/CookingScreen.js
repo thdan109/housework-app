@@ -64,11 +64,11 @@ const CookingScreen = ({ navigation } )=>{
    const [ dish4, setDish4] = React.useState()
    
    const hours = [
-      {label: '1', value: 'itemHours1'},
-      {label: '2', value: 'itemHours2'},
-      {label: '3', value: 'itemHours3'},
-      {label: '4', value: 'itemHours4'},
-      {label: '5', value: 'itemHours5'},
+      // {label: '1', value: 'itemHours1'},
+      // {label: '2', value: 'itemHours2'},
+      // {label: '3', value: 'itemHours3'},
+      // {label: '4', value: 'itemHours4'},
+      // {label: '5', value: 'itemHours5'},
       {label: '6', value: 'itemHours6'},
       {label: '7', value: 'itemHours7'},
       {label: '8', value: 'itemHours8'},
@@ -76,6 +76,12 @@ const CookingScreen = ({ navigation } )=>{
       {label: '10', value: 'itemHours10'},
       {label: '11', value: 'itemHours11'},
       {label: '12', value: 'itemHours12'},
+      {label: '13', value: 'itemHours13'},
+      {label: '14', value: 'itemHours14'},
+      {label: '15', value: 'itemHours15'},
+      {label: '16', value: 'itemHours16'},
+      {label: '17', value: 'itemHours17'},
+      {label: '18', value: 'itemHours18'},
    ]
    
    const mins = [
@@ -369,7 +375,7 @@ const CookingScreen = ({ navigation } )=>{
       const token_val = await AsyncStorage.getItem('Token')
 
       const sendAddress = numaddress+', '+ address.address;
-      const sendTime = datatime.hour.label+' : '+datatime.min.label;
+      const sendTime = datatime.hour.label+':'+datatime.min.label;
       // console.log(dish);
       console.log(listStaff);      
          const createCooking = await axios.get(`${host}/cooking/create`, {

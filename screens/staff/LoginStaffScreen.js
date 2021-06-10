@@ -108,9 +108,20 @@ const LoginStaffScreen = ({navigation}) => {
          tokenDevice: expoPushToken 
       })
       // console.log(user.data.staff);
-      await AsyncStorage.setItem('TokenStaff', user.data.token)
-      dispatch(addUser(user.data.staff))
-      navigation.replace('NavigatorStaff')
+     
+      if (user.data.staff){
+         // await AsyncStorage.setItem('Token', user.data.token)
+         // dispatch(addUser(user.data.user))
+         await AsyncStorage.setItem('TokenStaff', user.data.token)
+         dispatch(addUser(user.data.staff))
+         navigation.replace('NavigatorStaff')
+         // navigation.replace('Home')
+      }else if (!user.data.staff){
+         return Alert.alert(
+            'Thông báo!',
+            "Mật khẩu hoặc tên đăng nhập sai!"
+         )
+      }
    }
 
       return(
@@ -140,7 +151,7 @@ const LoginStaffScreen = ({navigation}) => {
                         <View style={{ flex: 1, alignItems: 'center' }}>
                            <TextInput  
                               value={data.password}
-                              secureTextEntry={showHide}
+                              secureTextEntry={true}
                               placeholder='Password' 
                               style={{ flex: 1 , fontSize: 18 }} 
                               onChangeText={(val) => handleChangePassword(val)}

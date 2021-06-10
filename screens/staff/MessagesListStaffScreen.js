@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios'
 import host from '../../host'
 import {useSelector} from 'react-redux'
+import Moment from 'moment'
 
 
 // const Messages = [
@@ -88,8 +89,9 @@ const MessagesListStaffScreen = ({navigation}) => {
                                  <Text style={{flex:1, textAlign: "right", fontSize: 15}}>aaaaaaaaaaaaaaa</Text>
                               </View> */}
                              
-                              <View style={{flexDirection: 'row'}}>
-                                 <Text style={{marginTop: 15 ,fontWeight: 'bold', fontSize: 18}} >{item.nameUser}</Text>
+                              <View style={{}}>
+                                 <Text style={{marginTop: 1 ,fontWeight: 'bold', fontSize: 18}} >{item.nameUser}</Text>
+                                 <Text style={{fontWeight: 'bold', fontSize: 13, marginTop: 1}} >{Moment(item.date).format('DD/MM/YYYY')}</Text>
                               </View>
                               <View style={{flexDirection: 'row', marginTop: 18}}>
                                  <Text style={{fontSize: 15, color: 'gray', fontStyle: 'italic'}} >{ item && ( item.messages[0] ? item.messages[0].text : '')}</Text>

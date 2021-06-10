@@ -302,7 +302,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                                       <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
                                                       <View style={{flexDirection:'row'}}>
                                                          <TouchableOpacity onPress={()=>navigation.navigate('MessagesCustomer')}>
-                                                            <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                                            {/* <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} />  */}
                                                          </TouchableOpacity>
                                                          {
                                                             (data.status !== "Đã xác nhận")?
@@ -460,7 +460,7 @@ const OrderScreen = ({ navigation,props }) =>{
                                                    )
                                                    }
                                                 </View>
-                                                <View>
+                                                {/* <View>
                                                    {
                                                       data.idStaff.map(dt1=>
                                                          <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
@@ -474,11 +474,34 @@ const OrderScreen = ({ navigation,props }) =>{
                                                                   <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} /> 
                                                                </TouchableOpacity>
                                                                :
+                                                           2    <View></View>
+                                                            }
+                                                         </View>
+                                                      </View>
+                                                      )
+                                                   }   
+                                                </View> */}
+                                                <View>
+                                                   {
+                                                      data.idStaff.map(dt1=>
+                                                         <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
+                                                         <View style={{flexDirection:'row'}}>
+                                                            <TouchableOpacity onPress={()=>navigation.navigate('MessagesCustomer')}>
+                                                               {/* <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} />  */}
+                                                            </TouchableOpacity>
+                                                            {
+                                                               (data.status !== "Đã xác nhận")?
+                                                               <TouchableOpacity onPress={()=> setModalVisible({visible: true, idStaff: dt1, idWork: data._id})}>
+                                                                  {/* <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} />  */}
+                                                                  <MaterialIcons name="star-rate" size={24} color="#FF8C00" />
+                                                               </TouchableOpacity>
+                                                               :
                                                                <View></View>
                                                             }
                                                          </View>
                                                       </View>
                                                       )
+                                                      
                                                    }   
                                                 </View>
                                              </View>
@@ -617,13 +640,13 @@ const OrderScreen = ({ navigation,props }) =>{
                                                          <View key={Math.random()} style={{flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 2}}> 
                                                          <View style={{flexDirection:'row'}}>
                                                             <TouchableOpacity onPress={()=>navigation.navigate('MessagesCustomer')}>
-                                                               <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} /> 
+                                                               {/* <Ionicons name="ios-chatbubble-ellipses-sharp" size={24} color='#1E90FF' style={{marginLeft: 10}} />  */}
                                                             </TouchableOpacity>
                                                             {
                                                                (data.status !== "Đã xác nhận")?
                                                                <TouchableOpacity onPress={()=> setModalVisible({visible: true, idStaff: dt1, idWork: data._id})}>
                                                                   {/* <MaterialIcons name="report" size={24} color="red"  style={{marginLeft: 10}} />  */}
-                                                                  <MaterialIcons name="star-rate" size={24} color="black" />
+                                                                  <MaterialIcons name="star-rate" size={24} color="#FF8C00" />
                                                                </TouchableOpacity>
                                                                :
                                                                <View></View>
@@ -651,17 +674,17 @@ const OrderScreen = ({ navigation,props }) =>{
                                        </View>
                                     }
                                     {
-                                       // (data.status === "Đang thực hiện")?
-                                       //    (<TouchableOpacity onPress = {()=> {confirmWork(data._id,"cooking"),
-                                       //       // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
-                                       //          checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname, "cooking")
-                                       //    }}  
-                                       //    >
-                                       //       <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
-                                       //          <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
-                                       //       </View>
-                                       //    </TouchableOpacity>)
-                                       // :
+                                       (data.status === "Đang thực hiện")?
+                                          (<TouchableOpacity onPress = {()=> {confirmWork(data._id,"cooking"),
+                                             // setModalVisibleFB({visible: true,idWork: data._id, nameUser: user.users.data.fullname, idUser: user.users.data._id})
+                                                checkFeebback('a', user.users.data._id,data._id, user.users.data.fullname, "cooking")
+                                          }}  
+                                          >
+                                             <View style={{height: 45, borderWidth: 0, justifyContent: 'center', backgroundColor: 'red', marginHorizontal: 10}}>
+                                                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Hoàn thành</Text>
+                                             </View>
+                                          </TouchableOpacity>)
+                                       :
                                        //    (data.status === 'Đang chờ xác nhận')?
                                        //    (<TouchableOpacity 
                                        //       onPress = {()=> { 

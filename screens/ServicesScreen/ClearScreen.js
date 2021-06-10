@@ -33,7 +33,7 @@ const ClearScreen = ( { navigation}  ) =>{
    }])
 
    const [ listStaff, setListStaff ] = React.useState()
-   const [ datee, setdate] = React.useState(new Date())
+   const [ datee, setdate] = React.useState()
    const [ province, setProvince] = React.useState([])
    const [ district, setDistrict] = React.useState([])
    const [ ward, setWard ] = React.useState([])
@@ -398,7 +398,7 @@ const ClearScreen = ( { navigation}  ) =>{
                                  locale="en" 
                                  onSelect={ (date) => changeDate(date) }
                                  isHideOnSelect={true}
-                                 initialDate={new Date(Date.now()+1*24*60*60*1000)}
+                                 initialDate={new Date(Date.now()+1*24*60*60*1000)} 
                                  button={<Text style={{backgroundColor:'white', fontSize: 17, borderWidth: 1, borderColor: '#228B22',borderRadius: 5,paddingHorizontal: 10, textAlign: 'center', color: 'black',height: 45}}>{Moment(datee).format('dddd  DD/MM/YYYY')}</Text>}
                               />  
                            </View>

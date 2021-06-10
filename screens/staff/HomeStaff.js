@@ -92,7 +92,7 @@ const  HomeStaff = ({navigation}) =>{
                </View>
             </View>
 
-            <View style={{ alignItems: 'center'}} >
+            <View style={{flex:1, alignItems: 'center'}} >
                <ScrollView style={styles.scrollview}>
                   {/* Show work */}
                {
@@ -129,8 +129,10 @@ const  HomeStaff = ({navigation}) =>{
                                     {
                                        (dt.timeStart)?
                                           <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeStart}</Text>
-                                       :
+                                       :(!dt.timeStart)?
                                           <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeSend}</Text>
+                                       :
+                                       <Text style={{flex:1, fontWeight: 'bold', textAlign: 'center', fontSize: 27, color: 'white'}}>{dt.timeTake}</Text>
                                     }
                                     
                                  </View>
@@ -155,7 +157,7 @@ const  HomeStaff = ({navigation}) =>{
                </ScrollView>
                
             </View>
-            <View style={{marginTop: 15, }}>
+            <View style={{borderWidth: 0,justifyContent: 'flex-end', marginTop: 15 }}>
                {/* <TouchableOpacity onPress={()=>getDataWork()}>
                   <View style={{ height: 50,justifyContent: 'center', alignItems: 'center', backgroundColor: '#008B8B', borderRadius: 15, marginHorizontal: 10  }}>
                      <Text style={{fontWeight: 'bold', fontSize: 20, color: 'white'}}>Làm mới</Text>
@@ -189,9 +191,10 @@ const styles = StyleSheet.create({
       // backgroundColor: 'white'
    },
    scrollview: {
+      // flex:1,
       paddingVertical: 20,
       borderRadius: 20,
-      height: 600,
+      // height: 600,
       backgroundColor: 'rgba(255,255,255,0.9)',
       width: '100%',
       // marginBottom: 20
