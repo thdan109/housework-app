@@ -116,7 +116,7 @@ const  WorkStaffScreen = ({navigation}) =>{
                </View>
                
                <View style={{marginTop:30, marginLeft: 25}} >
-                  <Text style={{fontWeight: 'bold'}}> Số việc đã làm tháng này:  {numWork} </Text>
+                  <Text style={{fontWeight: 'bold'}}> Số việc đã làm tháng này:  {Number(numWork+2)} </Text>
                </View>
 
 
